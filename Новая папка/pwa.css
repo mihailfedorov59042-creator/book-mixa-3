@@ -1,0 +1,33 @@
+/* PWA controls kept separate from the reader's original styles. */
+.pwa-management {
+  display:flex; flex-wrap:wrap; align-items:center; gap:10px;
+  margin:10px 0 22px; color:var(--muted, #746450);
+  font:12px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.pwa-management button {
+  border:1px solid currentColor; border-radius:7px; background:transparent;
+  padding:6px 10px; color:inherit; font:inherit; cursor:pointer;
+}
+.pwa-management button:hover { background:rgba(120,95,60,.08); }
+.pwa-management button:focus-visible, .pwa-notice button:focus-visible {
+  outline:2px solid #b78a4d; outline-offset:3px;
+}
+.pwa-management button[hidden], .pwa-notice[hidden] { display:none !important; }
+.pwa-state { flex-basis:100%; }
+.pwa-notice {
+  position:fixed; z-index:1000000; left:50%; bottom:max(12px,env(safe-area-inset-bottom,0px));
+  transform:translateX(-50%); width:min(550px,calc(100vw - 24px));
+  background:#f8f1e4; color:#38291b; border:1px solid #c9b28e; border-radius:12px;
+  box-shadow:0 10px 35px rgba(20,13,7,.24); padding:12px 14px;
+  display:flex; align-items:center; flex-wrap:wrap; gap:9px 12px;
+  font:14px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.pwa-notice__message {flex:1 1 220px;}
+.pwa-notice__actions {display:flex;flex-wrap:wrap;gap:8px;}
+.pwa-notice button {border:1px solid #876a47;border-radius:7px;background:transparent;color:inherit;padding:8px 11px;cursor:pointer;font:inherit;}
+.pwa-notice button.pwa-primary {color:#fff;background:#583922;border-color:#583922;}
+@media (prefers-color-scheme:dark) {
+  .pwa-notice {background:#251d17;color:#f5ead8;border-color:#816849;}
+  .pwa-notice button {border-color:#a88963;}
+  .pwa-notice button.pwa-primary {background:#bd9a6c;color:#1d170f;border-color:#bd9a6c;}
+}
