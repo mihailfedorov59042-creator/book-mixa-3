@@ -3,7 +3,7 @@ const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { chromium, devices } = require('playwright');
 const { createServer } = require('node:http');
-const { readFile } = require('node:fs/promises');
+const { readFile, mkdir } = require('node:fs/promises');
 const { execFileSync } = require('node:child_process');
 const path = require('node:path');
 const transfer = require('../notes-transfer.js');
@@ -16,7 +16,7 @@ const initial = () => ({ notes: { fixture1: note() }, progress: { phedre: { a: 3
   del: [], cm: {}, bookmarks: { phedre: [7, 30] }, ink: { phedre: { t: 1, s: [] } } });
 const json = notes => JSON.stringify({ format: 'polka-notes', version: 1,
   exportedAt: '2026-11-06T12:00:00Z', notes });
-const books = { phedre: 100000 };
+const books = { phedre: 100000, barthes: 100000 };
 let server, browser, base, previous = false, interruptUpdate = false;
 const oldFiles = new Map();
 before(async () => {
@@ -196,6 +196,7 @@ test('update from the original PWA: interrupted install, confirmation, activatio
     page.once('dialog', dialog => dialog.accept());
     await page.getByRole('button', { name: 'Обновить', exact: true }).click();
     await page.locator('[data-notes-export]').waitFor();
+    await page.waitForFunction(() => !!window.__BOOKS?.barthes);
     assert.equal(await rawSaved(page), originalRaw);
     await context.setOffline(true);
     await page.reload();
@@ -220,5 +221,74 @@ test('fresh device imports an exported file without progress or bookmarks from t
     assert.deepEqual(data.notes.fixture1, note());
     assert.deepEqual(data.progress, {});
     assert.equal(data.bookmarks, undefined);
+  } finally { await context.close(); }
+});
+
+for (const [name, options] of [
+  ['desktop', { viewport: { width: 1365, height: 900 } }],
+  ['android', devices['Pixel 7']]
+]) test(`Barthes on ${name}: full anthology, navigation, table, notes and offline persistence`, { timeout: 180000 }, async () => {
+  const context = await contextFor(options);
+  try {
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    const screenshot = async suffix => {
+      if (!process.env.POLKA_SCREENSHOT_DIR) return;
+      await mkdir(process.env.POLKA_SCREENSHOT_DIR, { recursive: true });
+      await page.screenshot({ path: path.join(process.env.POLKA_SCREENSHOT_DIR, `barthes-${name}-${suffix}.png`) });
+    };
+    await ready(page);
+    const original = await saved(page);
+    const card = page.locator('#theory-slot [data-go="barthes"]');
+    assert.equal(await card.count(), 1);
+    await card.scrollIntoViewIfNeeded();
+    await screenshot('shelf');
+    await context.setOffline(true);
+    await card.click();
+    await page.locator('#book .page').first().waitFor({ state: 'attached' });
+    assert.ok(await page.locator('#book .page').count() > 50);
+    assert.equal(await page.locator('#toc-list .toc-i').count(), 36);
+    await screenshot('title');
+    await page.locator('#btn-toc').click();
+    await page.locator('#toc-list .toc-i').filter({ hasText: 'Смерть автора' }).click();
+    const visibleText = await page.locator('#book .page:not([hidden])').allTextContents();
+    assert.ok(visibleText.join('\n').includes('Смерть автора'));
+    await page.locator('#btn-search').click();
+    await page.locator('#sr-q').fill('рождение читателя');
+    await page.locator('#sr-list .sr-hit').first().waitFor();
+    await page.locator('#sr-list .sr-hit').first().click();
+    await page.locator('#btn-pnote').click();
+    await page.locator('#ed-text').fill('Синтетическая заметка к Барту');
+    await page.locator('#ed-save').click();
+    const annotated = await saved(page);
+    assert.equal(Object.values(annotated.notes).filter(n => n.book === 'barthes').length, 1);
+    assert.deepEqual(annotated.progress.phedre, original.progress.phedre);
+    assert.deepEqual(annotated.bookmarks, original.bookmarks);
+    assert.deepEqual(annotated.notes.fixture1, original.notes.fixture1);
+    const tableIndex = await page.evaluate(() => window.__BOOKS.barthes.b.findIndex(b => b[0] === 'table'));
+    await page.evaluate(i => { location.hash = 'barthes@' + i; }, tableIndex);
+    const table = page.locator(`#book [data-i="${tableIndex}"] table:visible`);
+    await table.waitFor();
+    assert.equal(await table.locator('tr').count(), 3);
+    const fits = await table.evaluate(el => {
+      const r = el.getBoundingClientRect(), body = el.closest('.pg-body').getBoundingClientRect();
+      return r.left >= body.left - 1 && r.right <= body.right + 1;
+    });
+    assert.equal(fits, true, 'the original diagram must fit the reader column');
+    await screenshot('table');
+    await page.evaluate(() => { location.hash = ''; });
+    const exported = await download(page, '[data-notes-export]');
+    assert.equal(transfer.parseBackup(exported, books).filter(n => n.book === 'barthes').length, 1);
+    await choose(page, exported);
+    await apply(page);
+    assert.equal(Object.keys((await saved(page)).notes).length, 2);
+    await page.reload();
+    const restored = await saved(page);
+    assert.equal(Object.values(restored.notes).filter(n => n.book === 'barthes').length, 1);
+    assert.ok(restored.progress.barthes.a > 0);
+    assert.deepEqual(restored.progress.phedre, original.progress.phedre);
+    assert.equal(await page.evaluate(() => window.__cloudCalls), 0);
+    assert.deepEqual(errors, []);
   } finally { await context.close(); }
 });

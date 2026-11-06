@@ -4,7 +4,7 @@
   "scripts": {
     "pretest": "python3 tools/build_pwa.py",
     "test": "npm run test:unit && npm run test:browser",
-    "test:unit": "node tests/notes-transfer.test.cjs",
+    "test:unit": "node tests/notes-transfer.test.cjs && python3 -m unittest discover -s tests -p 'test_*.py'",
     "test:browser": "node tests/browser.test.cjs"
   },
   "devDependencies": {
