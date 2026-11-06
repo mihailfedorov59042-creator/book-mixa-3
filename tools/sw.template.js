@@ -41,7 +41,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   event.respondWith((async () => {
-    const cached = await caches.match(req);
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(req);
     if (cached) return cached;
     return fetch(req); // New uncached assets can still be requested online.
   })());

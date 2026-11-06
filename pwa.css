@@ -31,3 +31,25 @@
   .pwa-notice button {border-color:#a88963;}
   .pwa-notice button.pwa-primary {background:#bd9a6c;color:#1d170f;border-color:#bd9a6c;}
 }
+
+/* File transfer uses the reader's colours and a native accessible modal. */
+.notes-transfer-dialog {
+  width:min(520px,calc(100vw - 32px)); max-height:calc(100dvh - 32px);
+  box-sizing:border-box; overflow:auto; padding:22px;
+  background:var(--paper,#f8f1e4); color:var(--ink,#38291b);
+  border:1px solid var(--rule,#c9b28e); border-radius:12px;
+  box-shadow:0 10px 35px var(--shadow,rgba(20,13,7,.24));
+  font:14px/1.5 var(--f-ui,system-ui,sans-serif);
+}
+.notes-transfer-dialog::backdrop { background:var(--scrim,rgba(20,13,7,.4)); }
+.notes-transfer-dialog h2 { margin:0 0 12px; font:24px/1.2 var(--f-disp,Georgia,serif); }
+.notes-transfer-dialog p { margin:12px 0; overflow-wrap:anywhere; }
+.notes-transfer-dialog fieldset { padding:12px; border:1px solid var(--rule,#c9b28e); border-radius:7px; }
+.notes-transfer-dialog label { display:block; margin:8px 0; cursor:pointer; }
+.notes-transfer-dialog input { accent-color:var(--ink,#38291b); }
+.notes-transfer-dialog .notes-transfer-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:10px; margin-top:18px; }
+.notes-transfer-dialog button { min-height:44px; white-space:normal; }
+.notes-transfer-dialog :focus-visible { outline:2px solid #b78a4d; outline-offset:3px; }
+.notes-transfer-error { color:var(--ink,#38291b); font-weight:600; }
+.pwa-management button:disabled { opacity:.6; cursor:wait; }
+#notes-transfer-status { overflow-wrap:anywhere; }

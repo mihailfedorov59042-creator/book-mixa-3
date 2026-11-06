@@ -1,48 +1,49 @@
 /* GENERATED FILE. Edit tools/sw.template.js and run python3 tools/build_pwa.py. */
-const BUILD_ID = 'b700f1509724957d';
+const BUILD_ID = '9f9a12f4b2944127';
 const CACHE_NAME = 'polka-offline-' + BUILD_ID;
 const PRECACHE_FILES = [
-  "./index.html?v=b700f1509724957d",
-  "./pwa.js",
-  "./pwa.css",
+  "./index.html?v=9f9a12f4b2944127",
+  "./pwa.js?v=9f9a12f4b2944127",
+  "./pwa.css?v=9f9a12f4b2944127",
+  "./notes-transfer.js?v=9f9a12f4b2944127",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-maskable-512.png",
   "./icons/apple-touch-icon.png",
-  "./data/b-apelsiny.js?v=b700f1509724957d",
-  "./data/b-e_about.js?v=b700f1509724957d",
-  "./data/b-e_alcestis.js?v=b700f1509724957d",
-  "./data/b-e_andromache.js?v=b700f1509724957d",
-  "./data/b-e_bacchae.js?v=b700f1509724957d",
-  "./data/b-e_bacchaez.js?v=b700f1509724957d",
-  "./data/b-e_cyclops.js?v=b700f1509724957d",
-  "./data/b-e_electra.js?v=b700f1509724957d",
-  "./data/b-e_hecuba.js?v=b700f1509724957d",
-  "./data/b-e_helena.js?v=b700f1509724957d",
-  "./data/b-e_heracles.js?v=b700f1509724957d",
-  "./data/b-e_heraclidae.js?v=b700f1509724957d",
-  "./data/b-e_hippolytus.js?v=b700f1509724957d",
-  "./data/b-e_ion.js?v=b700f1509724957d",
-  "./data/b-e_iphaul.js?v=b700f1509724957d",
-  "./data/b-e_iphtaur.js?v=b700f1509724957d",
-  "./data/b-e_medea.js?v=b700f1509724957d",
-  "./data/b-e_orestes.js?v=b700f1509724957d",
-  "./data/b-e_phoenissae.js?v=b700f1509724957d",
-  "./data/b-e_rhesus.js?v=b700f1509724957d",
-  "./data/b-e_supplices.js?v=b700f1509724957d",
-  "./data/b-e_troades.js?v=b700f1509724957d",
-  "./data/b-frye.js?v=b700f1509724957d",
-  "./data/b-gulliver.js?v=b700f1509724957d",
-  "./data/b-ne.js?v=b700f1509724957d",
-  "./data/b-paradise.js?v=b700f1509724957d",
-  "./data/b-peterburg.js?v=b700f1509724957d",
-  "./data/b-phedre.js?v=b700f1509724957d",
-  "./data/b-robinson.js?v=b700f1509724957d",
-  "./data/b-tartuffe.js?v=b700f1509724957d",
-  "./data/b-voron.js?v=b700f1509724957d",
-  "./data/b-werther.js?v=b700f1509724957d",
-  "./data/img.js?v=b700f1509724957d"
+  "./data/b-apelsiny.js?v=9f9a12f4b2944127",
+  "./data/b-e_about.js?v=9f9a12f4b2944127",
+  "./data/b-e_alcestis.js?v=9f9a12f4b2944127",
+  "./data/b-e_andromache.js?v=9f9a12f4b2944127",
+  "./data/b-e_bacchae.js?v=9f9a12f4b2944127",
+  "./data/b-e_bacchaez.js?v=9f9a12f4b2944127",
+  "./data/b-e_cyclops.js?v=9f9a12f4b2944127",
+  "./data/b-e_electra.js?v=9f9a12f4b2944127",
+  "./data/b-e_hecuba.js?v=9f9a12f4b2944127",
+  "./data/b-e_helena.js?v=9f9a12f4b2944127",
+  "./data/b-e_heracles.js?v=9f9a12f4b2944127",
+  "./data/b-e_heraclidae.js?v=9f9a12f4b2944127",
+  "./data/b-e_hippolytus.js?v=9f9a12f4b2944127",
+  "./data/b-e_ion.js?v=9f9a12f4b2944127",
+  "./data/b-e_iphaul.js?v=9f9a12f4b2944127",
+  "./data/b-e_iphtaur.js?v=9f9a12f4b2944127",
+  "./data/b-e_medea.js?v=9f9a12f4b2944127",
+  "./data/b-e_orestes.js?v=9f9a12f4b2944127",
+  "./data/b-e_phoenissae.js?v=9f9a12f4b2944127",
+  "./data/b-e_rhesus.js?v=9f9a12f4b2944127",
+  "./data/b-e_supplices.js?v=9f9a12f4b2944127",
+  "./data/b-e_troades.js?v=9f9a12f4b2944127",
+  "./data/b-frye.js?v=9f9a12f4b2944127",
+  "./data/b-gulliver.js?v=9f9a12f4b2944127",
+  "./data/b-ne.js?v=9f9a12f4b2944127",
+  "./data/b-paradise.js?v=9f9a12f4b2944127",
+  "./data/b-peterburg.js?v=9f9a12f4b2944127",
+  "./data/b-phedre.js?v=9f9a12f4b2944127",
+  "./data/b-robinson.js?v=9f9a12f4b2944127",
+  "./data/b-tartuffe.js?v=9f9a12f4b2944127",
+  "./data/b-voron.js?v=9f9a12f4b2944127",
+  "./data/b-werther.js?v=9f9a12f4b2944127",
+  "./data/img.js?v=9f9a12f4b2944127"
 ];
 const SCOPE = self.registration.scope;
 
@@ -83,7 +84,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   event.respondWith((async () => {
-    const cached = await caches.match(req);
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(req);
     if (cached) return cached;
     return fetch(req); // New uncached assets can still be requested online.
   })());
