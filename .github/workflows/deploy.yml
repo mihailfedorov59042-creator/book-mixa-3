@@ -13,6 +13,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -28,8 +29,9 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
       - name: Build and test notes transfer and offline PWA updates
+        env:
+          POLKA_CHROMIUM_PATH: /usr/bin/google-chrome
         run: npm test
       - name: Stage static PWA files
         run: |
