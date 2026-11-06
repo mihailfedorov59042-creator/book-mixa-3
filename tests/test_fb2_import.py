@@ -64,6 +64,8 @@ class FB2ImportTests(unittest.TestCase):
         self.assertEqual(len(tables), 1)
         self.assertEqual(tables[0].count('<tr>'), 3)
         self.assertIn('colspan="2"', tables[0])
+        self.assertIn('3. знак<br>I. ОЗНАЧАЮЩЕЕ', tables[0])
+        self.assertIn('myth-void', tables[0])
         self.assertIn('colspan="3"', tables[0])
         self.assertIn('III. ЗНАК', Text(tables[0]).value())
 
