@@ -36,10 +36,6 @@ jobs:
           mkdir _site
           cp index.html notes-transfer.js pwa.js pwa.css manifest.webmanifest sw.js .nojekyll _site/
           cp -R data icons _site/
-      - name: Use GitHub Actions as the Pages source
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh api --method PUT "repos/$GITHUB_REPOSITORY/pages" -f build_type=workflow --silent
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
