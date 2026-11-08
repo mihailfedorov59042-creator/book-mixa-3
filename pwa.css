@@ -53,3 +53,22 @@
 .notes-transfer-error { color:var(--ink,#38291b); font-weight:600; }
 .pwa-management button:disabled { opacity:.6; cursor:wait; }
 #notes-transfer-status { overflow-wrap:anywhere; }
+.settings-gear { margin-left:auto; width:40px; height:40px; flex:0 0 40px; padding:8px; }
+.settings-gear svg { width:22px; height:22px; }
+.settings-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.settings-heading h2 { margin:0; }
+.app-settings section { border-top:1px solid var(--rule); margin-top:18px; padding-top:10px; }
+.app-settings h3 { font-family:var(--f-disp); font-size:20px; }
+.app-settings .pwa-management { color:var(--ink2); margin-bottom:0; }
+.app-settings #aa-panel { position:static; width:auto; max-width:none; margin:14px 0 0; box-shadow:none; transform:none; }
+.shelf-choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.shelf-choice { min-width:0; align-items:center; }
+.shelf-choice > span:nth-child(2) { flex:1; min-width:0; }
+.shelf-choice small + small { margin-top:7px; }
+.shelf-arrow { font-size:24px; }
+.export-folder { flex-basis:100%; border-top:1px solid var(--rule); padding-top:12px; }
+.export-folder p { margin-top:0; }
+.export-folder small { display:block; margin-top:8px; }
+#shelf-navigation { display:flex; align-items:center; flex-wrap:wrap; gap:16px; margin:20px 0; font-family:var(--f-disp); font-size:22px; }
+#shelf-navigation[hidden] { display:none; }
+@media(max-width:640px) { .shelf-choices { grid-template-columns:1fr; } .shelf-choice .xi { flex-basis:44px; height:44px; } }

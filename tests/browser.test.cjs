@@ -66,7 +66,16 @@ async function ready(page) {
 }
 const saved = page => page.evaluate(key => JSON.parse(localStorage.getItem(key)), transfer.STORAGE_KEY);
 const rawSaved = page => page.evaluate(key => localStorage.getItem(key), transfer.STORAGE_KEY);
+async function openSettings(page) {
+  if (!await page.locator('#app-settings').count()) return;
+  if (!await page.locator('#app-settings').evaluate(el => el.open)) {
+    const gear = page.locator('[data-settings-open]:visible');
+    if (await gear.count()) await gear.first().click();
+    else await page.locator('#btn-aa').click();
+  }
+}
 async function choose(page, text, filename = 'polka-notes.json') {
+  await openSettings(page);
   const picker = page.waitForEvent('filechooser');
   await page.locator('[data-notes-import]').click();
   await (await picker).setFiles({ name: filename, mimeType: 'application/json', buffer: Buffer.from(text) });
@@ -78,11 +87,14 @@ async function apply(page, mode = 'merge', accept = true) {
   await page.locator('#notes-import-apply').click();
 }
 async function download(page, selector) {
+  await openSettings(page);
   const waiting = page.waitForEvent('download');
   await page.locator(selector).click();
   const file = await waiting;
   assert.match(file.suggestedFilename(), /^polka-notes-.*\.json$/);
-  return readFile(await file.path(), 'utf8');
+  const text = await readFile(await file.path(), 'utf8');
+  await page.evaluate(() => document.querySelector('#app-settings')?.close());
+  return text;
 }
 
 for (const [name, options] of [
@@ -131,6 +143,7 @@ for (const [name, options] of [
     await apply(page);
     assert.equal(Object.keys((await saved(page)).notes).length, 3);
     await page.reload();
+    await openSettings(page);
     await page.locator('[data-notes-backup]:visible').waitFor();
     assert.equal(transfer.parseBackup(await download(page, '[data-notes-export]'), books).length, 3);
     await choose(page, json([note({ id: 'replacement', text: 'Замена' })]));
@@ -195,7 +208,7 @@ test('update from the original PWA: interrupted install, confirmation, activatio
     await page.waitForFunction(async () => !!(await navigator.serviceWorker.getRegistration()).waiting);
     page.once('dialog', dialog => dialog.accept());
     await page.getByRole('button', { name: 'Обновить', exact: true }).click();
-    await page.locator('[data-notes-export]').waitFor();
+    await page.locator('[data-notes-export]').waitFor({state:'attached'});
     await page.waitForFunction(() => !!window.__BOOKS?.barthes);
     assert.equal(await rawSaved(page), originalRaw);
     await context.setOffline(true);
@@ -240,7 +253,9 @@ for (const [name, options] of [
     };
     await ready(page);
     const original = await saved(page);
+    await page.locator('[data-go="shelf/theory"]').click();
     const card = page.locator('#theory-slot [data-go="barthes"]');
+    await card.waitFor();
     assert.equal(await card.count(), 1);
     await card.scrollIntoViewIfNeeded();
     await screenshot('shelf');
@@ -291,4 +306,113 @@ for (const [name, options] of [
     assert.equal(await page.evaluate(() => window.__cloudCalls), 0);
     assert.deepEqual(errors, []);
   } finally { await context.close(); }
+});
+
+for (const [name, options] of [
+  ['desktop', {viewport:{width:1365,height:900}}],
+  ['android', devices['Pixel 7']]
+]) test(`Shelf selection and settings on ${name}: routes, history, keyboard and offline use`, {timeout:120000}, async () => {
+  const context = await contextFor(options);
+  try {
+    const page = await context.newPage();
+    const errors=[]; page.on('pageerror', e=>errors.push(e.message));
+    await ready(page);
+    const before=await saved(page);
+    assert.equal(await page.locator('.shelf-choice').count(),5);
+    assert.equal(await page.locator('#home .book').count(),0);
+    assert.equal(await page.locator('#home [data-notes-export]').count(),0);
+    await context.setOffline(true);
+    for(const [id,slot] of [['classic','classic-slot'],['gozzi','gz-slot'],['xx','xx-slot'],['euripides','eur-slot'],['theory','theory-slot']]) {
+      await page.locator(`[data-go="shelf/${id}"]`).click();
+      await page.waitForURL(`**/#shelf/${id}`);
+      await page.locator('#'+slot).waitFor();
+      assert.equal(await page.locator('#shelf-picker').isVisible(),false);
+      assert.equal(await page.locator('#'+slot).isVisible(),true);
+      assert.equal(await page.locator('#home .shelf-choice').count(),0);
+      await page.reload();
+      assert.equal(await page.locator('#'+slot).isVisible(),true);
+      await page.locator('#shelf-navigation [data-go="home"]').click();
+      await page.locator('.shelf-choice').first().waitFor();
+    }
+    await page.locator('[data-go="shelf/theory"]').click();
+    await page.locator('#theory-slot [data-go="barthes"]').click();
+    await page.locator('#book .page').first().waitFor({state:'attached'});
+    await page.locator('#btn-aa').click();
+    assert.equal(await page.locator('#app-settings').isVisible(),true);
+    assert.equal(await page.locator('#aa-panel').isVisible(),true);
+    await page.locator('#fs-inc').click();
+    assert.equal((await saved(page)).fs,before.fs+1);
+    await page.keyboard.press('Escape');
+    assert.equal(await page.locator('#app-settings').isVisible(),false);
+    await page.locator('#reader [data-go="home"]').click();
+    await page.waitForURL('**/#shelf/theory');
+    await page.goBack();
+    await page.waitForURL('**/#barthes');
+    await page.goForward();
+    await page.waitForURL('**/#shelf/theory');
+    await openSettings(page);
+    await page.locator('[data-splash-tog]').click();
+    assert.equal((await saved(page)).splash,true);
+    await page.locator('[data-splash-tog]').click();
+    await page.locator('[data-settings-close]').click();
+    assert.deepEqual((await saved(page)).notes,before.notes);
+    assert.deepEqual((await saved(page)).progress.phedre,before.progress.phedre);
+    assert.deepEqual(errors,[]);
+    if(process.env.POLKA_SCREENSHOT_DIR) {
+      await page.locator('#shelf-navigation [data-go="home"]').click();
+      await mkdir(process.env.POLKA_SCREENSHOT_DIR,{recursive:true});
+      await page.screenshot({path:path.join(process.env.POLKA_SCREENSHOT_DIR,`shelves-${name}.png`)});
+      await openSettings(page);
+      await page.screenshot({path:path.join(process.env.POLKA_SCREENSHOT_DIR,`settings-${name}.png`)});
+    }
+  } finally { await context.close(); }
+});
+
+test('Remembered export folder: actual filesystem writes, reload, revoked permission and reset', {timeout:90000}, async () => {
+  const context=await contextFor({viewport:{width:1280,height:900}});
+  await context.addInitScript(() => {
+    window.showDirectoryPicker = async () => (await navigator.storage.getDirectory()).getDirectoryHandle('polka-test-exports',{create:true});
+  });
+  try {
+    const page=await context.newPage(); await ready(page); await context.setOffline(true);
+    const original=await saved(page);
+    await openSettings(page);
+    await page.locator('#notes-folder-choose').click();
+    await page.waitForFunction(()=>document.querySelector('#notes-folder-status').textContent.includes('polka-test-exports'));
+    await page.locator('[data-notes-export]').click();
+    await page.waitForFunction(()=>document.querySelector('#notes-transfer-status').textContent.includes('JSON-копия сохранена'));
+    const files=await page.evaluate(async()=>{
+      const dir=await (await navigator.storage.getDirectory()).getDirectoryHandle('polka-test-exports');
+      const result=[];for await(const [name,handle] of dir.entries()) result.push({name,text:await (await handle.getFile()).text()});return result;
+    });
+    assert.equal(files.length,1);assert.deepEqual(transfer.parseBackup(files[0].text,books),[note()]);
+    await page.reload();await openSettings(page);
+    await page.waitForFunction(()=>document.querySelector('#notes-folder-status').textContent.includes('polka-test-exports'));
+    await page.evaluate(()=>{FileSystemDirectoryHandle.prototype.queryPermission=async()=> 'denied';});
+    await page.locator('[data-notes-export]').click();
+    await page.waitForFunction(()=>document.querySelector('#notes-transfer-status').textContent.includes('Доступ к папке не разрешён'));
+    assert.deepEqual((await saved(page)).notes,original.notes);
+    await page.reload();await openSettings(page);
+    await page.waitForFunction(()=>document.querySelector('#notes-folder-status').textContent.includes('polka-test-exports'));
+    await page.evaluate(()=>{FileSystemDirectoryHandle.prototype.getFileHandle=async()=>{throw new DOMException('full','QuotaExceededError');};});
+    await page.locator('[data-notes-export]').click();
+    await page.waitForFunction(()=>document.querySelector('#notes-transfer-status').textContent.includes('Не удалось записать JSON'));
+    assert.deepEqual((await saved(page)).notes,original.notes);
+    await page.locator('#notes-folder-reset').click();
+    await page.waitForFunction(()=>document.querySelector('#notes-folder-reset').hidden);
+    assert.deepEqual(transfer.parseBackup(await download(page,'[data-notes-export]'),books),[note()]);
+    await page.reload();await openSettings(page);
+    assert.equal(await page.locator('#notes-folder-reset').isVisible(),false);
+  }finally{await context.close();}
+});
+
+test('Unsupported folder selection keeps ordinary JSON downloads available', {timeout:60000},async()=>{
+  const context=await contextFor(devices['Pixel 7']);
+  await context.addInitScript(()=>{window.showDirectoryPicker=undefined;});
+  try{
+    const page=await context.newPage();await ready(page);await context.setOffline(true);await openSettings(page);
+    assert.equal(await page.locator('#notes-folder-choose').isVisible(),false);
+    assert.match(await page.locator('#notes-folder-status').innerText(),/не поддерживает закрепление/);
+    assert.deepEqual(transfer.parseBackup(await download(page,'[data-notes-export]'),books),[note()]);
+  }finally{await context.close();}
 });

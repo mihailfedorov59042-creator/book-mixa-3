@@ -44,6 +44,7 @@
   function hideNotice() { if (notice) notice.hidden = true; }
   function offerUpdate(worker) {
     if (!navigator.serviceWorker.controller || dismissedWorker === worker) return;
+    document.getElementById('app-settings')?.close();
     status('Новая версия готова к установке.');
     noticeBar('Вышло обновление «Полки». Оно уже загружено. Обновить приложение сейчас?', [
       {title:'Обновить', primary:true, click:() => {

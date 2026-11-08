@@ -154,12 +154,87 @@
       try { recoveryButton.hidden = window.localStorage.getItem(BACKUP_KEY) === null; }
       catch (_) { recoveryButton.hidden = true; }
     }
-    function download(text, prefix) {
+    const folderChoose = find('#notes-folder-choose');
+    const folderReset = find('#notes-folder-reset');
+    const folderStatus = find('#notes-folder-status');
+    const folderSupported = window.isSecureContext && typeof window.showDirectoryPicker === 'function';
+    let directory = null;
+    function folderPreference(value, write = false) {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open('polka-file-settings-v1', 1);
+        request.onupgradeneeded = () => request.result.createObjectStore('preferences');
+        request.onerror = () => reject(request.error);
+        request.onblocked = () => reject(new Error('Хранилище настроек занято'));
+        request.onsuccess = () => {
+          const db = request.result;
+          const tx = db.transaction('preferences', write ? 'readwrite' : 'readonly');
+          const store = tx.objectStore('preferences');
+          const op = write ? (value === null ? store.delete('directory') : store.put(value, 'directory')) : store.get('directory');
+          tx.oncomplete = () => { db.close(); resolve(write ? value : op.result || null); };
+          tx.onerror = tx.onabort = () => { db.close(); reject(tx.error || new Error('Ошибка хранения папки')); };
+        };
+      });
+    }
+    function updateFolder() {
+      folderChoose.hidden = !folderSupported;
+      folderReset.hidden = !directory;
+      folderStatus.textContent = directory ? `Папка сохранения: «${directory.name}» (запомнена).` :
+        folderSupported ? 'Папка сохранения: загрузки браузера.' :
+        'Этот браузер не поддерживает закрепление папки. Файлы сохраняются через загрузки браузера; место сохранения выбирается в его настройках.';
+    }
+    const folderReady = folderSupported ? folderPreference().then(handle => {
+      directory = handle; updateFolder();
+    }).catch(() => {
+      updateFolder();
+      message('Не удалось прочитать сохранённую папку. Пока используется скачивание браузера; выберите папку заново.');
+    }) : Promise.resolve();
+    updateFolder();
+    folderChoose.addEventListener('click', async () => {
+      folderChoose.disabled = true;
+      try {
+        const handle = await window.showDirectoryPicker({ id:'polka-notes', mode:'readwrite', ...(directory ? {startIn:directory} : {}) });
+        await folderReady;
+        await folderPreference(handle, true);
+        directory = handle; updateFolder();
+        message('Папка запомнена. Кнопка «Выгрузить заметки» будет сохранять JSON-копии в неё.');
+      } catch (err) {
+        if (err.name !== 'AbortError') message('Не удалось выбрать или запомнить папку. Прежнее место сохранения не изменено.');
+      } finally { folderChoose.disabled = false; }
+    });
+    folderReset.addEventListener('click', async () => {
+      folderReset.disabled = true;
+      try {
+        await folderReady;
+        await folderPreference(null, true);
+        directory = null; updateFolder();
+        message('Закрепление папки отключено. Скачанные ранее файлы остаются в ней.');
+      } catch (_) { message('Не удалось сбросить папку. Повторите попытку.'); }
+      finally { folderReset.disabled = false; }
+    });
+    async function download(text, prefix) {
+      await folderReady;
+      const filename = prefix + new Date().toISOString().replace(/[:.]/g, '-') + '.json';
+      if (directory) {
+        const target = directory;
+        try {
+          let permission = await target.queryPermission({mode:'readwrite'});
+          if (permission === 'prompt') permission = await target.requestPermission({mode:'readwrite'});
+          if (permission !== 'granted') fail('Доступ к папке не разрешён. Разрешите доступ или выберите другую папку в настройках.');
+          const file = await target.getFileHandle(filename, {create:true});
+          const writer = await file.createWritable();
+          try { await writer.write(text); await writer.close(); }
+          catch (err) { try { await writer.abort(); } catch (_) {} throw err; }
+          return `JSON-копия сохранена в папке «${target.name}»: ${filename}`;
+        } catch (err) {
+          if (err instanceof TransferError) throw err;
+          fail('Не удалось записать JSON в выбранную папку. Проверьте доступ и свободное место или выберите папку заново. Заметки в приложении сохранены.');
+        }
+      }
       const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = prefix + new Date().toISOString().replace(/[:.]/g, '-') + '.json';
+      link.download = filename;
       document.body.appendChild(link);
       try { link.click(); }
       finally {
@@ -167,19 +242,18 @@
         // Android may consume the Blob after the click handler has returned.
         window.setTimeout(() => URL.revokeObjectURL(url), 60000);
       }
+      return 'Скачивание JSON-копии начато. Сохраните файл и перенесите его на другое устройство.';
     }
-    exportButton.addEventListener('click', () => {
+    exportButton.addEventListener('click', async () => {
       try {
-        download(serializeBackup(storedNotes(getState(), books), books), 'polka-notes-');
-        message('Скачивание JSON-копии начато. Сохраните файл и перенесите его на другое устройство.');
+        message(await download(serializeBackup(storedNotes(getState(), books), books), 'polka-notes-'));
       } catch (err) { message(errorMessage(err)); }
     });
-    recoveryButton.addEventListener('click', () => {
+    recoveryButton.addEventListener('click', async () => {
       try {
         const text = window.localStorage.getItem(BACKUP_KEY);
         parseBackup(text, books);
-        download(text, 'polka-notes-before-import-');
-        message('Скачивание копии до последней загрузки начато. Для восстановления выберите её через «Загрузить заметки».');
+        message((await download(text, 'polka-notes-before-import-')) + ' Для восстановления выберите этот файл через «Загрузить заметки».');
       } catch (err) { message(errorMessage(err)); }
     });
     importButton.addEventListener('click', () => {
@@ -209,6 +283,7 @@
         find('#notes-import-summary').textContent = `Файл «${file.name}»: ${notes.length} заметок. На устройстве: ${before.notes.length}.`;
         find('input[name="notes-import-mode"][value="merge"]').checked = true;
         find('#notes-import-error').textContent = '';
+        find('#app-settings')?.close();
         dialog.showModal();
       } catch (err) { pending = null; message(errorMessage(err)); }
       finally { busy = false; importButton.disabled = false; }
