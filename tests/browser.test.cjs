@@ -25,14 +25,16 @@ before(async () => {
   }
   server = createServer(async (request, response) => {
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-    const name = pathname.replace(/^\/book-mixa-3\//, '') || 'index.html';
-    const file = path.resolve(root, name);
-    if (!pathname.startsWith('/book-mixa-3/') || !file.startsWith(root + path.sep)) {
+    const ssl = pathname.startsWith('/SSL/');
+    const name = pathname.replace(ssl ? /^\/SSL\// : /^\/book-mixa-3\//, '') || 'index.html';
+    const assetName = ssl && name.startsWith('icons/') ? name.slice(6) : name;
+    const file = path.resolve(ssl ? path.join(root,'tests/fixtures/ssl') : root, assetName);
+    if ((!ssl && !pathname.startsWith('/book-mixa-3/')) || !file.startsWith(root + path.sep)) {
       response.writeHead(404).end(); return;
     }
     if (interruptUpdate && name === 'notes-transfer.js') { response.writeHead(503).end(); return; }
     try {
-      const data = previous && oldFiles.has(name) ? oldFiles.get(name) : await readFile(file);
+      const data = !ssl && previous && oldFiles.has(name) ? oldFiles.get(name) : await readFile(file);
       const type = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
         '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.svg': 'image/svg+xml' }[path.extname(name)] || 'application/octet-stream';
       response.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store' }).end(data);
@@ -415,4 +417,50 @@ test('Unsupported folder selection keeps ordinary JSON downloads available', {ti
     assert.match(await page.locator('#notes-folder-status').innerText(),/не поддерживает закрепление/);
     assert.deepEqual(transfer.parseBackup(await download(page,'[data-notes-export]'),books),[note()]);
   }finally{await context.close();}
+});
+
+test('Two installed-app identities on one origin stay separate, including offline caches and stored data', {timeout:90000},async()=>{
+ const context=await contextFor({viewport:{width:1280,height:900}});
+ try {
+  const polka=await context.newPage();await ready(polka);
+  const ssl=await context.newPage();await ssl.goto(base.replace('/book-mixa-3/','/SSL/'));
+  await ssl.evaluate(()=>navigator.serviceWorker.ready.then(()=>true));await ssl.reload();
+  const polkaSession=await context.newCDPSession(polka),sslSession=await context.newCDPSession(ssl);
+  const a=await polkaSession.send('Page.getAppManifest'),b=await sslSession.send('Page.getAppManifest');
+  const ma=JSON.parse(a.data),mb=JSON.parse(b.data);
+  assert.equal(ma.id,'/book-mixa-3/');assert.equal(mb.id,'/SSL/');
+  assert.notEqual(new URL(ma.id,base).href,new URL(mb.id,base).href);
+  if(a.manifest?.id && b.manifest?.id) assert.notEqual(a.manifest.id,b.manifest.id);
+  const scopeA=await polka.evaluate(()=>navigator.serviceWorker.controller.scriptURL);
+  const scopeB=await ssl.evaluate(()=>navigator.serviceWorker.controller.scriptURL);
+  assert.match(scopeA,/\/book-mixa-3\/sw.js$/);assert.match(scopeB,/\/SSL\/sw.js$/);
+  await ssl.evaluate(()=>localStorage.setItem('noun-v2',JSON.stringify({test:'keep-ssl-progress'})));
+  const before=await saved(polka);
+  // Simulate an existing SSL installation with its old cached identity.
+  await ssl.evaluate(async()=>{
+   const names=await caches.keys();const cache=await caches.open(names.find(n=>n.startsWith('ssl-study:')));
+   const url=new URL('manifest.webmanifest',location.href);
+   const old=await (await cache.match(url)).json();old.id='./';
+   await cache.put(url,new Response(JSON.stringify(old),{headers:{'Content-Type':'application/manifest+json'}}));
+   const reg=await navigator.serviceWorker.register('./sw.js?identity-update',{scope:'./'});
+   if(reg.waiting) return;
+   await new Promise(resolve=>{
+    const watch=()=>{const w=reg.installing;if(!w)return;const check=()=>{if(w.state==='installed'||w.state==='activated')resolve();};w.addEventListener('statechange',check);check();};
+    reg.addEventListener('updatefound',watch);watch();
+   });
+  });
+  await context.setOffline(true);await polka.reload();await ssl.reload();
+  assert.equal(await ssl.locator('h1').innerText(),'Старославянский язык');
+  assert.equal(await polka.locator('.shelf-choice').count(),5);
+  assert.deepEqual((await saved(polka)).notes,before.notes);
+  assert.equal(await ssl.evaluate(()=>JSON.parse(localStorage.getItem('noun-v2')).test),'keep-ssl-progress');
+  const names=await polka.evaluate(()=>caches.keys());
+  assert.ok(names.some(n=>n.startsWith('polka-offline-')));
+  assert.ok(names.some(n=>n.startsWith('ssl-study:')));
+  const cached=await ssl.evaluate(async()=>{
+   const names=await caches.keys();const cache=await caches.open(names.find(n=>n.startsWith('ssl-study:')));
+   return (await (await cache.match(new URL('manifest.webmanifest',location.href))).json()).id;
+  });
+  assert.equal(cached,'/SSL/');
+ }finally{await context.close();}
 });
