@@ -1,0 +1,695 @@
+{
+  "source": {
+    "file": "1-Anatomy-of-Criticism_-Four-Essays-Frye-Northrop-2000-Princeton-University-Press-4304072-libgen.li.pdf",
+    "sha256": "481d334673f303d3fc06fc223e88f13b7640337069f1d00d9b96b4d56f870d9b",
+    "pdfPages": 401,
+    "printedToPdfOffset": 18
+  },
+  "scope": "English quotation wording and printed pagination only; not semantic verification.",
+  "quotes": [
+    {
+      "block": 15,
+      "printedPages": [
+        172,
+        172
+      ],
+      "pdfPages": [
+        190,
+        190
+      ],
+      "english": "With regard to the characterization of comedy, the Tractatus lists three types of comic characters: the alazons or impostors, the eirons or self-deprecators, and the buffoons (bomolochoi).",
+      "fragments": [
+        "With regard to the characterization of comedy, the Tractatus lists three types of comic characters: the alazons or impostors, the eirons or self-deprecators, and the buffoons (bomolochoi)."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 16,
+      "printedPages": [
+        172,
+        172
+      ],
+      "pdfPages": [
+        190,
+        190
+      ],
+      "english": "The contest of eiron and alazon forms the basis of the comic action, and the buffoon and the churl polarize the comic mood.",
+      "fragments": [
+        "The contest of eiron and alazon forms the basis of the comic action, and the buffoon and the churl polarize the comic mood."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 24,
+      "printedPages": [
+        4,
+        4
+      ],
+      "pdfPages": [
+        22,
+        22
+      ],
+      "english": "Criticism can talk, and all the arts are dumb.",
+      "fragments": [
+        "Criticism can talk, and all the arts are dumb."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 26,
+      "printedPages": [
+        5,
+        5
+      ],
+      "pdfPages": [
+        23,
+        23
+      ],
+      "english": "The axiom of criticism must be, not that the poet does not know what he is talking about, but that he cannot talk about what he knows.",
+      "fragments": [
+        "The axiom of criticism must be, not that the poet does not know what he is talking about, but that he cannot talk about what he knows."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 35,
+      "printedPages": [
+        11,
+        11
+      ],
+      "pdfPages": [
+        29,
+        29
+      ],
+      "english": "Literature is not a subject of study, but an object of study",
+      "fragments": [
+        "Literature is not a subject of study, but an object of study"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 43,
+      "printedPages": [
+        17,
+        17
+      ],
+      "pdfPages": [
+        35,
+        35
+      ],
+      "english": "literature is not a piled aggregate of \"works,\" but an order of words.",
+      "fragments": [
+        "literature is not a piled aggregate of \"works,\" but an order of words."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 49,
+      "printedPages": [
+        20,
+        20
+      ],
+      "pdfPages": [
+        38,
+        38
+      ],
+      "english": "Value-judgements are founded on the study of literature; the study of literature can never be founded on value-judgements.",
+      "fragments": [
+        "Value-judgements are founded on the study of literature; the study of literature can never be founded on value-judgements."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 72,
+      "printedPages": [
+        39,
+        39
+      ],
+      "pdfPages": [
+        57,
+        57
+      ],
+      "english": "The type of character involved here we may call by the Greek word alazon, which means impostor, someone who pretends or tries to be something more than he is.",
+      "fragments": [
+        "The type of character involved here we may call by the Greek word alazon, which means impostor, someone who pretends or tries to be something more than he is."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 74,
+      "printedPages": [
+        40,
+        40
+      ],
+      "pdfPages": [
+        58,
+        58
+      ],
+      "english": "even Tartuffe, as far as his dramatic function is concerned, is a study of parasitism rather than hypocrisy.",
+      "fragments": [
+        "even Tartuffe, as far as his dramatic function is concerned, is a study of parasitism rather than hypocrisy."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 85,
+      "printedPages": [
+        45,
+        45
+      ],
+      "pdfPages": [
+        63,
+        63
+      ],
+      "english": "The rejection of the entertainer, whether fool, clown, buffoon, or simpleton, can be one of the most terrible ironies known to art, as the rejection of Falstaff shows",
+      "fragments": [
+        "The rejection of the entertainer, whether fool, clown, buffoon, or simpleton, can be one of the most terrible ironies known to art, as the rejection of Falstaff shows"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 102,
+      "printedPages": [
+        62,
+        62
+      ],
+      "pdfPages": [
+        80,
+        80
+      ],
+      "english": "no set of critical standards derived from only one mode can ever assimilate the whole truth about poetry.",
+      "fragments": [
+        "no set of critical standards derived from only one mode can ever assimilate the whole truth about poetry."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 117,
+      "printedPages": [
+        76,
+        76
+      ],
+      "pdfPages": [
+        94,
+        94
+      ],
+      "english": "the poet never affirmeth",
+      "fragments": [
+        "the poet never affirmeth"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 125,
+      "printedPages": [
+        83,
+        83
+      ],
+      "pdfPages": [
+        101,
+        101
+      ],
+      "english": "The mythos is the dianoia in movement; the dianoia is the mythos in stasis.",
+      "fragments": [
+        "The mythos is the dianoia in movement; the dianoia is the mythos in stasis."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 129,
+      "printedPages": [
+        86,
+        86
+      ],
+      "pdfPages": [
+        104,
+        104
+      ],
+      "english": "I meant it to form part of the play.",
+      "fragments": [
+        "I meant it to form part of the play."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 132,
+      "printedPages": [
+        89,
+        89
+      ],
+      "pdfPages": [
+        107,
+        107
+      ],
+      "english": "all commentary is allegorical interpretation, an attaching of ideas to the structure of poetic imagery.",
+      "fragments": [
+        "all commentary is allegorical interpretation, an attaching of ideas to the structure of poetic imagery."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 137,
+      "printedPages": [
+        94,
+        94
+      ],
+      "pdfPages": [
+        112,
+        112
+      ],
+      "english": "\"Exuberance is beauty,\" said Blake.",
+      "fragments": [
+        "\"Exuberance is beauty,\" said Blake."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 142,
+      "printedPages": [
+        97,
+        97
+      ],
+      "pdfPages": [
+        115,
+        115
+      ],
+      "english": "Poetry can only be made out of other poems; novels out of other novels.",
+      "fragments": [
+        "Poetry can only be made out of other poems; novels out of other novels."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 146,
+      "printedPages": [
+        99,
+        99
+      ],
+      "pdfPages": [
+        117,
+        117
+      ],
+      "english": "I mean by an archetype a symbol which connects one poem with another and thereby helps to unify and integrate our literary experience.",
+      "fragments": [
+        "I mean by an archetype a symbol which connects one poem with another and thereby helps to unify and integrate our literary experience."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 148,
+      "printedPages": [
+        100,
+        100
+      ],
+      "pdfPages": [
+        118,
+        118
+      ],
+      "english": "we can get a whole liberal education simply by picking up one conventional poem and following its archetypes as they stretch out into the rest of literature.",
+      "fragments": [
+        "we can get a whole liberal education simply by picking up one conventional poem and following its archetypes as they stretch out into the rest of literature."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 154,
+      "printedPages": [
+        106,
+        106
+      ],
+      "pdfPages": [
+        124,
+        124
+      ],
+      "english": "The union of ritual and dream in a form of verbal communication is myth.",
+      "fragments": [
+        "The union of ritual and dream in a form of verbal communication is myth."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 181,
+      "printedPages": [
+        136,
+        136
+      ],
+      "pdfPages": [
+        154,
+        154
+      ],
+      "english": "as realism is an art of implicit simile, myth is an art of implicit metaphorical identity.",
+      "fragments": [
+        "as realism is an art of implicit simile, myth is an art of implicit metaphorical identity."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 210,
+      "printedPages": [
+        165,
+        165
+      ],
+      "pdfPages": [
+        183,
+        183
+      ],
+      "english": "They are, in short, impostors",
+      "fragments": [
+        "They are, in short, impostors"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 214,
+      "printedPages": [
+        167,
+        167
+      ],
+      "pdfPages": [
+        185,
+        185
+      ],
+      "english": "In Molière we have a simple but fully tested formula in which the ethical interest is focussed on a single blocking character, a heavy father, a miser, a misanthrope, a hypocrite, or a hypochondriac.",
+      "fragments": [
+        "In Molière we have a simple but fully tested formula in which the ethical interest is focussed on a single blocking character, a heavy father, a miser, a misanthrope, a hypocrite, or a hypochondriac."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 218,
+      "printedPages": [
+        168,
+        168
+      ],
+      "pdfPages": [
+        186,
+        186
+      ],
+      "english": "unincremental repetition, the literary imitation of ritual bondage, is funny.",
+      "fragments": [
+        "unincremental repetition, the literary imitation of ritual bondage, is funny."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 222,
+      "printedPages": [
+        170,
+        170
+      ],
+      "pdfPages": [
+        188,
+        188
+      ],
+      "english": "Happy endings do not impress us as true, but as desirable, and they are brought about by manipulation.",
+      "fragments": [
+        "Happy endings do not impress us as true, but as desirable, and they are brought about by manipulation."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 226,
+      "printedPages": [
+        172,
+        172
+      ],
+      "pdfPages": [
+        190,
+        190
+      ],
+      "english": "All lifelike characters, whether in drama or fiction, owe their consistency to the appropriateness of the stock type which belongs to their dramatic function.",
+      "fragments": [
+        "All lifelike characters, whether in drama or fiction, owe their consistency to the appropriateness of the stock type which belongs to their dramatic function."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 234,
+      "printedPages": [
+        176,
+        176
+      ],
+      "pdfPages": [
+        194,
+        194
+      ],
+      "english": "dramatic structure is a permanent and moral attitude a variable factor in literature.",
+      "fragments": [
+        "dramatic structure is a permanent and moral attitude a variable factor in literature."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 239,
+      "printedPages": [
+        178,
+        178
+      ],
+      "pdfPages": [
+        196,
+        196
+      ],
+      "english": "The intervention of the king at the end of Tartuffe is deliberately arbitrary: there is nothing in the action of the play itself to prevent Tartuffe’s triumph.",
+      "fragments": [
+        "The intervention of the king at the end of Tartuffe is deliberately arbitrary: there is nothing in the action of the play itself to prevent Tartuffe’s triumph."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 273,
+      "printedPages": [
+        213,
+        213
+      ],
+      "pdfPages": [
+        231,
+        231
+      ],
+      "english": "Aristotle’s hamartia, then, is a condition of being, not a cause of becoming",
+      "fragments": [
+        "Aristotle’s hamartia, then, is a condition of being, not a cause of becoming"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 295,
+      "printedPages": [
+        245,
+        245
+      ],
+      "pdfPages": [
+        263,
+        263
+      ],
+      "english": "literature may be described as the rhetorical organization of grammar and logic.",
+      "fragments": [
+        "literature may be described as the rhetorical organization of grammar and logic."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 299,
+      "printedPages": [
+        246,
+        247
+      ],
+      "pdfPages": [
+        264,
+        265
+      ],
+      "english": "The basis of generic distinctions in literature appears to be the radical of presentation.",
+      "fragments": [
+        "The basis of generic distinctions in literature appears to be the radical of presen",
+        "tation."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 302,
+      "printedPages": [
+        249,
+        249
+      ],
+      "pdfPages": [
+        267,
+        267
+      ],
+      "english": "The lyric is … preeminently the utterance that is overheard.",
+      "fragments": [
+        "The lyric is",
+        "preeminently the utterance that is overheard."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 313,
+      "printedPages": [
+        269,
+        269
+      ],
+      "pdfPages": [
+        287,
+        287
+      ],
+      "english": "Drama might be described … as epos or fiction absorbed by decorum.",
+      "fragments": [
+        "Drama might be described",
+        "as epos or fiction absorbed by decorum."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 319,
+      "printedPages": [
+        278,
+        278
+      ],
+      "pdfPages": [
+        296,
+        296
+      ],
+      "english": "The radical of melos is charm",
+      "fragments": [
+        "The radical of melos is charm"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 321,
+      "printedPages": [
+        280,
+        280
+      ],
+      "pdfPages": [
+        298,
+        298
+      ],
+      "english": "the radical of opsis in the lyric is riddle",
+      "fragments": [
+        "the radical of opsis in the lyric is riddle"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 338,
+      "printedPages": [
+        304,
+        304
+      ],
+      "pdfPages": [
+        322,
+        322
+      ],
+      "english": "The romancer does not attempt to create \"real people\" so much as stylized figures which expand into psychological archetypes.",
+      "fragments": [
+        "The romancer does not attempt to create \"real people\" so much as stylized figures which expand into psychological archetypes."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 342,
+      "printedPages": [
+        309,
+        309
+      ],
+      "pdfPages": [
+        327,
+        327
+      ],
+      "english": "The Menippean satire deals less with people as such than with mental attitudes.",
+      "fragments": [
+        "The Menippean satire deals less with people as such than with mental attitudes."
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 362,
+      "printedPages": [
+        344,
+        344
+      ],
+      "pdfPages": [
+        362,
+        362
+      ],
+      "english": "It is the consumer, not the producer, who benefits by culture",
+      "fragments": [
+        "It is the consumer, not the producer, who benefits by culture"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 364,
+      "printedPages": [
+        346,
+        346
+      ],
+      "pdfPages": [
+        364,
+        364
+      ],
+      "english": "The culture of the past is not only the memory of mankind, but our own buried life",
+      "fragments": [
+        "The culture of the past is not only the memory of mankind, but our own buried life"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    },
+    {
+      "block": 368,
+      "printedPages": [
+        351,
+        351
+      ],
+      "pdfPages": [
+        369,
+        369
+      ],
+      "english": "Hamlet and Falstaff neither exist nor do not exist",
+      "fragments": [
+        "Hamlet and Falstaff neither exist nor do not exist"
+      ],
+      "method": "normalized fragments in source order",
+      "passed": true
+    }
+  ],
+  "passed": true
+}
