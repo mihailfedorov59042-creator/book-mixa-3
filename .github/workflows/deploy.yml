@@ -42,7 +42,7 @@ jobs:
       - name: Stage static PWA files
         run: |
           mkdir _site
-          cp index.html notes-transfer.js pwa.js pwa.css theory-map.js manifest.webmanifest sw.js .nojekyll _site/
+          cp index.html notes-transfer.js pwa.js pwa.css theory-map.js theory-map-legacy.js manifest.webmanifest sw.js .nojekyll _site/
           cp -R data icons _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

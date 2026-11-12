@@ -14,7 +14,7 @@ INDEX = ROOT / 'index.html'
 SCRIPT_TAG = re.compile(r'(<script\s+src="data/[^"?]+\.js\?v=)[^"&]+("></script>)')
 SHELL_LINK = re.compile(r'((?:src|href)="\./(?:pwa\.js|pwa\.css|notes-transfer\.js|theory-map\.js))(?:\?v=[^"&]+)?(")')
 DATA_FILES = sorted((ROOT / 'data').glob('*.js'))
-ASSETS = ['index.html','pwa.js','pwa.css','notes-transfer.js','theory-map.js','data/theory-map.json','manifest.webmanifest',
+ASSETS = ['index.html','pwa.js','pwa.css','notes-transfer.js','theory-map.js','theory-map-legacy.js','data/theory-map.json','manifest.webmanifest',
           'icons/icon.svg','icons/icon-192.png','icons/icon-512.png',
           'icons/icon-maskable-512.png','icons/apple-touch-icon.png']
 

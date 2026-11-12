@@ -17,11 +17,14 @@ const initial = () => ({ notes: { fixture1: note() }, progress: { phedre: { a: 3
 const json = notes => JSON.stringify({ format: 'polka-notes', version: 1,
   exportedAt: '2026-11-06T12:00:00Z', notes });
 const books = { phedre: 100000, barthes: 100000 };
-let server, browser, base, previous = false, interruptUpdate = false;
-const oldFiles = new Map();
+let server, browser, base, previous = false, interruptUpdate = false, previousTheory = false;
+const oldFiles = new Map(), oldTheoryFiles = new Map();
 before(async () => {
   for (const name of ['index.html', 'pwa.js', 'pwa.css', 'sw.js']) {
     oldFiles.set(name, execFileSync('git', ['show', '99f7fd9:' + name], { cwd: root, maxBuffer: 8 * 1024 * 1024 }));
+  }
+  for (const name of ['index.html','pwa.js','pwa.css','theory-map.js','sw.js']) {
+    oldTheoryFiles.set(name,execFileSync('git',['show','c4e6ac0:'+name],{cwd:root,maxBuffer:8*1024*1024}));
   }
   server = createServer(async (request, response) => {
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
@@ -34,7 +37,7 @@ before(async () => {
     }
     if (interruptUpdate && name === 'notes-transfer.js') { response.writeHead(503).end(); return; }
     try {
-      const data = !ssl && previous && oldFiles.has(name) ? oldFiles.get(name) : await readFile(file);
+      const data = !ssl && previousTheory && oldTheoryFiles.has(name) ? oldTheoryFiles.get(name) : !ssl && previous && oldFiles.has(name) ? oldFiles.get(name) : await readFile(file);
       const type = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
         '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.svg': 'image/svg+xml' }[path.extname(name)] || 'application/octet-stream';
       response.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store' }).end(data);
@@ -465,82 +468,183 @@ test('Two installed-app identities on one origin stay separate, including offlin
  }finally{await context.close();}
 });
 
-test('theory maps open in all four modes and remain available offline', { timeout: 120000 }, async () => {
+test('theory SVG maps: fullscreen, four modes, sources and offline use', { timeout: 120000 }, async () => {
   previous = false; interruptUpdate = false;
   const context = await contextFor(devices['Pixel 7'], { notes: {}, splash: false });
   try {
-    const page = await context.newPage();
-    const errors = []; page.on('pageerror', e => errors.push(e.message));
-    await ready(page);
-    await context.setOffline(true);
-    for (const id of ['frye', 'ne', 'barthes']) {
+    const page = await context.newPage(); const errors = [];
+    page.on('pageerror', e => errors.push(e.message));
+    await ready(page); await context.setOffline(true);
+    for (const [id, group] of [['frye','F1'],['ne','A1'],['barthes','B3']]) {
       await page.evaluate(id => { location.hash = id; }, id);
       await page.waitForFunction(id => document.body.dataset.book === id, id);
       await page.locator('.theory-open').click();
-      const dialog = page.locator('.theory-dialog');
-      await dialog.waitFor({ state: 'visible' });
-      await dialog.locator('[data-kind="cluster"]').first().click();
-      assert.ok(await dialog.locator('.theory-detail h3').count());
+      const dialog=page.locator('.tm');await dialog.waitFor({state:'visible'});
+      const bounds=await dialog.boundingBox();
+      assert.equal(Math.round(bounds.width),page.viewportSize().width);
+      assert.equal(Math.round(bounds.height),page.viewportSize().height);
+      assert.equal(await dialog.locator('.tm-card').isVisible(),false);
+      assert.ok(await dialog.locator('.tm-svg circle.outer').count());
+      await dialog.locator('[data-group]').selectOption(group);
       await dialog.locator('[data-mode="topics"]').click();
-      assert.ok(await dialog.locator('[data-kind="topic"]').count());
-      assert.ok(await dialog.locator('[data-kind="relation"]').count());
-      await dialog.locator('button[data-kind="relation"]').first().click();
-      assert.ok(await dialog.locator('.theory-detail [data-source]').count());
+      assert.ok(await dialog.locator('.tm-svg [data-kind="topic"]').count());
+      assert.ok(await dialog.locator('.tm-svg .edge-hit').count());
+      await dialog.locator('[data-list]').first().click();
+      await dialog.locator('.tm-list button[data-kind="relation"]').first().click();
+      assert.ok(await dialog.locator('.tm-card [data-source]').count());
+      await dialog.locator('.tm-list [data-list]').click();
       await dialog.locator('[data-mode="works"]').click();
       await dialog.locator('[data-mode="claims"]').click();
-      assert.ok(await dialog.locator('.theory-claim').count());
+      assert.ok(await dialog.locator('.tm-svg .tm-structural').count());
       await dialog.locator('[data-close]').click();
     }
     assert.deepEqual(errors, []);
   } finally { await context.close(); }
 });
 
-test('theory annotations persist offline, remain separate, and can be undone', { timeout: 120000 }, async () => {
-  previous = false; interruptUpdate = false;
-  const context = await contextFor({ viewport: { width: 1280, height: 900 } }, initial());
-  try {
-    const page = await context.newPage();
-    const errors = []; page.on('pageerror', error => errors.push(error.message));
-    await ready(page);
-    await context.setOffline(true);
-    await page.evaluate(() => { location.hash = 'frye'; });
-    await page.waitForFunction(() => document.body.dataset.book === 'frye');
-    await page.locator('.theory-open').click();
-    const dialog = page.locator('.theory-dialog'); await dialog.waitFor({ state: 'visible' });
-    assert.equal(await dialog.locator('.theory-large').first().evaluate(e => getComputedStyle(e).borderRadius), '50%');
-    const notesBefore = (await saved(page)).notes;
-    await dialog.locator('[data-ink-tool="pen"]').click();
-    await dialog.locator('[data-ink-color]').selectOption('cin');
-    const rect = await dialog.locator('.theory-ink').boundingBox();
-    await page.mouse.move(rect.x + 25, rect.y + 25);
-    await page.mouse.down(); await page.mouse.move(rect.x + 75, rect.y + 65, {steps: 5}); await page.mouse.up();
-    const key = 'polka-theory-ink-v1';
-    let marks = await page.evaluate(k => JSON.parse(localStorage.getItem(k)), key);
-    assert.equal(marks['frye:thoughts:overview'].length, 1);
-    assert.equal(marks['frye:thoughts:overview'][0].color, 'cin');
-    assert.deepEqual((await saved(page)).notes, notesBefore);
-    await dialog.locator('[data-close]').click();
-    await page.reload();
-    await page.locator('.theory-open').click();
-    await dialog.waitFor({state:'visible'});
-    assert.equal(await dialog.locator('.theory-ink polyline').count(), 1);
-    await dialog.locator('[data-mode="topics"]').click();
-    assert.equal(await dialog.locator('.theory-ink polyline').count(), 0);
-    await dialog.locator('[data-mode="thoughts"]').click();
-    assert.equal(await dialog.locator('.theory-ink polyline').count(), 1);
-    await dialog.locator('[data-ink-tool="erase"]').click();
-    const eraserRect = await dialog.locator('.theory-ink').boundingBox();
-    await page.mouse.click(eraserRect.x + 50, eraserRect.y + 45);
-    assert.equal(await dialog.locator('.theory-ink polyline').count(), 0);
-    await dialog.locator('[data-ink-undo]').click();
-    assert.equal(await dialog.locator('.theory-ink polyline').count(), 1);
-    page.once('dialog', d => d.accept());
-    await dialog.locator('[data-ink-clear]').click();
-    assert.equal(await dialog.locator('.theory-ink polyline').count(), 0);
-    await dialog.locator('[data-ink-undo]').click();
-    assert.equal(await dialog.locator('.theory-ink polyline').count(), 1);
-    marks = await page.evaluate(k => JSON.parse(localStorage.getItem(k)), key);
-    assert.equal(marks['frye:thoughts:overview'].length, 1);
-    assert.deepEqual(errors, []);
-  } finally { await context.close(); }
+test('theory SVG ink: world coordinates, pan, zoom, eraser, undo and legacy preservation', {timeout:120000}, async()=>{
+  previous=false;interruptUpdate=false;
+  const context=await contextFor({viewport:{width:1440,height:960}},initial());
+  try{
+    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+    await ready(page);await context.setOffline(true);
+    const legacy=JSON.stringify({'frye:thoughts:overview':[{color:'cin',width:3,points:[[200,200],[1000,1000]]}]});
+    await page.evaluate(value=>{localStorage.setItem('polka-theory-ink-v1',value);location.hash='frye';},legacy);
+    await page.locator('.theory-open').click();const dialog=page.locator('.tm');await dialog.waitFor({state:'visible'});
+    const notesBefore=(await saved(page)).notes;
+    const canvas=dialog.locator('.tm-svg');const r=await canvas.boundingBox();
+    await dialog.locator('[data-tool="pen"]').click();await dialog.locator('[data-color="cin"]').click();
+    await page.mouse.move(r.x+100,r.y+100);await page.mouse.down();await page.mouse.move(r.x+180,r.y+160,{steps:8});await page.mouse.up();
+    const key='polka-theory-ink-v2',scene='frye:thoughts:overview';
+    const ink=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)),key);
+    assert.equal(ink[scene].length,1);assert.equal(ink[scene][0].color,'cin');
+    const points=await dialog.locator('.tm-ink polyline').getAttribute('points');
+    await dialog.locator('[data-tool="view"]').click();
+    const before=await canvas.getAttribute('viewBox');
+    await page.mouse.move(r.x+40,r.y+40);await page.mouse.down();await page.mouse.move(r.x+150,r.y+90,{steps:5});await page.mouse.up();
+    assert.notEqual(await canvas.getAttribute('viewBox'),before);
+    await dialog.locator('[data-zoom="+"]').click();
+    assert.equal(await dialog.locator('.tm-ink polyline').getAttribute('points'),points);
+    await page.setViewportSize({width:1000,height:720});
+    assert.equal(await dialog.locator('.tm-ink polyline').getAttribute('points'),points);
+    await dialog.locator('[data-close]').click();await page.reload();
+    await page.locator('.theory-open').click();await dialog.waitFor({state:'visible'});
+    assert.equal(await dialog.locator('.tm-ink polyline').getAttribute('points'),points);
+    await dialog.locator('[data-mode="topics"]').click();assert.equal(await dialog.locator('.tm-ink polyline').count(),0);
+    await dialog.locator('[data-mode="thoughts"]').click();assert.equal(await dialog.locator('.tm-ink polyline').count(),1);
+    await dialog.locator('[data-tool="erase"]').click();
+    const target=await canvas.evaluate((s,p)=>{const point=new DOMPoint(p[0],p[1]).matrixTransform(s.getScreenCTM());return {x:point.x,y:point.y};},ink[scene][0].points[4]);
+    await page.mouse.click(target.x,target.y);
+    assert.equal(await dialog.locator('.tm-ink polyline').count(),0);
+    await dialog.locator('[data-undo]').click();assert.equal(await dialog.locator('.tm-ink polyline').count(),1);
+    page.once('dialog',d=>d.accept());await dialog.locator('[data-clear]').click();
+    assert.equal(await dialog.locator('.tm-ink polyline').count(),0);
+    await dialog.locator('[data-undo]').click();assert.equal(await dialog.locator('.tm-ink polyline').count(),1);
+    assert.deepEqual((await saved(page)).notes,notesBefore);
+    assert.equal(await page.evaluate(()=>localStorage.getItem('polka-theory-ink-v1')),legacy);
+    await dialog.locator('[data-legacy]').click();
+    await page.locator('.theory-dialog').waitFor({state:'visible'});
+    assert.equal(await page.locator('.theory-dialog .theory-ink polyline').count(),1);
+    assert.equal(await page.evaluate(()=>localStorage.getItem('polka-theory-ink-v1')),legacy);
+    assert.deepEqual(errors,[]);
+  }finally{await context.close();}
+});
+
+test('theory layout keeps every title inside its circle in all 25 groups', {timeout:120000}, async()=>{
+  const data=JSON.parse(await readFile(path.join(root,'data/theory-map.json'),'utf8'));
+  const context=await contextFor({viewport:{width:1920,height:1000}},{notes:{},splash:false});
+  try{
+    const page=await context.newPage();await ready(page);await context.setOffline(true);
+    for(const book of ['frye','ne','barthes']){
+      await page.evaluate(book=>location.hash=book,book);
+      await page.waitForFunction(book=>document.body.dataset.book===book,book);
+      await page.locator('.theory-open').click();
+      for(const group of data.clusters.filter(g=>g.book===book)){
+        await page.locator('.tm [data-group]').selectOption(group.id);
+        for(const mode of ['thoughts','topics','works','claims']){
+          await page.locator(`.tm [data-mode="${mode}"]`).click();
+          const overflow=await page.locator('.tm-svg').evaluate(svg=>[...svg.querySelectorAll('.tm-node')].flatMap(node=>{
+            const r=+node.querySelector('circle').getAttribute('r');
+            return [...node.querySelectorAll('tspan')].flatMap(line=>{
+              const b=line.getBBox();const extent=Math.max(...[b.x,b.x+b.width].flatMap(x=>[b.y,b.y+b.height].map(y=>Math.hypot(x,y))));
+              return extent>r-3?[node.getAttribute('aria-label')]:[];
+            });
+          }));
+          assert.deepEqual(overflow,[],`${book}/${group.id}/${mode}: titles must fit circles`);
+          const overlaps=await page.locator('.tm-svg').evaluate(svg=>{
+            const nodes=[...svg.querySelectorAll('.tm-node')].map(n=>({id:n.dataset.id,r:+n.querySelector('circle').getAttribute('r'),m:n.transform.baseVal.consolidate().matrix}));
+            return nodes.flatMap((a,i)=>nodes.slice(i+1).filter(b=>Math.hypot(a.m.e-b.m.e,a.m.f-b.m.f)<a.r+b.r+2).map(b=>[a.id,b.id]));
+          });
+          assert.deepEqual(overlaps,[],`${book}/${group.id}/${mode}: circles must not overlap`);
+        }
+      }
+      await page.locator('.tm [data-close]').click();
+    }
+  }finally{await context.close();}
+});
+
+test('theory pen and touch: pinch, palm rejection, cancelled strokes and failed saving', {timeout:120000}, async()=>{
+  const context=await contextFor(devices['Pixel 7']);
+  try{
+    const page=await context.newPage();await ready(page);await context.setOffline(true);
+    await page.evaluate(()=>location.hash='frye');await page.locator('.theory-open').click();
+    const canvas=page.locator('.tm-svg'),r=await canvas.boundingBox();
+    const client=await context.newCDPSession(page);
+    const touch=(type,points)=>client.send('Input.dispatchTouchEvent',{type,touchPoints:points.map(([x,y],id)=>({x,y,id}))});
+    const before=await canvas.getAttribute('viewBox');
+    await touch('touchStart',[[130,r.y+190],[230,r.y+190]]);
+    await touch('touchMove',[[100,r.y+190],[260,r.y+190]]);
+    await touch('touchEnd',[]);
+    assert.notEqual(await canvas.getAttribute('viewBox'),before);
+    assert.equal(await canvas.locator('.tm-ink polyline').count(),0);
+    await page.locator('.tm [data-tool="pen"]').click();
+    const pen=(type,x,y)=>client.send('Input.dispatchMouseEvent',{type,x,y,pointerType:'pen',button:'left',buttons:type==='mouseReleased'?0:1,clickCount:1,force:.7});
+    await pen('mousePressed',120,r.y+160);await pen('mouseMoved',150,r.y+190);
+    await touch('touchStart',[[270,r.y+200]]);await touch('touchMove',[[280,r.y+210]]);await touch('touchEnd',[]);
+    await pen('mouseMoved',170,r.y+210);await pen('mouseReleased',170,r.y+210);
+    assert.equal(await canvas.locator('.tm-ink polyline').count(),1);
+    const original=await page.evaluate(()=>localStorage.getItem('polka-theory-ink-v2'));
+    assert.ok(Object.values(JSON.parse(original)).flat()[0].points.some(p=>p[2]>.6));
+    // Browser cancellation must never turn a partial stroke into a saved drawing.
+    await canvas.evaluate(s=>s.addEventListener('pointerdown',e=>{window.__testPenID=e.pointerId;},{once:true}));
+    await pen('mousePressed',100,r.y+250);await pen('mouseMoved',120,r.y+270);
+    await canvas.evaluate(s=>s.dispatchEvent(new PointerEvent('pointercancel',{pointerId:window.__testPenID,pointerType:'pen',bubbles:true})));
+    await pen('mouseReleased',120,r.y+270);
+    assert.equal(await page.evaluate(()=>localStorage.getItem('polka-theory-ink-v2')),original);
+    // A quota failure must keep the last persisted drawing and explain the failure.
+    await page.evaluate(()=>{window.__setItem=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='polka-theory-ink-v2')throw new DOMException('quota','QuotaExceededError');return window.__setItem.call(this,k,v);};});
+    await pen('mousePressed',100,r.y+280);await pen('mouseMoved',140,r.y+300);await pen('mouseReleased',140,r.y+300);
+    assert.equal(await page.evaluate(()=>localStorage.getItem('polka-theory-ink-v2')),original);
+    assert.match(await page.locator('.tm [data-status]').textContent(),/Не удалось сохранить/);
+  }finally{await context.close();}
+});
+
+test('upgrade from the previous theory map preserves old ink and opens it offline', {timeout:120000},async()=>{
+  previousTheory=true;
+  const context=await contextFor({viewport:{width:1440,height:960}});
+  try{
+    const page=await context.newPage();
+    const oldInk=JSON.stringify({'frye:thoughts:overview':[{color:'az',width:2,points:[[200,200],[1000,1000]]}]});
+    await page.addInitScript(ink=>{if(!localStorage.getItem('polka-theory-ink-v1'))localStorage.setItem('polka-theory-ink-v1',ink);},oldInk);
+    await ready(page);await page.evaluate(()=>location.hash='frye');
+    await page.locator('.theory-open').click();await page.locator('.theory-dialog').waitFor({state:'visible'});
+    assert.equal(await page.locator('.theory-ink polyline').count(),1);
+    await page.keyboard.press('Escape');
+    const original=await saved(page);
+    previousTheory=false;
+    await page.evaluate(async()=>(await navigator.serviceWorker.getRegistration()).update());
+    await page.waitForFunction(async()=>!!(await navigator.serviceWorker.getRegistration()).waiting);
+    page.once('dialog',dialog=>dialog.accept());
+    await page.getByRole('button',{name:'Обновить',exact:true}).click();
+    await page.locator('.tm').waitFor({state:'attached'});
+    await context.setOffline(true);await page.reload();
+    assert.equal(await page.evaluate(()=>localStorage.getItem('polka-theory-ink-v1')),oldInk);
+    const after=await saved(page);
+    for(const field of ['notes','bookmarks','ink'])assert.deepEqual(after[field],original[field]);
+    assert.deepEqual(after.progress.phedre,original.progress.phedre);
+    await page.locator('.theory-open').click();await page.locator('.tm').waitFor({state:'visible'});
+    await page.locator('.tm [data-legacy]').click();await page.locator('.theory-dialog').waitFor({state:'visible'});
+    assert.equal(await page.locator('.theory-ink polyline').count(),1);
+    assert.equal(await page.evaluate(()=>localStorage.getItem('polka-theory-ink-v1')),oldInk);
+  }finally{previousTheory=false;await context.close();}
 });
