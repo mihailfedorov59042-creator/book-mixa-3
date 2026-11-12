@@ -32,6 +32,7 @@ jobs:
       - name: Check prepared theory materials and source references
         run: |
           python tools/build_theory_materials.py --check
+          python tools/build_theory_app_data.py --check
           python tools/check_theory_materials.py
           python tools/check_theory_research.py
       - name: Build and test notes transfer and offline PWA updates
@@ -41,7 +42,7 @@ jobs:
       - name: Stage static PWA files
         run: |
           mkdir _site
-          cp index.html notes-transfer.js pwa.js pwa.css manifest.webmanifest sw.js .nojekyll _site/
+          cp index.html notes-transfer.js pwa.js pwa.css theory-map.js manifest.webmanifest sw.js .nojekyll _site/
           cp -R data icons _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

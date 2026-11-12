@@ -12,9 +12,9 @@ import re
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / 'index.html'
 SCRIPT_TAG = re.compile(r'(<script\s+src="data/[^"?]+\.js\?v=)[^"&]+("></script>)')
-SHELL_LINK = re.compile(r'((?:src|href)="\./(?:pwa\.js|pwa\.css|notes-transfer\.js))(?:\?v=[^"&]+)?(")')
+SHELL_LINK = re.compile(r'((?:src|href)="\./(?:pwa\.js|pwa\.css|notes-transfer\.js|theory-map\.js))(?:\?v=[^"&]+)?(")')
 DATA_FILES = sorted((ROOT / 'data').glob('*.js'))
-ASSETS = ['index.html','pwa.js','pwa.css','notes-transfer.js','manifest.webmanifest',
+ASSETS = ['index.html','pwa.js','pwa.css','notes-transfer.js','theory-map.js','data/theory-map.json','manifest.webmanifest',
           'icons/icon.svg','icons/icon-192.png','icons/icon-512.png',
           'icons/icon-maskable-512.png','icons/apple-touch-icon.png']
 
@@ -24,8 +24,8 @@ def build():
     if count != len(DATA_FILES):
         raise RuntimeError(f'Expected {len(DATA_FILES)} book/image script tags, found {count}')
     canonical, shell_count = SHELL_LINK.subn(r'\g<1>?v=BUILD_ID\g<2>', canonical)
-    if shell_count != 3:
-        raise RuntimeError(f'Expected 3 application script/style links, found {shell_count}')
+    if shell_count != 4:
+        raise RuntimeError(f'Expected 4 application script/style links, found {shell_count}')
     hash_ = hashlib.sha256()
     for name in ASSETS:
         item = ROOT / name
@@ -38,7 +38,7 @@ def build():
     html = canonical.replace('?v=BUILD_ID', '?v='+build_id)
     if html != source:
         INDEX.write_text(html, encoding='utf-8')
-    versioned = {'index.html', 'pwa.js', 'pwa.css', 'notes-transfer.js'}
+    versioned = {'index.html', 'pwa.js', 'pwa.css', 'notes-transfer.js', 'theory-map.js'}
     files = ['./' + name + ('?v=' + build_id if name in versioned else '') for name in ASSETS if name != 'icons/icon.svg']
     files += ['./data/' + file.name + '?v=' + build_id for file in DATA_FILES]
     template = (ROOT / 'tools/sw.template.js').read_text(encoding='utf-8')

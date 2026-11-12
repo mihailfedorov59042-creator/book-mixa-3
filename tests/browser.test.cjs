@@ -464,3 +464,33 @@ test('Two installed-app identities on one origin stay separate, including offlin
   assert.equal(cached,'/SSL/');
  }finally{await context.close();}
 });
+
+test('theory maps open in all four modes and remain available offline', { timeout: 120000 }, async () => {
+  previous = false; interruptUpdate = false;
+  const context = await contextFor(devices['Pixel 7'], { notes: {}, splash: false });
+  try {
+    const page = await context.newPage();
+    const errors = []; page.on('pageerror', e => errors.push(e.message));
+    await ready(page);
+    await context.setOffline(true);
+    for (const id of ['frye', 'ne', 'barthes']) {
+      await page.evaluate(id => { location.hash = id; }, id);
+      await page.waitForFunction(id => document.body.dataset.book === id, id);
+      await page.locator('.theory-open').click();
+      const dialog = page.locator('.theory-dialog');
+      await dialog.waitFor({ state: 'visible' });
+      await dialog.locator('[data-kind="cluster"]').first().click();
+      assert.ok(await dialog.locator('.theory-detail h3').count());
+      await dialog.locator('[data-mode="topics"]').click();
+      assert.ok(await dialog.locator('[data-kind="topic"]').count());
+      assert.ok(await dialog.locator('[data-kind="relation"]').count());
+      await dialog.locator('[data-kind="relation"]').first().click();
+      assert.ok(await dialog.locator('.theory-detail [data-source]').count());
+      await dialog.locator('[data-mode="works"]').click();
+      await dialog.locator('[data-mode="claims"]').click();
+      assert.ok(await dialog.locator('.theory-claim').count());
+      await dialog.locator('[data-close]').click();
+    }
+    assert.deepEqual(errors, []);
+  } finally { await context.close(); }
+});
