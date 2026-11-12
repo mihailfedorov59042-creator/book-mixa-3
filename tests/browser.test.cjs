@@ -494,3 +494,53 @@ test('theory maps open in all four modes and remain available offline', { timeou
     assert.deepEqual(errors, []);
   } finally { await context.close(); }
 });
+
+test('theory annotations persist offline, remain separate, and can be undone', { timeout: 120000 }, async () => {
+  previous = false; interruptUpdate = false;
+  const context = await contextFor({ viewport: { width: 1280, height: 900 } }, initial());
+  try {
+    const page = await context.newPage();
+    const errors = []; page.on('pageerror', error => errors.push(error.message));
+    await ready(page);
+    await context.setOffline(true);
+    await page.evaluate(() => { location.hash = 'frye'; });
+    await page.waitForFunction(() => document.body.dataset.book === 'frye');
+    await page.locator('.theory-open').click();
+    const dialog = page.locator('.theory-dialog'); await dialog.waitFor({ state: 'visible' });
+    assert.equal(await dialog.locator('.theory-large').first().evaluate(e => getComputedStyle(e).borderRadius), '50%');
+    const notesBefore = (await saved(page)).notes;
+    await dialog.locator('[data-ink-tool="pen"]').click();
+    await dialog.locator('[data-ink-color]').selectOption('cin');
+    const rect = await dialog.locator('.theory-ink').boundingBox();
+    await page.mouse.move(rect.x + 25, rect.y + 25);
+    await page.mouse.down(); await page.mouse.move(rect.x + 75, rect.y + 65, {steps: 5}); await page.mouse.up();
+    const key = 'polka-theory-ink-v1';
+    let marks = await page.evaluate(k => JSON.parse(localStorage.getItem(k)), key);
+    assert.equal(marks['frye:thoughts:overview'].length, 1);
+    assert.equal(marks['frye:thoughts:overview'][0].color, 'cin');
+    assert.deepEqual((await saved(page)).notes, notesBefore);
+    await dialog.locator('[data-close]').click();
+    await page.reload();
+    await page.locator('.theory-open').click();
+    await dialog.waitFor({state:'visible'});
+    assert.equal(await dialog.locator('.theory-ink polyline').count(), 1);
+    await dialog.locator('[data-mode="topics"]').click();
+    assert.equal(await dialog.locator('.theory-ink polyline').count(), 0);
+    await dialog.locator('[data-mode="thoughts"]').click();
+    assert.equal(await dialog.locator('.theory-ink polyline').count(), 1);
+    await dialog.locator('[data-ink-tool="erase"]').click();
+    const eraserRect = await dialog.locator('.theory-ink').boundingBox();
+    await page.mouse.click(eraserRect.x + 50, eraserRect.y + 45);
+    assert.equal(await dialog.locator('.theory-ink polyline').count(), 0);
+    await dialog.locator('[data-ink-undo]').click();
+    assert.equal(await dialog.locator('.theory-ink polyline').count(), 1);
+    page.once('dialog', d => d.accept());
+    await dialog.locator('[data-ink-clear]').click();
+    assert.equal(await dialog.locator('.theory-ink polyline').count(), 0);
+    await dialog.locator('[data-ink-undo]').click();
+    assert.equal(await dialog.locator('.theory-ink polyline').count(), 1);
+    marks = await page.evaluate(k => JSON.parse(localStorage.getItem(k)), key);
+    assert.equal(marks['frye:thoughts:overview'].length, 1);
+    assert.deepEqual(errors, []);
+  } finally { await context.close(); }
+});

@@ -85,3 +85,29 @@ body:is([data-book="frye"],[data-book="ne"],[data-book="barthes"]) .theory-open 
 .theory-node.theory-context {border-style:dashed; background:#ede6dc}
 
 .theory-tree-edge {display:block;margin:.25rem 0 .65rem 1.5rem;text-align:left;background:transparent!important;font-size:.9em!important}
+/* Теоретическая схема использует ту же палитру пергамента и чернил, что и схема персонажей. */
+.theory-dialog[open] { display:flex; flex-direction:column; background:var(--desk); color:var(--ink); }
+.theory-head,.theory-modes,.theory-controls,.theory-draw-tools { background:var(--parchment); border-color:var(--rule); }
+.theory-head b,.theory-group h2,.theory-tree h2 { font-family:var(--f-disp); }
+.theory-head small { color:var(--gold-ink); font-family:var(--f-disp); font-style:italic; }
+.theory-dialog button,.theory-dialog select { background:var(--vellum); border-color:var(--rule-strong); color:var(--ink); }
+.theory-modes [aria-pressed="true"],.theory-draw-tools [aria-pressed="true"],.theory-node.active { background:var(--ink); color:var(--parchment); }
+.theory-node.theory-large,.theory-node.theory-small-node { background:var(--vellum); border:2px solid var(--ink); box-shadow:inset 0 0 0 4px var(--vellum),inset 0 0 0 5px var(--rule),0 3px 10px #38291b22; font-family:var(--f-disp); font-weight:600; }
+.theory-node.theory-large.active { background:var(--ink); color:var(--vellum); }
+.theory-node.theory-context { border-style:dashed; background:var(--parchment-deep); }
+.theory-node:hover,.theory-node:focus-visible { outline:2px solid var(--cinnabar); outline-offset:2px; }
+.theory-group { background:var(--parchment); border-color:var(--rule-strong); }
+.theory-thread { stroke:var(--cinnabar); }
+.theory-draw-tools { display:flex; align-items:center; flex-wrap:wrap; gap:5px; padding:6px 10px; border-bottom:1px solid var(--rule); }
+.theory-draw-tools button,.theory-draw-tools select { min-height:34px; padding:4px 8px; }
+.theory-draw-tools small { color:var(--ink2); }
+.theory-layout { flex:1; min-height:0; height:auto; }
+.theory-canvas { position:relative; min-height:100%; }
+.theory-ink { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:5; }
+.theory-ink.drawing { pointer-events:auto; touch-action:none; cursor:crosshair; }
+.theory-ink polyline { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.theory-ink-ink {stroke:var(--ink)} .theory-ink-cin {stroke:var(--cinnabar)} .theory-ink-az {stroke:var(--azure)} .theory-ink-vert {stroke:var(--vert)}
+@media(max-width:650px) { .theory-draw-tools {flex-wrap:nowrap; overflow-x:auto; flex-shrink:0; white-space:nowrap} .theory-draw-tools small {min-width:180px} .theory-layout {height:auto} }
+/* Основная тема сайта сбрасывает скругления у кнопок; для узлов схемы сохраняем круг. */
+.theory-node.theory-large,.theory-node.theory-small-node { border-radius:50% !important; }
+.theory-node.theory-small-node { height:132px; width:132px; }
