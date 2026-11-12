@@ -484,7 +484,7 @@ test('theory maps open in all four modes and remain available offline', { timeou
       await dialog.locator('[data-mode="topics"]').click();
       assert.ok(await dialog.locator('[data-kind="topic"]').count());
       assert.ok(await dialog.locator('[data-kind="relation"]').count());
-      await dialog.locator('[data-kind="relation"]').first().click();
+      await dialog.locator('button[data-kind="relation"]').first().click();
       assert.ok(await dialog.locator('.theory-detail [data-source]').count());
       await dialog.locator('[data-mode="works"]').click();
       await dialog.locator('[data-mode="claims"]').click();
