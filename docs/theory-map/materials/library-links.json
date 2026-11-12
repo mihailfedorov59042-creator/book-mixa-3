@@ -1,0 +1,12 @@
+[
+  {"work": "f-tartuffe", "book": "tartuffe", "title": "Тартюф", "author": "Мольер"},
+  {"work": "f-paradise", "book": "paradise", "title": "Потерянный рай", "author": "Джон Мильтон"},
+  {"work": "f-gulliver", "book": "gulliver", "title": "Путешествия Гулливера", "author": "Джонатан Свифт"},
+  {"work": "f-alcestis", "book": "e_alcestis", "title": "Алькеста", "author": "Еврипид", "note": "В конспекте: «Алкестида»; на полке: «Алькеста»."},
+  {"work": "f-iphigenia", "book": "e_iphtaur", "title": "Ифигения в Тавриде", "author": "Еврипид"},
+  {"work": "a-phoen", "book": "e_phoenissae", "title": "Финикиянки", "author": "Еврипид"},
+  {"work": "a-orest", "book": "e_orestes", "title": "Орест", "author": "Еврипид", "note": "Атрибуция цитаты сохраняет ссылку на примечание r19."},
+  {"work": "b-phedre", "book": "phedre", "title": "Федра", "author": "Жан Расин"},
+  {"work": "b-robinson", "book": "robinson", "title": "Робинзон Крузо", "author": "Даниель Дефо"},
+  {"work": "extra-frye-277-14", "book": "e_hippolytus", "title": "Ипполит", "author": "Еврипид"}
+]

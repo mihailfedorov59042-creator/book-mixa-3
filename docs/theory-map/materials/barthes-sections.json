@@ -1,0 +1,1151 @@
+[
+  {
+    "start": 0,
+    "label": "Выходные сведения и обложка",
+    "clusters": [
+      "B0"
+    ],
+    "endExclusive": 9
+  },
+  {
+    "start": 9,
+    "label": "Косиков: введение в развитие мысли Барта",
+    "clusters": [
+      "B0"
+    ],
+    "endExclusive": 135
+  },
+  {
+    "start": 135,
+    "label": "Предисловие к выборке «Мифологий»",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 142
+  },
+  {
+    "start": 142,
+    "label": "Литература и Мину Друэ: миф о поэте",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 165
+  },
+  {
+    "start": 165,
+    "label": "Мозг Эйнштейна: миф о гении",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 172
+  },
+  {
+    "start": 172,
+    "label": "Бедняк и пролетарий",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 176
+  },
+  {
+    "start": 176,
+    "label": "Фото-шоки и работа зрителя",
+    "clusters": [
+      "B1",
+      "B2"
+    ],
+    "endExclusive": 183
+  },
+  {
+    "start": 183,
+    "label": "Романы и дети: образ женщины-писателя",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 190
+  },
+  {
+    "start": 190,
+    "label": "Марсиане и проекция земного мира",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 199
+  },
+  {
+    "start": 199,
+    "label": "Затерянный континент и экзотика",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 206
+  },
+  {
+    "start": 206,
+    "label": "Миф как высказывание",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 216
+  },
+  {
+    "start": 216,
+    "label": "Миф как семиологическая система",
+    "clusters": [
+      "B1",
+      "B2"
+    ],
+    "endExclusive": 223
+  },
+  {
+    "start": 223,
+    "label": "Готовый знак в функции нового означающего",
+    "clusters": [
+      "B1",
+      "B2"
+    ],
+    "endExclusive": 228
+  },
+  {
+    "start": 228,
+    "label": "Форма и концепт",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 237
+  },
+  {
+    "start": 237,
+    "label": "Значение и деформация смысла",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 246
+  },
+  {
+    "start": 246,
+    "label": "Мотивированность мифа",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 249
+  },
+  {
+    "start": 249,
+    "label": "Три позиции чтения мифа",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 257
+  },
+  {
+    "start": 257,
+    "label": "Превращение истории в природу",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 261
+  },
+  {
+    "start": 261,
+    "label": "Миф как похищенный язык",
+    "clusters": [
+      "B1",
+      "B5"
+    ],
+    "endExclusive": 270
+  },
+  {
+    "start": 270,
+    "label": "Мифологизация мифа",
+    "clusters": [
+      "B1",
+      "B5"
+    ],
+    "endExclusive": 273
+  },
+  {
+    "start": 273,
+    "label": "Буржуазия и устранение своего имени",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 281
+  },
+  {
+    "start": 281,
+    "label": "Деполитизированное слово",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 287
+  },
+  {
+    "start": 287,
+    "label": "Миф слева",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 294
+  },
+  {
+    "start": 294,
+    "label": "Миф справа",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 299
+  },
+  {
+    "start": 299,
+    "label": "Риторические фигуры мифа",
+    "clusters": [
+      "B1",
+      "B2"
+    ],
+    "endExclusive": 311
+  },
+  {
+    "start": 311,
+    "label": "Задачи и границы мифолога",
+    "clusters": [
+      "B1"
+    ],
+    "endExclusive": 320
+  },
+  {
+    "start": 320,
+    "label": "Язык-объект и метаязык: фрагмент 1959 года без заголовка",
+    "clusters": [
+      "B4",
+      "B5"
+    ],
+    "endExclusive": 324
+  },
+  {
+    "start": 324,
+    "label": "Писатель и пишущий",
+    "clusters": [
+      "B5"
+    ],
+    "endExclusive": 342
+  },
+  {
+    "start": 342,
+    "label": "Принципы чтения Расина в предисловии",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 353
+  },
+  {
+    "start": 353,
+    "label": "Трагическое пространство",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 378
+  },
+  {
+    "start": 378,
+    "label": "Типы отношений в расиновском мире",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 384
+  },
+  {
+    "start": 384,
+    "label": "Формы Эроса",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 396
+  },
+  {
+    "start": 396,
+    "label": "Эротическая картина и взгляд",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 405
+  },
+  {
+    "start": 405,
+    "label": "Власть и неразделённая любовь",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 413
+  },
+  {
+    "start": 413,
+    "label": "Фрустрация, шантаж и речевая агрессия",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 422
+  },
+  {
+    "start": 422,
+    "label": "Неопределённо-личное и общественное мнение",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 430
+  },
+  {
+    "start": 430,
+    "label": "Раскол трагического мира",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 433
+  },
+  {
+    "start": 433,
+    "label": "Отец, кровь и повторяющееся время",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 437
+  },
+  {
+    "start": 437,
+    "label": "Трагический переворот",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 440
+  },
+  {
+    "start": 440,
+    "label": "Вина и отношение к Богу",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 442
+  },
+  {
+    "start": 442,
+    "label": "Догматизм и невозможность освобождения",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 445
+  },
+  {
+    "start": 445,
+    "label": "Варианты выхода из тупика",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 447
+  },
+  {
+    "start": 447,
+    "label": "Наперсник и диалектический выход",
+    "clusters": [
+      "B3"
+    ],
+    "endExclusive": 449
+  },
+  {
+    "start": 449,
+    "label": "Знакобоязнь",
+    "clusters": [
+      "B3",
+      "B2"
+    ],
+    "endExclusive": 453
+  },
+  {
+    "start": 453,
+    "label": "Логос замещает праксис",
+    "clusters": [
+      "B3",
+      "B5"
+    ],
+    "endExclusive": 459
+  },
+  {
+    "start": 459,
+    "label": "История литературы и исследование произведения",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 497
+  },
+  {
+    "start": 497,
+    "label": "Литература сегодня: работа, ответственность, эксперимент",
+    "clusters": [
+      "B5"
+    ],
+    "endExclusive": 531
+  },
+  {
+    "start": 531,
+    "label": "Три отношения знака",
+    "clusters": [
+      "B2"
+    ],
+    "endExclusive": 545
+  },
+  {
+    "start": 545,
+    "label": "Структурализм как деятельность",
+    "clusters": [
+      "B2"
+    ],
+    "endExclusive": 552
+  },
+  {
+    "start": 552,
+    "label": "Членение и монтаж",
+    "clusters": [
+      "B2"
+    ],
+    "endExclusive": 558
+  },
+  {
+    "start": 558,
+    "label": "Университетская и интерпретативная критика",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 569
+  },
+  {
+    "start": 569,
+    "label": "Критика как речь о чужой речи",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 581
+  },
+  {
+    "start": 581,
+    "label": "Литература, театр и семиология",
+    "clusters": [
+      "B2",
+      "B5"
+    ],
+    "endExclusive": 624
+  },
+  {
+    "start": 624,
+    "label": "Возможность семиологии изображения",
+    "clusters": [
+      "B2"
+    ],
+    "endExclusive": 626
+  },
+  {
+    "start": 626,
+    "label": "Три сообщения изображения",
+    "clusters": [
+      "B2"
+    ],
+    "endExclusive": 635
+  },
+  {
+    "start": 635,
+    "label": "Языковое сообщение: закрепление и связь",
+    "clusters": [
+      "B2"
+    ],
+    "endExclusive": 643
+  },
+  {
+    "start": 643,
+    "label": "Денотативное изображение",
+    "clusters": [
+      "B2"
+    ],
+    "endExclusive": 651
+  },
+  {
+    "start": 651,
+    "label": "Риторика коннотации",
+    "clusters": [
+      "B2"
+    ],
+    "endExclusive": 658
+  },
+  {
+    "start": 658,
+    "label": "Спор вокруг новой критики",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 666
+  },
+  {
+    "start": 666,
+    "label": "Критическое правдоподобие",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 670
+  },
+  {
+    "start": 670,
+    "label": "Проблема объективности",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 676
+  },
+  {
+    "start": 676,
+    "label": "Вкус как ограничение критики",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 685
+  },
+  {
+    "start": 685,
+    "label": "Ясность и принятый язык",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 694
+  },
+  {
+    "start": 694,
+    "label": "Асимболия",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 707
+  },
+  {
+    "start": 707,
+    "label": "Переход к новой задаче критики",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 709
+  },
+  {
+    "start": 709,
+    "label": "Кризис комментария",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 715
+  },
+  {
+    "start": 715,
+    "label": "Множественный язык",
+    "clusters": [
+      "B4",
+      "B6"
+    ],
+    "endExclusive": 724
+  },
+  {
+    "start": 724,
+    "label": "Наука о литературе",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 735
+  },
+  {
+    "start": 735,
+    "label": "Критика как производство смысла",
+    "clusters": [
+      "B4"
+    ],
+    "endExclusive": 752
+  },
+  {
+    "start": 752,
+    "label": "Чтение и критическое письмо",
+    "clusters": [
+      "B4",
+      "B6"
+    ],
+    "endExclusive": 762
+  },
+  {
+    "start": 762,
+    "label": "От науки к литературе: язык исследования",
+    "clusters": [
+      "B4",
+      "B5"
+    ],
+    "endExclusive": 779
+  },
+  {
+    "start": 779,
+    "label": "Автор, скриптор и читатель",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 798
+  },
+  {
+    "start": 798,
+    "label": "Эффект реальности",
+    "clusters": [
+      "B6",
+      "B2"
+    ],
+    "endExclusive": 813
+  },
+  {
+    "start": 813,
+    "label": "С чего начать: трансформации в «Таинственном острове»",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 825
+  },
+  {
+    "start": 825,
+    "label": "Произведение и Текст: постановка различия",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 829
+  },
+  {
+    "start": 829,
+    "label": "Текст как поле работы",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 832
+  },
+  {
+    "start": 832,
+    "label": "Границы жанров и классификаций",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 834
+  },
+  {
+    "start": 834,
+    "label": "Означающее и отсрочка смысла",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 835
+  },
+  {
+    "start": 835,
+    "label": "Множественность и интертекст",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 840
+  },
+  {
+    "start": 840,
+    "label": "Происхождение и авторство",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 842
+  },
+  {
+    "start": 842,
+    "label": "Читатель и производство текста",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 844
+  },
+  {
+    "start": 844,
+    "label": "Удовольствие и утопия текста",
+    "clusters": [
+      "B6",
+      "B7"
+    ],
+    "endExclusive": 847
+  },
+  {
+    "start": 847,
+    "label": "Текстовой анализ По: цель и метод",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 855
+  },
+  {
+    "start": 855,
+    "label": "Лексии и последовательность чтения",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 865
+  },
+  {
+    "start": 865,
+    "label": "Лексии 1–17: научность, сообщение и тайна",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 938
+  },
+  {
+    "start": 938,
+    "label": "Акциональная последовательность лексий 18–102",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 953
+  },
+  {
+    "start": 953,
+    "label": "Голос, смерть и невозможное высказывание",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 996
+  },
+  {
+    "start": 996,
+    "label": "Коды и методологическое заключение",
+    "clusters": [
+      "B6"
+    ],
+    "endExclusive": 1015
+  },
+  {
+    "start": 1015,
+    "label": "Удовольствие: вход в проблему и эпиграф",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1022
+  },
+  {
+    "start": 1022,
+    "label": "Неустойчивость различия удовольствия и наслаждения",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1025
+  },
+  {
+    "start": 1025,
+    "label": "Желание текста и отношения с читателем",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1031
+  },
+  {
+    "start": 1031,
+    "label": "Разрыв и два края текста",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1038
+  },
+  {
+    "start": 1038,
+    "label": "Эротика прерывистости",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1042
+  },
+  {
+    "start": 1042,
+    "label": "Два способа чтения",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1045
+  },
+  {
+    "start": 1045,
+    "label": "Удовольствие и оценочное суждение",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1048
+  },
+  {
+    "start": 1048,
+    "label": "Текст-удовольствие и текст-наслаждение",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1051
+  },
+  {
+    "start": 1051,
+    "label": "Различие, конфликт и общество друзей текста",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1054
+  },
+  {
+    "start": 1054,
+    "label": "Тело читателя",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1057
+  },
+  {
+    "start": 1057,
+    "label": "Речь об удовольствии и дрейф",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1063
+  },
+  {
+    "start": 1063,
+    "label": "Удовольствие и наслаждение: пределы определения",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1072
+  },
+  {
+    "start": 1072,
+    "label": "Удовольствие и идеология",
+    "clusters": [
+      "B7",
+      "B8"
+    ],
+    "endExclusive": 1077
+  },
+  {
+    "start": 1077,
+    "label": "Растроганность, любовь и скука",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1084
+  },
+  {
+    "start": 1084,
+    "label": "Фраза, наслаждение и авторский образ",
+    "clusters": [
+      "B7",
+      "B6"
+    ],
+    "endExclusive": 1091
+  },
+  {
+    "start": 1091,
+    "label": "Логосфера и борьба языков",
+    "clusters": [
+      "B7",
+      "B8"
+    ],
+    "endExclusive": 1102
+  },
+  {
+    "start": 1102,
+    "label": "Воображаемое языка и несистематичность удовольствия",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1109
+  },
+  {
+    "start": 1109,
+    "label": "Звуковая фактура, смысл и удовольствие",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1116
+  },
+  {
+    "start": 1116,
+    "label": "Язык и классовая эротика",
+    "clusters": [
+      "B7",
+      "B8"
+    ],
+    "endExclusive": 1123
+  },
+  {
+    "start": 1123,
+    "label": "Повторение и язык власти",
+    "clusters": [
+      "B7",
+      "B8"
+    ],
+    "endExclusive": 1136
+  },
+  {
+    "start": 1136,
+    "label": "История, перверсия и читательский субъект",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1139
+  },
+  {
+    "start": 1139,
+    "label": "Социальные пределы удовольствия",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1143
+  },
+  {
+    "start": 1143,
+    "label": "Отец и расщепление субъекта",
+    "clusters": [
+      "B7",
+      "B6"
+    ],
+    "endExclusive": 1146
+  },
+  {
+    "start": 1146,
+    "label": "Страх и наслаждение",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1150
+  },
+  {
+    "start": 1150,
+    "label": "Фраза как иерархия и образ тела",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1155
+  },
+  {
+    "start": 1155,
+    "label": "Культура, разрыв и изменчивость удовольствия",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1160
+  },
+  {
+    "start": 1160,
+    "label": "Текст и политическое подчинение",
+    "clusters": [
+      "B7",
+      "B8"
+    ],
+    "endExclusive": 1162
+  },
+  {
+    "start": 1162,
+    "label": "История, повседневность и разрушение искусства",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1169
+  },
+  {
+    "start": 1169,
+    "label": "Представление и изображение",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1177
+  },
+  {
+    "start": 1177,
+    "label": "Мистика, сновидение и материальность текста",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1182
+  },
+  {
+    "start": 1182,
+    "label": "Изучение текста и чувственная практика смысла",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1186
+  },
+  {
+    "start": 1186,
+    "label": "Субъект и типы читательского удовольствия",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1191
+  },
+  {
+    "start": 1191,
+    "label": "Текст как ткань и место удовольствия в теории",
+    "clusters": [
+      "B7",
+      "B6"
+    ],
+    "endExclusive": 1195
+  },
+  {
+    "start": 1195,
+    "label": "Удовольствие и приостановка ценности",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1198
+  },
+  {
+    "start": 1198,
+    "label": "Письмо вслух и голос",
+    "clusters": [
+      "B7"
+    ],
+    "endExclusive": 1201
+  },
+  {
+    "start": 1201,
+    "label": "Разделение культуры и языков",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1208
+  },
+  {
+    "start": 1208,
+    "label": "Социолингвистика и социальные языки",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1219
+  },
+  {
+    "start": 1219,
+    "label": "Энкратические и акратические дискурсы",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1232
+  },
+  {
+    "start": 1232,
+    "label": "Война языков и дискурсивная сила",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1249
+  },
+  {
+    "start": 1249,
+    "label": "Гетерологичность и атопия письма",
+    "clusters": [
+      "B8",
+      "B5"
+    ],
+    "endExclusive": 1252
+  },
+  {
+    "start": 1252,
+    "label": "Необратимость устной речи и гул языка",
+    "clusters": [
+      "B8",
+      "B7"
+    ],
+    "endExclusive": 1269
+  },
+  {
+    "start": 1269,
+    "label": "Ситуация вступительной лекции",
+    "clusters": [
+      "B0",
+      "B8"
+    ],
+    "endExclusive": 1275
+  },
+  {
+    "start": 1275,
+    "label": "Власть и принудительность языка",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1281
+  },
+  {
+    "start": 1281,
+    "label": "Письмо и силы свободы литературы",
+    "clusters": [
+      "B8",
+      "B5"
+    ],
+    "endExclusive": 1282
+  },
+  {
+    "start": 1282,
+    "label": "Матесис: множественность знаний",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1287
+  },
+  {
+    "start": 1287,
+    "label": "Мимесис и желание реальности",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1290
+  },
+  {
+    "start": 1290,
+    "label": "Этика литературного языка и утопия",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1292
+  },
+  {
+    "start": 1292,
+    "label": "Упорство и смещение",
+    "clusters": [
+      "B8",
+      "B5"
+    ],
+    "endExclusive": 1295
+  },
+  {
+    "start": 1295,
+    "label": "История и личное понимание семиологии",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1303
+  },
+  {
+    "start": 1303,
+    "label": "Негативная и активная семиология",
+    "clusters": [
+      "B8",
+      "B4"
+    ],
+    "endExclusive": 1312
+  },
+  {
+    "start": 1312,
+    "label": "Преподавание, желание и отказ от господства",
+    "clusters": [
+      "B8"
+    ],
+    "endExclusive": 1316
+  },
+  {
+    "start": 1316,
+    "label": "Завершающие издательские сведения",
+    "clusters": [
+      "B0"
+    ],
+    "endExclusive": 1318
+  }
+]

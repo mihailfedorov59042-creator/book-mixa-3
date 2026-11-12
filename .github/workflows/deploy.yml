@@ -29,6 +29,11 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - name: Check prepared theory materials and source references
+        run: |
+          python tools/build_theory_materials.py --check
+          python tools/check_theory_materials.py
+          python tools/check_theory_research.py
       - name: Build and test notes transfer and offline PWA updates
         env:
           POLKA_CHROMIUM_PATH: /usr/bin/google-chrome

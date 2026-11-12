@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "status": "preparatory_research_not_runtime_graph",
-  "date": "2026-11-11",
+  "status": "Source inventory; implementation materials are in map-data.json",
+  "date": "2026-11-12",
   "limits": [
     "Заголовки крупных мыслей и тематическая группировка принадлежат составителю карты.",
     "Список произведений содержит проверенные опорные примеры, а не полный указатель всех упоминаний.",
@@ -780,7 +780,7 @@
       "coverageRanges": [
         [
           135,
-          324
+          320
         ]
       ],
       "attribution": "Редакторская группировка материала; заголовок и сводка не являются цитатой автора."
@@ -898,6 +898,10 @@
       ],
       "coverageRanges": [
         [
+          320,
+          324
+        ],
+        [
           459,
           497
         ],
@@ -939,6 +943,10 @@
         "barthes:527"
       ],
       "coverageRanges": [
+        [
+          320,
+          324
+        ],
         [
           324,
           342
@@ -13143,12 +13151,28 @@
       "level": 2,
       "kind": "section",
       "start": 363,
-      "endExclusive": 366,
+      "endExclusive": 365,
       "clusters": [
         "A6"
       ],
       "attribution": "Аристотель в переводе Радлова",
       "url": "https://mihailfedorov59042-creator.github.io/book-mixa-3/#ne@363",
+      "quotedStringCandidates": []
+    },
+    {
+      "id": "ne-s-365",
+      "book": "ne",
+      "title": "§ 4",
+      "path": "Книга восьмая / § 4",
+      "level": 2,
+      "kind": "section",
+      "start": 365,
+      "endExclusive": 366,
+      "clusters": [
+        "A6"
+      ],
+      "attribution": "Аристотель в переводе Радлова",
+      "url": "https://mihailfedorov59042-creator.github.io/book-mixa-3/#ne@365",
       "quotedStringCandidates": []
     },
     {
@@ -13287,12 +13311,28 @@
       "level": 2,
       "kind": "section",
       "start": 383,
-      "endExclusive": 386,
+      "endExclusive": 385,
       "clusters": [
         "A6"
       ],
       "attribution": "Аристотель в переводе Радлова",
       "url": "https://mihailfedorov59042-creator.github.io/book-mixa-3/#ne@383",
+      "quotedStringCandidates": []
+    },
+    {
+      "id": "ne-s-385",
+      "book": "ne",
+      "title": "§ 13",
+      "path": "Книга восьмая / § 13",
+      "level": 2,
+      "kind": "section",
+      "start": 385,
+      "endExclusive": 386,
+      "clusters": [
+        "A6"
+      ],
+      "attribution": "Аристотель в переводе Радлова",
+      "url": "https://mihailfedorov59042-creator.github.io/book-mixa-3/#ne@385",
       "quotedStringCandidates": []
     },
     {
@@ -17514,7 +17554,7 @@
       "level": 2,
       "kind": "section",
       "start": 206,
-      "endExclusive": 324,
+      "endExclusive": 320,
       "clusters": [
         "B1"
       ],
@@ -18016,7 +18056,25 @@
             316
           ],
           "status": "unclassified_quote_not_a_verified_work_title"
-        },
+        }
+      ]
+    },
+    {
+      "id": "barthes-s-320",
+      "book": "barthes",
+      "title": "Фрагмент о языке-объекте и метаязыке (редакторское название; 1959, Phantomas)",
+      "path": "Фрагмент о языке-объекте и метаязыке (редакторское название; 1959, Phantomas)",
+      "level": 2,
+      "kind": "section",
+      "start": 320,
+      "endExclusive": 324,
+      "clusters": [
+        "B4",
+        "B5"
+      ],
+      "attribution": "Барт",
+      "url": "https://mihailfedorov59042-creator.github.io/book-mixa-3/#barthes@320",
+      "quotedStringCandidates": [
         {
           "text": "на завтра",
           "blocks": [

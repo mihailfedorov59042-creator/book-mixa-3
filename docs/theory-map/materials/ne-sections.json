@@ -1,0 +1,1105 @@
+[
+  {
+    "start": 0,
+    "label": "Издание, перевод, греческие вставки",
+    "clusters": [
+      "A0"
+    ],
+    "endExclusive": 5
+  },
+  {
+    "start": 5,
+    "label": "Цели человеческой деятельности",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 12
+  },
+  {
+    "start": 12,
+    "label": "Метод исследования блаженства",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 18
+  },
+  {
+    "start": 18,
+    "label": "Образы жизни",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 20
+  },
+  {
+    "start": 20,
+    "label": "Критика единой идеи блага",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 22
+  },
+  {
+    "start": 22,
+    "label": "Конечность цели и самодостаточность",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 24
+  },
+  {
+    "start": 24,
+    "label": "Назначение человека и деятельность души",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 26
+  },
+  {
+    "start": 26,
+    "label": "Точность определения и способы познания начал",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 28
+  },
+  {
+    "start": 28,
+    "label": "Соотнесение определения с мнениями о благе",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 30
+  },
+  {
+    "start": 30,
+    "label": "Добродетель в деятельности, удовольствие и внешние блага",
+    "clusters": [
+      "A1",
+      "A2"
+    ],
+    "endExclusive": 35
+  },
+  {
+    "start": 35,
+    "label": "Приобретение блаженства и случай",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 37
+  },
+  {
+    "start": 37,
+    "label": "Целая жизнь, перемены судьбы и близкие",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 42
+  },
+  {
+    "start": 42,
+    "label": "Похвала и почитание блаженства",
+    "clusters": [
+      "A1"
+    ],
+    "endExclusive": 44
+  },
+  {
+    "start": 44,
+    "label": "Части души и виды добродетели",
+    "clusters": [
+      "A1",
+      "A4"
+    ],
+    "endExclusive": 47
+  },
+  {
+    "start": 47,
+    "label": "Добродетель и привычка",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 51
+  },
+  {
+    "start": 51,
+    "label": "Поступки, удовольствие и страдание",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 53
+  },
+  {
+    "start": 53,
+    "label": "Поступок и устойчивый характер",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 55
+  },
+  {
+    "start": 55,
+    "label": "Аффекты, способности и приобретённые свойства",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 57
+  },
+  {
+    "start": 57,
+    "label": "Среднее относительно нас",
+    "clusters": [
+      "A4",
+      "A2"
+    ],
+    "endExclusive": 62
+  },
+  {
+    "start": 62,
+    "label": "Определение добродетели и пределы середины",
+    "clusters": [
+      "A4",
+      "A2"
+    ],
+    "endExclusive": 66
+  },
+  {
+    "start": 66,
+    "label": "Частные области добродетели",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 74
+  },
+  {
+    "start": 74,
+    "label": "Противоположности и расстояние от середины",
+    "clusters": [
+      "A4",
+      "A2"
+    ],
+    "endExclusive": 76
+  },
+  {
+    "start": 76,
+    "label": "Практические правила поиска меры",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 79
+  },
+  {
+    "start": 79,
+    "label": "Принуждение и смешанные действия",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 84
+  },
+  {
+    "start": 84,
+    "label": "Неведение, сожаление и непроизвольное",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 87
+  },
+  {
+    "start": 87,
+    "label": "Источник произвольного действия",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 89
+  },
+  {
+    "start": 89,
+    "label": "Намерение и произвольность",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 91
+  },
+  {
+    "start": 91,
+    "label": "Делиберация: о чём и как размышляют",
+    "clusters": [
+      "A3",
+      "A4"
+    ],
+    "endExclusive": 94
+  },
+  {
+    "start": 94,
+    "label": "Благо и кажущееся благо как цель",
+    "clusters": [
+      "A3",
+      "A1"
+    ],
+    "endExclusive": 96
+  },
+  {
+    "start": 96,
+    "label": "Ответственность за поступки и характер",
+    "clusters": [
+      "A3",
+      "A2"
+    ],
+    "endExclusive": 99
+  },
+  {
+    "start": 99,
+    "label": "Приобретённое свойство и его проявление",
+    "clusters": [
+      "A3",
+      "A2"
+    ],
+    "endExclusive": 101
+  },
+  {
+    "start": 101,
+    "label": "Мужество и предмет страха",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 103
+  },
+  {
+    "start": 103,
+    "label": "Отвага, страх и прекрасная цель",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 105
+  },
+  {
+    "start": 105,
+    "label": "Пять подобий мужества",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 110
+  },
+  {
+    "start": 110,
+    "label": "Мужество перед страданием",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 112
+  },
+  {
+    "start": 112,
+    "label": "Умеренность и телесные удовольствия",
+    "clusters": [
+      "A2",
+      "A7"
+    ],
+    "endExclusive": 115
+  },
+  {
+    "start": 115,
+    "label": "Желание, излишество и умеренный человек",
+    "clusters": [
+      "A2",
+      "A7"
+    ],
+    "endExclusive": 117
+  },
+  {
+    "start": 117,
+    "label": "Произвольность невоздержанности в желаниях",
+    "clusters": [
+      "A2",
+      "A3"
+    ],
+    "endExclusive": 119
+  },
+  {
+    "start": 119,
+    "label": "Щедрость и отношение к деньгам",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 123
+  },
+  {
+    "start": 123,
+    "label": "Правильная отдача и получение",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 126
+  },
+  {
+    "start": 126,
+    "label": "Расточительность и скупость",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 130
+  },
+  {
+    "start": 130,
+    "label": "Великолепие и уместность крупных расходов",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 133
+  },
+  {
+    "start": 133,
+    "label": "Предмет, масштаб и обстоятельства расходов",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 135
+  },
+  {
+    "start": 135,
+    "label": "Безвкусная чрезмерность и мелочность",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 137
+  },
+  {
+    "start": 137,
+    "label": "Великодушие и достоинство",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 143
+  },
+  {
+    "start": 143,
+    "label": "Внешние блага и характер великодушного",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 145
+  },
+  {
+    "start": 145,
+    "label": "Малодушие и чванство",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 147
+  },
+  {
+    "start": 147,
+    "label": "Мера в стремлении к почестям",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 149
+  },
+  {
+    "start": 149,
+    "label": "Гнев и кротость",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 152
+  },
+  {
+    "start": 152,
+    "label": "Общительность, угодливость и вздорность",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 154
+  },
+  {
+    "start": 154,
+    "label": "Правдивость, хвастовство и ирония",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 161
+  },
+  {
+    "start": 161,
+    "label": "Шутка, остроумие и грубость",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 169
+  },
+  {
+    "start": 169,
+    "label": "Стыд как аффект",
+    "clusters": [
+      "A2"
+    ],
+    "endExclusive": 171
+  },
+  {
+    "start": 171,
+    "label": "Справедливость как свойство характера",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 177
+  },
+  {
+    "start": 177,
+    "label": "Законность и равенство",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 179
+  },
+  {
+    "start": 179,
+    "label": "Общая справедливость и добродетель к другому",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 183
+  },
+  {
+    "start": 183,
+    "label": "Частная несправедливость",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 186
+  },
+  {
+    "start": 186,
+    "label": "Виды частной справедливости",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 189
+  },
+  {
+    "start": 189,
+    "label": "Распределение по пропорции",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 192
+  },
+  {
+    "start": 192,
+    "label": "Распределение и уравнивание ущерба",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 205
+  },
+  {
+    "start": 205,
+    "label": "Обмен, нужда, деньги и соизмеримость",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 212
+  },
+  {
+    "start": 212,
+    "label": "Справедливое действие и середина",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 214
+  },
+  {
+    "start": 214,
+    "label": "Политическое право и добровольность действий",
+    "clusters": [
+      "A5",
+      "A3"
+    ],
+    "endExclusive": 219
+  },
+  {
+    "start": 219,
+    "label": "Возможность добровольно терпеть несправедливость",
+    "clusters": [
+      "A5",
+      "A3"
+    ],
+    "endExclusive": 228
+  },
+  {
+    "start": 228,
+    "label": "Ответственность распределяющего",
+    "clusters": [
+      "A5",
+      "A3"
+    ],
+    "endExclusive": 231
+  },
+  {
+    "start": 231,
+    "label": "Отдельный поступок и несправедливый человек",
+    "clusters": [
+      "A5",
+      "A2"
+    ],
+    "endExclusive": 234
+  },
+  {
+    "start": 234,
+    "label": "Правда как поправка к общему закону",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 239
+  },
+  {
+    "start": 239,
+    "label": "Несправедливость по отношению к себе",
+    "clusters": [
+      "A5"
+    ],
+    "endExclusive": 243
+  },
+  {
+    "start": 243,
+    "label": "Истинный разум как мера",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 247
+  },
+  {
+    "start": 247,
+    "label": "Части разумной души и истина",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 252
+  },
+  {
+    "start": 252,
+    "label": "Научное знание",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 255
+  },
+  {
+    "start": 255,
+    "label": "Искусство и производство",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 260
+  },
+  {
+    "start": 260,
+    "label": "Практичность и деятельность",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 262
+  },
+  {
+    "start": 262,
+    "label": "Разум и начала",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 264
+  },
+  {
+    "start": 264,
+    "label": "Мудрость и совершенство знания",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 272
+  },
+  {
+    "start": 272,
+    "label": "Практичность и общее знание",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 275
+  },
+  {
+    "start": 275,
+    "label": "Личная польза, политика и опыт",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 279
+  },
+  {
+    "start": 279,
+    "label": "Добрый совет",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 282
+  },
+  {
+    "start": 282,
+    "label": "Рассудительность и верное суждение",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 286
+  },
+  {
+    "start": 286,
+    "label": "Общие черты практических способностей",
+    "clusters": [
+      "A4"
+    ],
+    "endExclusive": 289
+  },
+  {
+    "start": 289,
+    "label": "Практичность, мудрость, изобретательность и добродетель",
+    "clusters": [
+      "A4",
+      "A2"
+    ],
+    "endExclusive": 295
+  },
+  {
+    "start": 295,
+    "label": "Порочность, невоздержность и зверство",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 302
+  },
+  {
+    "start": 302,
+    "label": "Исходные мнения о воздержности",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 304
+  },
+  {
+    "start": 304,
+    "label": "Затруднения: как знание уступает страсти",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 306
+  },
+  {
+    "start": 306,
+    "label": "Различения в постановке вопроса",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 308
+  },
+  {
+    "start": 308,
+    "label": "Обладание знанием и его применение",
+    "clusters": [
+      "A3",
+      "A4"
+    ],
+    "endExclusive": 312
+  },
+  {
+    "start": 312,
+    "label": "Области и разновидности невоздержности",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 317
+  },
+  {
+    "start": 317,
+    "label": "Гнев, желание и степень порочности",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 322
+  },
+  {
+    "start": 322,
+    "label": "Сопротивление наслаждению и страданию",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 326
+  },
+  {
+    "start": 326,
+    "label": "Раскаяние, излечимость и упорство",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 328
+  },
+  {
+    "start": 328,
+    "label": "Верность решению и её границы",
+    "clusters": [
+      "A3"
+    ],
+    "endExclusive": 330
+  },
+  {
+    "start": 330,
+    "label": "Воздержный, умеренный и практичный",
+    "clusters": [
+      "A3",
+      "A4"
+    ],
+    "endExclusive": 335
+  },
+  {
+    "start": 335,
+    "label": "Доводы против наслаждения",
+    "clusters": [
+      "A7"
+    ],
+    "endExclusive": 337
+  },
+  {
+    "start": 337,
+    "label": "Возражения против отрицания наслаждения",
+    "clusters": [
+      "A7"
+    ],
+    "endExclusive": 340
+  },
+  {
+    "start": 340,
+    "label": "Страдание, беспрепятственная деятельность и благо",
+    "clusters": [
+      "A7"
+    ],
+    "endExclusive": 348
+  },
+  {
+    "start": 348,
+    "label": "Телесное удовольствие и причины ошибочных мнений",
+    "clusters": [
+      "A7"
+    ],
+    "endExclusive": 354
+  },
+  {
+    "start": 354,
+    "label": "Необходимость дружбы",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 359
+  },
+  {
+    "start": 359,
+    "label": "Основания привязанности и взаимность",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 363
+  },
+  {
+    "start": 363,
+    "label": "Три вида дружбы",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 365
+  },
+  {
+    "start": 365,
+    "label": "Совершенная дружба добродетельных",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 366
+  },
+  {
+    "start": 366,
+    "label": "Устойчивость дружбы и равенство обмена",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 368
+  },
+  {
+    "start": 368,
+    "label": "Деятельность дружбы и совместная жизнь",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 372
+  },
+  {
+    "start": 372,
+    "label": "Характер совершенной дружбы",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 374
+  },
+  {
+    "start": 374,
+    "label": "Дружба неравных",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 377
+  },
+  {
+    "start": 377,
+    "label": "Равенство в дружбе и справедливости",
+    "clusters": [
+      "A6",
+      "A5"
+    ],
+    "endExclusive": 379
+  },
+  {
+    "start": 379,
+    "label": "Любовь как добродетель друга",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 381
+  },
+  {
+    "start": 381,
+    "label": "Общение, дружба и справедливость",
+    "clusters": [
+      "A6",
+      "A5"
+    ],
+    "endExclusive": 383
+  },
+  {
+    "start": 383,
+    "label": "Государственные устройства и их отклонения",
+    "clusters": [
+      "A6",
+      "A5"
+    ],
+    "endExclusive": 385
+  },
+  {
+    "start": 385,
+    "label": "Дружба при разных государственных устройствах",
+    "clusters": [
+      "A6",
+      "A5"
+    ],
+    "endExclusive": 386
+  },
+  {
+    "start": 386,
+    "label": "Родственная дружба и товарищество",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 388
+  },
+  {
+    "start": 388,
+    "label": "Претензии в дружбе ради пользы",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 391
+  },
+  {
+    "start": 391,
+    "label": "Разногласия при превосходстве одного друга",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 393
+  },
+  {
+    "start": 393,
+    "label": "Пропорциональность и воздаяние в дружбе",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 397
+  },
+  {
+    "start": 397,
+    "label": "Конкурирующие обязанности к разным людям",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 399
+  },
+  {
+    "start": 399,
+    "label": "Прекращение дружбы и изменение характера",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 401
+  },
+  {
+    "start": 401,
+    "label": "Друг как другой Я",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 403
+  },
+  {
+    "start": 403,
+    "label": "Благоволение и дружба",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 405
+  },
+  {
+    "start": 405,
+    "label": "Единомыслие и общие действия",
+    "clusters": [
+      "A6",
+      "A5"
+    ],
+    "endExclusive": 407
+  },
+  {
+    "start": 407,
+    "label": "Благодетель и облагодетельствованный",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 409
+  },
+  {
+    "start": 409,
+    "label": "Два смысла любви к себе",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 411
+  },
+  {
+    "start": 411,
+    "label": "Нужны ли счастливому друзья",
+    "clusters": [
+      "A6",
+      "A1"
+    ],
+    "endExclusive": 415
+  },
+  {
+    "start": 415,
+    "label": "Число друзей и близость",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 417
+  },
+  {
+    "start": 417,
+    "label": "Друзья в счастье и несчастье",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 420
+  },
+  {
+    "start": 420,
+    "label": "Совместная жизнь друзей",
+    "clusters": [
+      "A6"
+    ],
+    "endExclusive": 424
+  },
+  {
+    "start": 424,
+    "label": "Удовольствие, воспитание и нравственность",
+    "clusters": [
+      "A7",
+      "A2"
+    ],
+    "endExclusive": 428
+  },
+  {
+    "start": 428,
+    "label": "Доводы Евдокса и их обсуждение",
+    "clusters": [
+      "A7"
+    ],
+    "endExclusive": 432
+  },
+  {
+    "start": 432,
+    "label": "Удовольствие и завершённость",
+    "clusters": [
+      "A7"
+    ],
+    "endExclusive": 434
+  },
+  {
+    "start": 434,
+    "label": "Удовольствие завершает деятельность",
+    "clusters": [
+      "A7"
+    ],
+    "endExclusive": 438
+  },
+  {
+    "start": 438,
+    "label": "Виды удовольствий и виды деятельности",
+    "clusters": [
+      "A7"
+    ],
+    "endExclusive": 440
+  },
+  {
+    "start": 440,
+    "label": "Блаженство, деятельность и досуг",
+    "clusters": [
+      "A1",
+      "A7"
+    ],
+    "endExclusive": 442
+  },
+  {
+    "start": 442,
+    "label": "Созерцательная деятельность",
+    "clusters": [
+      "A7",
+      "A1"
+    ],
+    "endExclusive": 444
+  },
+  {
+    "start": 444,
+    "label": "Практические добродетели в человеческой жизни",
+    "clusters": [
+      "A7",
+      "A2"
+    ],
+    "endExclusive": 446
+  },
+  {
+    "start": 446,
+    "label": "Внешние условия созерцания",
+    "clusters": [
+      "A7",
+      "A1"
+    ],
+    "endExclusive": 449
+  },
+  {
+    "start": 449,
+    "label": "Воспитание, законодательство и переход к политике",
+    "clusters": [
+      "A7",
+      "A5"
+    ],
+    "endExclusive": 452
+  }
+]

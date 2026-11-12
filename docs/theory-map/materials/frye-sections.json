@@ -1,0 +1,509 @@
+[
+  {
+    "start": 0,
+    "label": "Статус конспекта и обзор книги",
+    "clusters": [
+      "F0"
+    ],
+    "endExclusive": 13
+  },
+  {
+    "start": 13,
+    "label": "Две пары комических типов",
+    "clusters": [
+      "F6"
+    ],
+    "endExclusive": 18
+  },
+  {
+    "start": 18,
+    "label": "Автономия и задача критики",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 21
+  },
+  {
+    "start": 21,
+    "label": "Критика говорит об искусстве",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 28
+  },
+  {
+    "start": 28,
+    "label": "Собственная рамка критики и внешние детерминизмы",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 31
+  },
+  {
+    "start": 31,
+    "label": "Учёность и публичная критика",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 37
+  },
+  {
+    "start": 37,
+    "label": "Потребность в систематической поэтике",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 40
+  },
+  {
+    "start": 40,
+    "label": "Индуктивный скачок и порядок слов",
+    "clusters": [
+      "F1",
+      "F4"
+    ],
+    "endExclusive": 45
+  },
+  {
+    "start": 45,
+    "label": "История вкуса",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 48
+  },
+  {
+    "start": 48,
+    "label": "Оценки и основания исследования",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 53
+  },
+  {
+    "start": 53,
+    "label": "Историческое и этическое измерения критики",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 58
+  },
+  {
+    "start": 58,
+    "label": "Возможности героя как основание модусов",
+    "clusters": [
+      "F2"
+    ],
+    "endExclusive": 61
+  },
+  {
+    "start": 61,
+    "label": "Пять фикциональных модусов",
+    "clusters": [
+      "F2"
+    ],
+    "endExclusive": 66
+  },
+  {
+    "start": 66,
+    "label": "Трагическая изоляция в разных модусах",
+    "clusters": [
+      "F2",
+      "F5"
+    ],
+    "endExclusive": 79
+  },
+  {
+    "start": 79,
+    "label": "Комическое включение и модальный контрапункт",
+    "clusters": [
+      "F2",
+      "F5"
+    ],
+    "endExclusive": 92
+  },
+  {
+    "start": 92,
+    "label": "Тематические модусы и отношение поэта к обществу",
+    "clusters": [
+      "F2"
+    ],
+    "endExclusive": 107
+  },
+  {
+    "start": 107,
+    "label": "Символ и пять контекстов чтения",
+    "clusters": [
+      "F3"
+    ],
+    "endExclusive": 110
+  },
+  {
+    "start": 110,
+    "label": "Многозначность без иерархии посвящения",
+    "clusters": [
+      "F3"
+    ],
+    "endExclusive": 113
+  },
+  {
+    "start": 113,
+    "label": "Мотив и знак: два направления чтения",
+    "clusters": [
+      "F3"
+    ],
+    "endExclusive": 123
+  },
+  {
+    "start": 123,
+    "label": "Образ, комментарий и аллегория",
+    "clusters": [
+      "F3"
+    ],
+    "endExclusive": 139
+  },
+  {
+    "start": 139,
+    "label": "Архетипы, конвенции, ритуал и сон",
+    "clusters": [
+      "F4",
+      "F3"
+    ],
+    "endExclusive": 161
+  },
+  {
+    "start": 161,
+    "label": "Монада и литературная целостность",
+    "clusters": [
+      "F3",
+      "F4"
+    ],
+    "endExclusive": 169
+  },
+  {
+    "start": 169,
+    "label": "Метафора в разных контекстах",
+    "clusters": [
+      "F3"
+    ],
+    "endExclusive": 174
+  },
+  {
+    "start": 174,
+    "label": "Миф и реализм",
+    "clusters": [
+      "F4"
+    ],
+    "endExclusive": 177
+  },
+  {
+    "start": 177,
+    "label": "Смещение мифа",
+    "clusters": [
+      "F4"
+    ],
+    "endExclusive": 185
+  },
+  {
+    "start": 185,
+    "label": "Апокалиптический мир",
+    "clusters": [
+      "F4"
+    ],
+    "endExclusive": 190
+  },
+  {
+    "start": 190,
+    "label": "Демонический мир",
+    "clusters": [
+      "F4"
+    ],
+    "endExclusive": 194
+  },
+  {
+    "start": 194,
+    "label": "Аналогические миры и демоническая модуляция",
+    "clusters": [
+      "F4"
+    ],
+    "endExclusive": 200
+  },
+  {
+    "start": 200,
+    "label": "Циклы и четыре мифоса",
+    "clusters": [
+      "F5",
+      "F4"
+    ],
+    "endExclusive": 204
+  },
+  {
+    "start": 204,
+    "label": "Комедия: возникновение нового общества",
+    "clusters": [
+      "F5"
+    ],
+    "endExclusive": 206
+  },
+  {
+    "start": 206,
+    "label": "Сюжет комедии и узнавание",
+    "clusters": [
+      "F5"
+    ],
+    "endExclusive": 216
+  },
+  {
+    "start": 216,
+    "label": "Юмор как ритуальное рабство",
+    "clusters": [
+      "F5",
+      "F6"
+    ],
+    "endExclusive": 224
+  },
+  {
+    "start": 224,
+    "label": "Функции четырёх комических типов",
+    "clusters": [
+      "F6"
+    ],
+    "endExclusive": 236
+  },
+  {
+    "start": 236,
+    "label": "Шесть фаз комедии",
+    "clusters": [
+      "F5"
+    ],
+    "endExclusive": 247
+  },
+  {
+    "start": 247,
+    "label": "Романс: поиск и освобождение",
+    "clusters": [
+      "F5"
+    ],
+    "endExclusive": 255
+  },
+  {
+    "start": 255,
+    "label": "Помощники, противники и нейтральные персонажи",
+    "clusters": [
+      "F6"
+    ],
+    "endExclusive": 259
+  },
+  {
+    "start": 259,
+    "label": "Шесть фаз романса",
+    "clusters": [
+      "F5"
+    ],
+    "endExclusive": 263
+  },
+  {
+    "start": 263,
+    "label": "Точка эпифании",
+    "clusters": [
+      "F5",
+      "F4"
+    ],
+    "endExclusive": 265
+  },
+  {
+    "start": 265,
+    "label": "Трагический закон и границы свободы",
+    "clusters": [
+      "F5"
+    ],
+    "endExclusive": 276
+  },
+  {
+    "start": 276,
+    "label": "Персонажи и общество трагедии",
+    "clusters": [
+      "F6",
+      "F5"
+    ],
+    "endExclusive": 279
+  },
+  {
+    "start": 279,
+    "label": "Шесть фаз трагедии",
+    "clusters": [
+      "F5"
+    ],
+    "endExclusive": 281
+  },
+  {
+    "start": 281,
+    "label": "Шесть фаз иронии и сатиры",
+    "clusters": [
+      "F5"
+    ],
+    "endExclusive": 289
+  },
+  {
+    "start": 289,
+    "label": "Жанр как отношение к аудитории",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 292
+  },
+  {
+    "start": 292,
+    "label": "Мелос, лексис, опсис и риторика",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 297
+  },
+  {
+    "start": 297,
+    "label": "Четыре корня представления",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 304
+  },
+  {
+    "start": 304,
+    "label": "Epos и повторяющийся ритм",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 308
+  },
+  {
+    "start": 308,
+    "label": "Проза и непрерывность",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 311
+  },
+  {
+    "start": 311,
+    "label": "Драма и декорум",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 315
+  },
+  {
+    "start": 315,
+    "label": "Лирика и ассоциация",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 323
+  },
+  {
+    "start": 323,
+    "label": "Круг драматических форм",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 331
+  },
+  {
+    "start": 331,
+    "label": "Тематические формы лирики и epos",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 335
+  },
+  {
+    "start": 335,
+    "label": "Четыре формы прозы и их сочетания",
+    "clusters": [
+      "F7"
+    ],
+    "endExclusive": 346
+  },
+  {
+    "start": 346,
+    "label": "Энциклопедические формы",
+    "clusters": [
+      "F7",
+      "F3"
+    ],
+    "endExclusive": 353
+  },
+  {
+    "start": 353,
+    "label": "Риторика нелитературной прозы",
+    "clusters": [
+      "F7",
+      "F1"
+    ],
+    "endExclusive": 356
+  },
+  {
+    "start": 356,
+    "label": "Критика, культура и восстановление связей",
+    "clusters": [
+      "F1"
+    ],
+    "endExclusive": 371
+  },
+  {
+    "start": 371,
+    "label": "Редакторский словарь терминов",
+    "clusters": [
+      "F0"
+    ],
+    "endExclusive": 422
+  },
+  {
+    "start": 422,
+    "label": "Статус учебных примеров",
+    "clusters": [
+      "F0"
+    ],
+    "endExclusive": 424
+  },
+  {
+    "start": 424,
+    "label": "Алазоны: авторские примеры и гипотезы составителя",
+    "clusters": [
+      "F6"
+    ],
+    "endExclusive": 430
+  },
+  {
+    "start": 430,
+    "label": "Эйроны: авторские примеры и гипотезы составителя",
+    "clusters": [
+      "F6"
+    ],
+    "endExclusive": 434
+  },
+  {
+    "start": 434,
+    "label": "Буффоны: авторские примеры и гипотезы составителя",
+    "clusters": [
+      "F6"
+    ],
+    "endExclusive": 436
+  },
+  {
+    "start": 436,
+    "label": "Агройкосы: авторские примеры и гипотезы составителя",
+    "clusters": [
+      "F6"
+    ],
+    "endExclusive": 440
+  },
+  {
+    "start": 440,
+    "label": "Фрай и книги библиотеки: упоминание и применение",
+    "clusters": [
+      "F0"
+    ],
+    "endExclusive": 450
+  }
+]
