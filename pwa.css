@@ -83,3 +83,5 @@ body:is([data-book="frye"],[data-book="ne"],[data-book="barthes"]) .theory-open 
 .theory-linked {position:relative}.theory-lines {position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.theory-thread {stroke:#8c674b;stroke-width:2;pointer-events:stroke;cursor:pointer}.theory-linked .theory-node {position:relative;z-index:1}.theory-lines {z-index:2}
 
 .theory-node.theory-context {border-style:dashed; background:#ede6dc}
+
+.theory-tree-edge {display:block;margin:.25rem 0 .65rem 1.5rem;text-align:left;background:transparent!important;font-size:.9em!important}

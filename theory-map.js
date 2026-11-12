@@ -44,7 +44,7 @@
       content = `<div class="theory-group"><h2>${escape(group.title)}</h2><div class="theory-small">${works.map(w=>objectButton('work',w.id,w.title,'theory-small-node')).join('') || '<p>Проверенные примеры для этой мысли не выделены.</p>'}</div></div>`;
     } else {
       const h = data.hierarchies.find(h=>h.cluster===group.id);
-      content = `<div class="theory-tree"><h2>${escape(group.title)}</h2>${h.branches.map(b=>`<section><h3>${escape(b.title)}</h3>${b.claimIds.map(id=>{const p=data.claims.find(x=>x.id===id);const t=getTopic(p.topic); return objectButton('topic',t.id,p.statement,'theory-claim');}).join('')}</section>`).join('')}</div>`;
+      content = `<div class="theory-tree"><h2>${escape(group.title)}</h2>${h.branches.map(b=>`<section><h3>${escape(b.title)}</h3>${b.claimIds.map(id=>{const p=data.claims.find(x=>x.id===id);const t=getTopic(p.topic); return objectButton('topic',t.id,p.statement,'theory-claim') + data.relations.filter(r=>r.from===t.id).map(r=>objectButton('relation',r.id,`↳ ${r.label}: ${getTopic(r.to).title}`,'theory-tree-edge')).join('');}).join('')}</section>`).join('')}</div>`;
     }
     const nav = groups.map(c=>`<option value="${escape(c.id)}" ${c.id===selected?'selected':''}>${escape(c.title)}</option>`).join('');
     const modes = [['thoughts','Мысли'],['topics','Темы и связи'],['works','Произведения'],['claims','Положения']];
