@@ -32,7 +32,8 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin || !url.href.startsWith(SCOPE)) return;
 
-  if (req.mode === 'navigate') {
+  const appRoot = new URL(SCOPE).pathname;
+  if (req.mode === 'navigate' && (url.pathname === appRoot || url.pathname === appRoot + 'index.html')) {
     // Do not mix a fresh index with older cached book scripts during updates.
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);

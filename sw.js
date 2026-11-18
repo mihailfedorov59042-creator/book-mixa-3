@@ -1,12 +1,12 @@
 /* GENERATED FILE. Edit tools/sw.template.js and run python3 tools/build_pwa.py. */
-const BUILD_ID = 'be45295dd4ff72d6';
+const BUILD_ID = '56f1abde2d6ce182';
 const CACHE_NAME = 'polka-offline-' + BUILD_ID;
 const PRECACHE_FILES = [
-  "./index.html?v=be45295dd4ff72d6",
-  "./pwa.js?v=be45295dd4ff72d6",
-  "./pwa.css?v=be45295dd4ff72d6",
-  "./notes-transfer.js?v=be45295dd4ff72d6",
-  "./theory-map.js?v=be45295dd4ff72d6",
+  "./index.html?v=56f1abde2d6ce182",
+  "./pwa.js?v=56f1abde2d6ce182",
+  "./pwa.css?v=56f1abde2d6ce182",
+  "./notes-transfer.js?v=56f1abde2d6ce182",
+  "./theory-map.js?v=56f1abde2d6ce182",
   "./theory-map-legacy.js",
   "./data/theory-map.json",
   "./manifest.webmanifest",
@@ -67,40 +67,40 @@ const PRECACHE_FILES = [
   "./data/art/milton/milton49.webp",
   "./data/art/milton/milton50.webp",
   "./data/art/milton/ornaments.webp",
-  "./data/b-apelsiny.js?v=be45295dd4ff72d6",
-  "./data/b-barthes.js?v=be45295dd4ff72d6",
-  "./data/b-e_about.js?v=be45295dd4ff72d6",
-  "./data/b-e_alcestis.js?v=be45295dd4ff72d6",
-  "./data/b-e_andromache.js?v=be45295dd4ff72d6",
-  "./data/b-e_bacchae.js?v=be45295dd4ff72d6",
-  "./data/b-e_bacchaez.js?v=be45295dd4ff72d6",
-  "./data/b-e_cyclops.js?v=be45295dd4ff72d6",
-  "./data/b-e_electra.js?v=be45295dd4ff72d6",
-  "./data/b-e_hecuba.js?v=be45295dd4ff72d6",
-  "./data/b-e_helena.js?v=be45295dd4ff72d6",
-  "./data/b-e_heracles.js?v=be45295dd4ff72d6",
-  "./data/b-e_heraclidae.js?v=be45295dd4ff72d6",
-  "./data/b-e_hippolytus.js?v=be45295dd4ff72d6",
-  "./data/b-e_ion.js?v=be45295dd4ff72d6",
-  "./data/b-e_iphaul.js?v=be45295dd4ff72d6",
-  "./data/b-e_iphtaur.js?v=be45295dd4ff72d6",
-  "./data/b-e_medea.js?v=be45295dd4ff72d6",
-  "./data/b-e_orestes.js?v=be45295dd4ff72d6",
-  "./data/b-e_phoenissae.js?v=be45295dd4ff72d6",
-  "./data/b-e_rhesus.js?v=be45295dd4ff72d6",
-  "./data/b-e_supplices.js?v=be45295dd4ff72d6",
-  "./data/b-e_troades.js?v=be45295dd4ff72d6",
-  "./data/b-frye.js?v=be45295dd4ff72d6",
-  "./data/b-gulliver.js?v=be45295dd4ff72d6",
-  "./data/b-ne.js?v=be45295dd4ff72d6",
-  "./data/b-paradise.js?v=be45295dd4ff72d6",
-  "./data/b-peterburg.js?v=be45295dd4ff72d6",
-  "./data/b-phedre.js?v=be45295dd4ff72d6",
-  "./data/b-robinson.js?v=be45295dd4ff72d6",
-  "./data/b-tartuffe.js?v=be45295dd4ff72d6",
-  "./data/b-voron.js?v=be45295dd4ff72d6",
-  "./data/b-werther.js?v=be45295dd4ff72d6",
-  "./data/img.js?v=be45295dd4ff72d6"
+  "./data/b-apelsiny.js?v=56f1abde2d6ce182",
+  "./data/b-barthes.js?v=56f1abde2d6ce182",
+  "./data/b-e_about.js?v=56f1abde2d6ce182",
+  "./data/b-e_alcestis.js?v=56f1abde2d6ce182",
+  "./data/b-e_andromache.js?v=56f1abde2d6ce182",
+  "./data/b-e_bacchae.js?v=56f1abde2d6ce182",
+  "./data/b-e_bacchaez.js?v=56f1abde2d6ce182",
+  "./data/b-e_cyclops.js?v=56f1abde2d6ce182",
+  "./data/b-e_electra.js?v=56f1abde2d6ce182",
+  "./data/b-e_hecuba.js?v=56f1abde2d6ce182",
+  "./data/b-e_helena.js?v=56f1abde2d6ce182",
+  "./data/b-e_heracles.js?v=56f1abde2d6ce182",
+  "./data/b-e_heraclidae.js?v=56f1abde2d6ce182",
+  "./data/b-e_hippolytus.js?v=56f1abde2d6ce182",
+  "./data/b-e_ion.js?v=56f1abde2d6ce182",
+  "./data/b-e_iphaul.js?v=56f1abde2d6ce182",
+  "./data/b-e_iphtaur.js?v=56f1abde2d6ce182",
+  "./data/b-e_medea.js?v=56f1abde2d6ce182",
+  "./data/b-e_orestes.js?v=56f1abde2d6ce182",
+  "./data/b-e_phoenissae.js?v=56f1abde2d6ce182",
+  "./data/b-e_rhesus.js?v=56f1abde2d6ce182",
+  "./data/b-e_supplices.js?v=56f1abde2d6ce182",
+  "./data/b-e_troades.js?v=56f1abde2d6ce182",
+  "./data/b-frye.js?v=56f1abde2d6ce182",
+  "./data/b-gulliver.js?v=56f1abde2d6ce182",
+  "./data/b-ne.js?v=56f1abde2d6ce182",
+  "./data/b-paradise.js?v=56f1abde2d6ce182",
+  "./data/b-peterburg.js?v=56f1abde2d6ce182",
+  "./data/b-phedre.js?v=56f1abde2d6ce182",
+  "./data/b-robinson.js?v=56f1abde2d6ce182",
+  "./data/b-tartuffe.js?v=56f1abde2d6ce182",
+  "./data/b-voron.js?v=56f1abde2d6ce182",
+  "./data/b-werther.js?v=56f1abde2d6ce182",
+  "./data/img.js?v=56f1abde2d6ce182"
 ];
 const SCOPE = self.registration.scope;
 
@@ -132,7 +132,8 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin || !url.href.startsWith(SCOPE)) return;
 
-  if (req.mode === 'navigate') {
+  const appRoot = new URL(SCOPE).pathname;
+  if (req.mode === 'navigate' && (url.pathname === appRoot || url.pathname === appRoot + 'index.html')) {
     // Do not mix a fresh index with older cached book scripts during updates.
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);
