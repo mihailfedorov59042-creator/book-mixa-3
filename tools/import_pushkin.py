@@ -6,6 +6,7 @@ import math
 import re
 import sys
 from pathlib import Path
+from pushkin_mentions import mark_mentions
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,7 +45,7 @@ def inline(e):
                 body = f'<a class="nr" href="#n-{num}" data-n="{num}">{body}</a>'
             elif href.startswith('#'):
                 links.append(href[1:])
-                body = f'<a href="@@ref{len(links)-1}@@">{body}</a>'
+                body = f'<a class="ed-ref" href="@@ref{len(links)-1}@@">{body}</a>'
         elif child.tag in ('strong','emphasis','sup'):
             tag = 'em' if child.tag=='emphasis' else child.tag
             body=f'<{tag}>{body}</{tag}>'
@@ -101,12 +102,6 @@ def resolve(m):
 
 research=json.loads((ROOT/'tools/pushkin-characters.json').read_text())
 schemes={}
-def speaker_id(label, people):
-    aliases = {'Вальсингам':['Председатель'], 'Григорий Отрепьев':['Григорий','Самозванец'], 'Борис Годунов':['Борис','Царь'], 'Статуя командора':['Статуя'], 'Слепой старик':['Старик']}
-    for j,(name,_,_) in enumerate(people):
-        if label in [name, *aliases.get(name,[])]: return f'c{j}'
-    return None
-
 for bid,book in books.items():
     book['b']=json.loads(re.sub(r'@@ref(\d+)@@',resolve,dump(book['b'])))
     text=[html.unescape(re.sub('<[^>]+>','',b[1])) for b in book['b'][:book['mainEnd']]]
@@ -114,19 +109,33 @@ for bid,book in books.items():
     nodes=[]
     for j,(name,role,events) in enumerate(spec['people']):
         stages=[]
-        for i,title in events:
+        for i,title,*quote in events:
             assert i<len(text) and text[i],(bid,i)
-            excerpt=text[i]
+            excerpt=quote[0] if quote else text[i]
+            assert excerpt in text[i], (bid,i,excerpt)
             stages.append(dict(i=i,t=title,d=excerpt[:220]+('…' if len(excerpt)>220 else ''),l=titles[bid],p=round(100*sum(map(len,text[:i+1]))/max(1,sum(map(len,text))))))
         cid=f'c{j}'
-        book['c'].append(dict(id=cid,name=name,role=role,intro=role,arc=' → '.join(s['t'] for s in stages),st=stages))
-        angle=2*math.pi*j/len(spec['people'])
-        nodes.append([cid,name,role,round(math.cos(angle)*max(1.05,len(spec['people'])*.28),3),round(math.sin(angle)*max(1,len(spec['people'])*.22),3)])
-    for block in book['b'][:book['mainEnd']]:
-        if block[0]=='sp':
-            label = html.unescape(re.sub('<[^>]+>', '', block[1])).rstrip('.').strip()
-            speaker = speaker_id(label, spec['people'])
-            if speaker: block[1]=f'<span class="ch" data-ch="{speaker}">{block[1]}</span>'
+        book['c'].append(dict(id=cid,name=name,role=role,intro=spec.get('introductions',{}).get(name,role),arc=' → '.join(s['t'] for s in stages),st=stages))
+        count=spec['originalCount']
+        # Existing ink is stored in diagram coordinates. Keep the original
+        # ring fixed and add the new cast around it without moving old nodes.
+        if j < count:
+            angle=2*math.pi*j/count
+            x=math.cos(angle)*max(1.05,count*.28)
+            y=math.sin(angle)*max(1,count*.22)
+        else:
+            slot=j-count
+            ring=1
+            capacity=12
+            while slot>=capacity:
+                slot-=capacity
+                ring+=1
+                capacity=12*ring
+            angle=2*math.pi*slot/capacity
+            x=math.cos(angle)*(max(1.05,count*.28)+1.75*ring)
+            y=math.sin(angle)*(max(1,count*.22)+1.55*ring)
+        nodes.append([cid,name,role,round(x,3),round(y,3)])
+    mark_mentions(bid,book['b'][:book['mainEnd']],spec['people'])
     schemes[bid]=dict(nodes=nodes,edges=[[f'c{a}',f'c{b}',typ,label] for a,b,typ,label in spec['edges']])
 # Verify textual completeness independently of the rendering/tag classification.
 for section in works:

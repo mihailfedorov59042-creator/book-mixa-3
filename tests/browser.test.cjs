@@ -649,6 +649,21 @@ test('upgrade from the previous theory map preserves old ink and opens it offlin
   }finally{previousTheory=false;await context.close();}
 });
 
+async function assertReadableRelations(page) {
+  await page.locator('#sch-svg .nodes .sn').first().waitFor();
+  const collisions = await page.locator('#sch-svg').evaluate(svg => {
+    const boxes = [...svg.querySelectorAll('.sn, .sz text')].map(el => el.getBBox());
+    const errors = [];
+    for (const label of svg.querySelectorAll('.edge-labels text')) {
+      const r = label.getBBox();
+      if (boxes.some(b => r.x < b.x + b.width && r.x + r.width > b.x && r.y < b.y + b.height && r.y + r.height > b.y)) errors.push(label.textContent);
+      boxes.push(r);
+    }
+    return errors;
+  });
+  assert.deepEqual(collisions, []);
+}
+
 test('Pushkin volume: 16 independent books, character timelines and illustrated plates offline', {timeout:180000}, async()=>{
   const context=await contextFor({viewport:{width:1440,height:900}});
   try {
@@ -663,6 +678,7 @@ test('Pushkin volume: 16 independent books, character timelines and illustrated 
       await page.locator(`#pushkin-slot [data-go="${id}"]`).click();
       await page.locator('#book .page').first().waitFor({state:'attached'});
       await page.locator('#btn-sch').click();
+      await assertReadableRelations(page);
       await page.locator('#scheme .sn.card').first().click();
       await page.locator('[data-sca="char"]').click();
       await page.locator('[data-cact="spoil"]').click();
@@ -694,7 +710,10 @@ test('Pushkin on a phone: shelf, cover, source notes and character scheme offlin
     await page.locator('#pushkin-slot [data-go="push_s002003"]').click();
     await page.locator('#btn-chars').click();
     await page.locator('#ch-sch').click();
+    await assertReadableRelations(page);
     await page.locator('#scheme .sn.card').first().click();
+    const card = await page.locator('#sch-card').boundingBox(), svg = await page.locator('#sch-svg').boundingBox();
+    assert.ok(card.y >= svg.y + svg.height - 1);
     await page.locator('[data-sca="char"]').click();
     await page.locator('[data-cact="spoil"]').click();
     await page.locator('#pop [data-goi]').last().click();
@@ -705,4 +724,55 @@ test('Pushkin on a phone: shelf, cover, source notes and character scheme offlin
     await page.locator('#pop').waitFor({state:'visible'});
     assert.ok((await page.locator('#pop').innerText()).length>12);
   }finally{await context.close();}
+});
+
+test('Boris Godunov: names in verse, speaker timelines, editorial reference and clean resume title offline', {timeout:90000}, async () => {
+  const id = 'push_s002001';
+  const state = {...initial(), last:id, progress:{[id]:{a:1,r:1,pct:.001,t:1234}}};
+  const context = await contextFor({viewport:{width:1280,height:800}}, state);
+  try {
+    const page = await context.newPage();
+    await ready(page); await context.setOffline(true);
+    assert.doesNotMatch(await page.locator('#cont-slot').innerText(), /\*/);
+    const jump = async i => { await page.evaluate(hash => {location.hash = hash;}, id + '@' + i); };
+    await jump(136);
+    for (const [i, name] of [[136,'Борис'],[138,'Годунова'],[12,'Воротынский']]) {
+      await jump(i);
+      const mention = page.locator(`#book .page:not([hidden]) [data-i="${i}"] .ch`).first();
+      await mention.waitFor(); assert.equal(await mention.innerText(), name);
+      if (i === 138) await mention.press('Enter'); else await mention.click();
+      const title = page.locator('#pop .cp-name');
+      await title.waitFor();
+      assert.equal(await title.innerText(), i === 12 ? name : 'Борис Годунов');
+      await page.locator('[data-cact="spoil"]').click();
+      assert.ok(await page.locator('#pop [data-goi]').count() >= 8);
+      await page.locator('#pop .pop-x').click();
+    }
+    assert.equal(await page.locator('#book .tp-title').textContent(), 'Борис Годунов');
+    assert.equal(await page.locator('#book .h1[data-i="0"] h2').textContent(), 'Борис Годунов');
+    const ref = page.locator('#book .titlepage a.ed-ref');
+    assert.match(await ref.getAttribute('href'), /^#push_s002001@\d+$/);
+    assert.equal(await ref.evaluate(a => {
+      const swatch = document.createElement('span');
+      a.after(swatch); swatch.style.color = 'var(--cinnabar)';
+      const ok = getComputedStyle(a).color === getComputedStyle(swatch).color;
+      swatch.remove(); return ok;
+    }), true);
+    await page.locator('#btn-sch').click();
+    await assertReadableRelations(page);
+    await page.locator('#sch-fit').click();
+    await page.locator('#scheme .sn[aria-label="Воротынский"]').click();
+    await page.locator('#sch-card').waitFor();
+    assert.ok((await page.locator('#sch-card').innerText()).includes('Шуйский'));
+    const card = await page.locator('#sch-card').boundingBox(), diagram = await page.locator('#sch-svg').boundingBox();
+    assert.ok(diagram.x + diagram.width <= card.x + 1 || diagram.y + diagram.height <= card.y + 1);
+    const invalid = await page.evaluate(() => Object.entries(window.__PUSHKIN).flatMap(([key]) => {
+      const b = window.__BOOKS[key], ids = new Set(b.c.map(c => c.id));
+      return b.b.slice(0,b.mainEnd).filter(([kind,h]) =>
+        kind === 'sp' && !h.includes('data-ch=') ||
+        [...h.matchAll(/data-ch="([^"]+)"/g)].some(m => !ids.has(m[1]))
+      );
+    }));
+    assert.deepEqual(invalid, []);
+  } finally { await context.close(); }
 });
