@@ -255,7 +255,7 @@ body:is([data-book="frye"],[data-book="ne"],[data-book="barthes"]) .theory-open 
 
 /* An illustrated leaf occupies its own reader page in either orientation. */
 .milton-plate { margin:0; height:100%; display:grid; grid-template-rows:minmax(0,1fr) auto; gap:.55em; text-align:center; }
-.milton-plate a { display:block; min-height:0; cursor:zoom-in; }
+.milton-plate > a { display:block; min-height:0; cursor:zoom-in; }
 .milton-plate img { display:block; height:100%; width:100%; object-fit:contain; }
 .milton-plate figcaption { color:var(--ink2); font:italic .82em/1.25 var(--f-disp); }
 .milton-ornament {
@@ -263,3 +263,7 @@ body:is([data-book="frye"],[data-book="ne"],[data-book="barthes"]) .theory-open 
   background-color:var(--ink);
   mask:url("./data/art/milton/ornaments.webp") var(--orn-position) center / 1300% 100% no-repeat;
 }
+.push-frieze { margin: 8px auto 24px; text-align:center; }
+.push-frieze img { display:block; width:100%; height:clamp(120px,20vw,270px); object-fit:cover; border:1px solid var(--rule); }
+.push-frieze figcaption { margin-top:8px; font:italic 16px var(--f-disp); color:var(--ink2); }
+.push-frieze a, .milton-plate figcaption a { color:var(--gold-ink); text-underline-offset:.15em; }

@@ -323,11 +323,11 @@ for (const [name, options] of [
     const errors=[]; page.on('pageerror', e=>errors.push(e.message));
     await ready(page);
     const before=await saved(page);
-    assert.equal(await page.locator('.shelf-choice').count(),5);
+    assert.equal(await page.locator('.shelf-choice').count(),6);
     assert.equal(await page.locator('#home .book').count(),0);
     assert.equal(await page.locator('#home [data-notes-export]').count(),0);
     await context.setOffline(true);
-    for(const [id,slot] of [['classic','classic-slot'],['gozzi','gz-slot'],['xx','xx-slot'],['euripides','eur-slot'],['theory','theory-slot']]) {
+    for(const [id,slot] of [['classic','classic-slot'],['gozzi','gz-slot'],['xx','xx-slot'],['euripides','eur-slot'],['theory','theory-slot'],['pushkin','pushkin-slot']]) {
       await page.locator(`[data-go="shelf/${id}"]`).click();
       await page.waitForURL(`**/#shelf/${id}`);
       await page.locator('#'+slot).waitFor();
@@ -454,7 +454,7 @@ test('Two installed-app identities on one origin stay separate, including offlin
   });
   await context.setOffline(true);await polka.reload();await ssl.reload();
   assert.equal(await ssl.locator('h1').innerText(),'Старославянский язык');
-  assert.equal(await polka.locator('.shelf-choice').count(),5);
+  assert.equal(await polka.locator('.shelf-choice').count(),6);
   assert.deepEqual((await saved(polka)).notes,before.notes);
   assert.equal(await ssl.evaluate(()=>JSON.parse(localStorage.getItem('noun-v2')).test),'keep-ssl-progress');
   const names=await polka.evaluate(()=>caches.keys());
@@ -647,4 +647,62 @@ test('upgrade from the previous theory map preserves old ink and opens it offlin
     assert.equal(await page.locator('.theory-ink polyline').count(),1);
     assert.equal(await page.evaluate(()=>localStorage.getItem('polka-theory-ink-v1')),oldInk);
   }finally{previousTheory=false;await context.close();}
+});
+
+test('Pushkin volume: 16 independent books, character timelines and illustrated plates offline', {timeout:180000}, async()=>{
+  const context=await contextFor({viewport:{width:1440,height:900}});
+  try {
+    const page=await context.newPage(),errors=[];
+    page.on('pageerror',err=>errors.push(err.message));
+    await ready(page);await context.setOffline(true);
+    await page.locator('[data-go="shelf/pushkin"]').click();
+    await page.locator('#pushkin-slot .book').first().waitFor();
+    const ids=await page.locator('#pushkin-slot .book').evaluateAll(nodes=>nodes.map(n=>n.dataset.go));
+    assert.equal(ids.length,16);
+    for(const id of ids){
+      await page.locator(`#pushkin-slot [data-go="${id}"]`).click();
+      await page.locator('#book .page').first().waitFor({state:'attached'});
+      await page.locator('#btn-sch').click();
+      await page.locator('#scheme .sn.card').first().click();
+      await page.locator('[data-sca="char"]').click();
+      await page.locator('[data-cact="spoil"]').click();
+      assert.ok(await page.locator('#pop [data-goi]').count());
+      await page.locator('#pop [data-goi]').last().click();
+      await page.locator('#scheme').waitFor({state:'hidden'});
+      if(id==='push_s001'){
+        assert.equal(await page.locator('#book .milton-plate').count(),5);
+        const src=await page.locator('#book .milton-plate img').first().getAttribute('src');
+        assert.equal(await page.evaluate(async url=>(await fetch(url)).ok,src),true);
+      }
+      await page.evaluate(()=>location.hash='shelf/pushkin');
+      await page.locator('#pushkin-slot .book').first().waitFor();
+    }
+    assert.deepEqual(errors,[]);
+  }finally{await context.close();}
+});
+
+test('Pushkin on a phone: shelf, cover, source notes and character scheme offline', {timeout:90000}, async()=>{
+  const context=await contextFor(devices['Pixel 7']);
+  try {
+    const page=await context.newPage();
+    await ready(page);await context.setOffline(true);
+    await page.locator('[data-go="shelf/pushkin"]').click();
+    await page.locator('#pushkin-slot .book').first().waitFor();
+    const banner=page.locator('.push-frieze img');
+    await banner.evaluate(img=>img.decode());
+    assert.ok(await banner.evaluate(img=>img.getBoundingClientRect().right<=innerWidth));
+    await page.locator('#pushkin-slot [data-go="push_s002003"]').click();
+    await page.locator('#btn-chars').click();
+    await page.locator('#ch-sch').click();
+    await page.locator('#scheme .sn.card').first().click();
+    await page.locator('[data-sca="char"]').click();
+    await page.locator('[data-cact="spoil"]').click();
+    await page.locator('#pop [data-goi]').last().click();
+    const note=await page.evaluate(()=>window.__BOOKS.push_s002003.b.findIndex(b=>b[1].includes('class="nr"')));
+    assert.ok(note>=0);
+    await page.evaluate(note=>location.hash='push_s002003@'+note,note);
+    await page.locator('#book .page:not([hidden]) a.nr').first().click();
+    await page.locator('#pop').waitFor({state:'visible'});
+    assert.ok((await page.locator('#pop').innerText()).length>12);
+  }finally{await context.close();}
 });
