@@ -58,20 +58,60 @@
       return result;
     });
   }
-  function parseBackup(text, books) {
+  const timeValid = t => Number.isSafeInteger(t) && t >= 0 && t <= 8640000000000000;
+  function validateMarks(items, books, ratings) {
+    if (!record(items)) fail('Некорректный раздел оценок или отметок о прочтении.');
+    const clean = {};
+    for (const [key, mark] of Object.entries(items)) {
+      if (!record(mark) || !timeValid(mark.t)) fail('Некорректная дата отметки.');
+      if (ratings) {
+        let id;
+        try { id = JSON.parse(key); } catch { fail('Некорректный идентификатор цитаты.'); }
+        if (!Array.isArray(id) || id.length !== 2 || typeof id[0] !== 'string' ||
+            !(id[0] === 'general' || own(books, id[0])) || typeof id[1] !== 'string' || !id[1].trim() ||
+            id[1].length > 1000000 || key !== JSON.stringify([id[0], id[1].replace(/\s+/g, ' ').trim()]) ||
+            !['up','down',null].includes(mark.vote)) fail('Некорректная оценка цитаты.');
+        clean[key] = {vote:mark.vote, t:mark.t};
+      } else {
+        if (!safeId(key) || !own(books,key) || typeof mark.on !== 'boolean') fail('Некорректная отметка о прочтении книги.');
+        clean[key] = {on:mark.on, t:mark.t};
+      }
+    }
+    return clean;
+  }
+  function localMarks(state, books) {
+    // Earlier reader states can contain a timestamp without the "on" flag.
+    const read = state.read === undefined ? {} : state.read;
+    if (!record(read)) fail('Некорректные отметки о прочтении на устройстве.');
+    const flags = Object.fromEntries(Object.entries(read).map(([id,m]) =>
+      [id, record(m) && m.on === undefined ? {...m,on:false} : m]));
+    return {read:validateMarks(flags,books,false), quoteRatings:validateMarks(state.quoteRatings === undefined ? {} : state.quoteRatings,books,true)};
+  }
+  function mergeMarks(local, incoming) {
+    const result = {...local};
+    for (const [key, mark] of Object.entries(incoming)) {
+      if (!own(result,key) || mark.t > result[key].t) result[key] = mark;
+    }
+    return result;
+  }
+  function parseFile(text, books) {
     if (typeof text !== 'string' || byteLength(text) > MAX_BYTES) fail('Файл слишком большой. Максимальный размер — 5 МБ.');
     let data;
     try { data = JSON.parse(text.replace(/^\uFEFF/, '')); }
     catch (_) { fail('Не удалось прочитать JSON. Выберите файл, созданный кнопкой «Выгрузить заметки».'); }
-    if (!record(data) || data.format !== 'polka-notes' || data.version !== 1 ||
+    if (!record(data) || data.format !== 'polka-notes' || ![1,2].includes(data.version) ||
         typeof data.exportedAt !== 'string' || !Number.isFinite(Date.parse(data.exportedAt))) {
       fail('Неподдерживаемый формат или версия файла. Нужна резервная копия «Полки» в формате JSON.');
     }
-    return validateNotes(data.notes, books);
+    const notes = validateNotes(data.notes, books);
+    if (data.version === 1) return {notes};
+    return {notes, read:validateMarks(data.read, books, false), quoteRatings:validateMarks(data.quoteRatings, books, true)};
   }
-  function serializeBackup(notes, books) {
-    const text = JSON.stringify({ format: 'polka-notes', version: 1,
-      exportedAt: new Date().toISOString(), notes: validateNotes(notes, books) }, null, 2) + '\n';
+  function parseBackup(text, books) { return parseFile(text, books).notes; }
+  function serializeBackup(notes, books, state) {
+    const text = JSON.stringify({ format:'polka-notes', version:state ? 2 : 1,
+      exportedAt:new Date().toISOString(), notes:validateNotes(notes,books),
+      ...(state ? localMarks(state,books) : {}) }, null, 2) + '\n';
     if (byteLength(text) > MAX_BYTES) fail('Резервная копия превышает 5 МБ. Загрузка отменена.');
     return text;
   }
@@ -117,12 +157,21 @@
   }
   function importNotes(storage, before, incoming, mode, books) {
     if (!['merge', 'replace'].includes(mode)) fail('Выберите объединение или замену заметок.');
-    const validated = validateNotes(incoming, books);
+    // Version 1 carries only notes. Missing sections must also be preserved in replace mode.
+    const file = Array.isArray(incoming) ? {notes:incoming} : incoming;
+    const validated = validateNotes(file.notes, books);
     const merged = mode === 'merge' ? mergeNotes(before.notes, validated) :
       { notes: noteMap(validated), added: validated.length, conflicts: 0 };
     validateNotes(Object.values(merged.notes), books);
     const next = { ...before.state, notes: merged.notes };
-    const backup = serializeBackup(before.notes, books);
+    if (own(file,'read') || own(file,'quoteRatings')) {
+      const local = localMarks(before.state,books);
+      for (const field of ['read','quoteRatings']) {
+        const marks = validateMarks(file[field],books,field === 'quoteRatings');
+        next[field] = mode === 'merge' ? mergeMarks(local[field],marks) : marks;
+      }
+    }
+    const backup = serializeBackup(before.notes, books, before.state);
     const serialized = JSON.stringify(next);
     if (storage.getItem(STORAGE_KEY) !== before.raw) fail('Данные изменились в другом окне. Загрузка отменена. Выберите файл заново.');
     try {
@@ -246,7 +295,8 @@
     }
     exportButton.addEventListener('click', async () => {
       try {
-        message(await download(serializeBackup(storedNotes(getState(), books), books), 'polka-notes-'));
+        const state = getState();
+        message(await download(serializeBackup(storedNotes(state, books), books, state), 'polka-notes-'));
       } catch (err) { message(errorMessage(err)); }
     });
     recoveryButton.addEventListener('click', async () => {
@@ -276,11 +326,12 @@
           reader.onerror = reader.onabort = () => reject(new TransferError('Не удалось прочитать файл. Выберите его заново.'));
           reader.readAsText(file, 'UTF-8');
         });
-        const notes = parseBackup(text, books);
+        const incoming = parseFile(text, books);
         const before = snapshot(window.localStorage, getState(), books);
         if (hasDraft()) fail('Сначала сохраните или закройте редактируемую заметку.');
-        pending = { notes, before };
-        find('#notes-import-summary').textContent = `Файл «${file.name}»: ${notes.length} заметок. На устройстве: ${before.notes.length}.`;
+        pending = { incoming, before };
+        const details = incoming.read ? `Отметок «Прочитано» — ${Object.values(incoming.read).filter(m => m.on).length}, оценок цитат — ${Object.values(incoming.quoteRatings).filter(m => m.vote).length}. Файл также учитывает снятые отметки.` : 'В этом файле только заметки. Оценки и отметки о прочтении на устройстве сохранятся.';
+        find('#notes-import-summary').textContent = `Файл «${file.name}». Заметок в файле — ${incoming.notes.length}, на устройстве — ${before.notes.length}. ${details}`;
         find('input[name="notes-import-mode"][value="merge"]').checked = true;
         find('#notes-import-error').textContent = '';
         find('#app-settings')?.close();
@@ -294,12 +345,12 @@
       if (!pending || busy) return;
       const mode = find('input[name="notes-import-mode"]:checked').value;
       const warning = mode === 'replace' ?
-        `Заменить все текущие заметки (${pending.before.notes.length}) заметками из файла (${pending.notes.length})? ${pending.notes.length === 0 ? 'Список заметок станет пустым. ' : ''}` :
+        `Заменить все текущие заметки (${pending.before.notes.length}) заметками из файла (${pending.incoming.notes.length})?${pending.incoming.read ? ' Оценки цитат и отметки о прочтении также будут заменены.' : ''} ${pending.incoming.notes.length === 0 ? 'Список заметок станет пустым. ' : ''}` :
         'Объединить заметки? Разные версии одной заметки будут сохранены отдельно. ';
-      if (!window.confirm(warning + 'Перед загрузкой будет создана резервная копия текущих заметок на этом устройстве.')) return;
+      if (!window.confirm(warning + 'Перед загрузкой будет создана резервная копия заметок, оценок и отметок о прочтении на этом устройстве.')) return;
       busy = true; applyButton.disabled = true;
       try {
-        const result = importNotes(window.localStorage, pending.before, pending.notes, mode, books);
+        const result = importNotes(window.localStorage, pending.before, pending.incoming, mode, books);
         // Update the reader only after the persistent write succeeds. No reload
         // is needed, and bookmarks, reading progress and preferences stay intact.
         Object.assign(getState(), result.state);
@@ -311,5 +362,5 @@
     });
     recoveryAvailable();
   }
-  return { STORAGE_KEY, BACKUP_KEY, MAX_BYTES, parseBackup, serializeBackup, mergeNotes, snapshot, importNotes, setup };
+  return { STORAGE_KEY, BACKUP_KEY, MAX_BYTES, parseFile, parseBackup, serializeBackup, mergeNotes, snapshot, importNotes, setup };
 });

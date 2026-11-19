@@ -113,3 +113,37 @@ test('fresh device can import and rejects unsupported modes without writes', () 
   const result = transfer.importNotes(local, before, [note()], 'merge', books);
   assert.deepEqual(result.state.notes.note1, note());
 });
+
+test('v2 merge respects newer votes and read/unread flags; replace and recovery round-trip all three sections', () => {
+  const key = JSON.stringify(['phedre','Цитата с пробелом']);
+  const other = JSON.stringify(['general','Другая цитата']);
+  const original = {...state(), read:{phedre:{on:true,t:20}, gulliver:{on:false,t:10}},
+    quoteRatings:{[key]:{vote:'up',t:30},[other]:{vote:'down',t:10}}};
+  const local = storage(original);
+  const incoming = {notes:[],read:{phedre:{on:false,t:15},gulliver:{on:true,t:15}},
+    quoteRatings:{[key]:{vote:'down',t:15},[other]:{vote:null,t:20}}};
+  const json = transfer.serializeBackup([],books,incoming);
+  const bundle = transfer.parseFile(json,books);
+  const apply = (file,mode) => {
+    const st = JSON.parse(local.getItem(transfer.STORAGE_KEY));
+    return transfer.importNotes(local,transfer.snapshot(local,st,books),file,mode,books).state;
+  };
+  const merged = apply(bundle,'merge');
+  assert.deepEqual(merged.read,{phedre:original.read.phedre,gulliver:incoming.read.gulliver});
+  assert.deepEqual(merged.quoteRatings,{[key]:original.quoteRatings[key],[other]:incoming.quoteRatings[other]});
+  assert.deepEqual(apply(bundle,'merge'),merged);
+  const replaced = apply(bundle,'replace');
+  assert.deepEqual(replaced.quoteRatings,incoming.quoteRatings);
+  assert.deepEqual(replaced.read,incoming.read);
+  assert.deepEqual(replaced.progress,original.progress);
+  assert.deepEqual(apply(transfer.parseFile(local.getItem(transfer.BACKUP_KEY),books),'replace'),merged);
+  assert.deepEqual(apply(transfer.parseFile(envelope([]),books),'replace').quoteRatings,merged.quoteRatings);
+});
+test('v2 rejects malformed and missing mark sections before import', () => {
+  const good = {format:'polka-notes',version:2,exportedAt:new Date().toISOString(),notes:[],read:{},quoteRatings:{}};
+  for (const edit of [{read:null},{read:{unknown:{on:true,t:0}}},{read:{phedre:{on:1,t:0}}},
+    {quoteRatings:undefined},{quoteRatings:{'wrong key':{vote:'up',t:1}}},
+    {quoteRatings:{'["general","цитата"]':{vote:'unknown',t:0}}}]) {
+    assert.throws(()=>transfer.parseFile(JSON.stringify({...good,...edit}),books));
+  }
+});

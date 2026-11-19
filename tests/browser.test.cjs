@@ -16,7 +16,7 @@ const initial = () => ({ notes: { fixture1: note() }, progress: { phedre: { a: 3
   del: [], cm: {}, bookmarks: { phedre: [7, 30] }, ink: { phedre: { t: 1, s: [] } } });
 const json = notes => JSON.stringify({ format: 'polka-notes', version: 1,
   exportedAt: '2026-11-06T12:00:00Z', notes });
-const books = { phedre: 100000, barthes: 100000 };
+const books = { phedre: 100000, barthes: 100000, gulliver: 100000 };
 let server, browser, base, previous = false, interruptUpdate = false, previousTheory = false;
 const oldFiles = new Map(), oldTheoryFiles = new Map();
 before(async () => {
@@ -855,4 +855,37 @@ test('A verse quotation keeps its complete passage, attribution and reading anch
     assert.equal(roundTrip.quote,n.quote);
     assert.equal(roundTrip.label,'А. С. Пушкин · Пир во время чумы');
   } finally { await context.close(); }
+});
+
+test('Download on desktop and restore ratings, notes and completed books on an offline phone', {timeout:90000}, async () => {
+  const source = await contextFor({viewport:{width:1280,height:800}}, {...initial(), read:{}});
+  const target = await contextFor(devices['Pixel 7'], {notes:{},splash:false});
+  try {
+    const desktop = await source.newPage(), phone = await target.newPage();
+    const key = JSON.stringify(['general','Цитата из предыдущей версии']);
+    await desktop.goto(base);
+    await desktop.evaluate(k=>localStorage.setItem('polka-quote-rating-v1:'+k,'down'),key);
+    await ready(desktop); await ready(phone);
+    await source.setOffline(true); await target.setOffline(true);
+    await desktop.locator('[data-go="shelf/classic"]').click();
+    await desktop.locator('#shelf [data-rd="phedre"]').click();
+    const cele = desktop.locator('#cele');
+    await cele.locator('[data-vote="up"]').click();
+    const rated = await cele.locator('[data-vote-key]').getAttribute('data-vote-key');
+    await cele.locator('[data-cele]').click();
+    const file = await download(desktop,'[data-notes-export]');
+    const data = JSON.parse(file);
+    assert.equal(data.version,2); assert.equal(data.read.phedre.on,true);
+    assert.equal(data.quoteRatings[key].vote,'down');
+    assert.equal(data.quoteRatings[rated].vote,'up');
+    assert.equal(data.notes.length,1,'a rating transfers without adding a note');
+    await choose(phone,file); await apply(phone);
+    await phone.reload();
+    await phone.locator('[data-go="shelf/classic"]').click();
+    assert.equal(await phone.locator('#shelf [data-rd="phedre"]').getAttribute('aria-pressed'),'true');
+    const roundTrip = JSON.parse(await download(phone,'[data-notes-export]'));
+    assert.deepEqual(roundTrip.quoteRatings,data.quoteRatings);
+    assert.deepEqual(roundTrip.notes,data.notes);
+    assert.deepEqual(roundTrip.read,data.read);
+  } finally { await source.close(); await target.close(); }
 });
