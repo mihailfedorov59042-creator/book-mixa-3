@@ -776,3 +776,83 @@ test('Boris Godunov: names in verse, speaker timelines, editorial reference and 
     assert.deepEqual(invalid, []);
   } finally { await context.close(); }
 });
+
+for (const [platform, options] of [['desktop', {viewport:{width:1360,height:820}}], ['Android', devices['Pixel 7']]]) {
+  test('Random quotations, notes and persistent ratings offline on ' + platform, {timeout:90000}, async () => {
+    const context = await contextFor({...options, reducedMotion:'reduce'});
+    try {
+      const page = await context.newPage();
+      await ready(page); await context.setOffline(true);
+      const draw = page.locator('#home-quote'), card = page.locator('#home-quotation');
+      await draw.click();
+      const first = await card.locator('blockquote').innerText();
+      await draw.click();
+      const text = await card.locator('blockquote').innerText();
+      const source = await card.locator('figcaption').textContent();
+      assert.notEqual(first, text);
+      const up = card.getByRole('button', {name:'Нравится',exact:true});
+      const down = card.getByRole('button', {name:'Не нравится',exact:true});
+      await up.click();
+      assert.equal(await up.getAttribute('aria-pressed'), 'true');
+      await down.click();
+      assert.equal(await up.getAttribute('aria-pressed'), 'false');
+      await card.getByRole('button',{name:'В заметки',exact:true}).click();
+      assert.equal(await card.getByRole('button',{name:'В заметках'}).isDisabled(), true);
+      const state = await saved(page);
+      const entries = Object.values(state.notes);
+      assert.equal(entries.length, 2);
+      const n = entries.find(n => n.label === source && n.quote === text);
+      assert.ok(n);
+      await page.locator('#home [data-go="notes"]').click();
+      await page.reload();
+      const noteCard = page.locator('.ncard').filter({has:page.getByText('«' + text + '»', {exact:true})});
+      assert.equal(await noteCard.getByRole('button',{name:'Не нравится',exact:true}).getAttribute('aria-pressed'),'true');
+      await noteCard.getByRole('button',{name:'Не нравится',exact:true}).click();
+      assert.equal(await noteCard.locator('[aria-pressed="true"]').count(),0);
+
+      // Barthes has a single attributed quotation, so a repeat visit must show the same rating.
+      await page.locator('[data-settings-open]:visible').first().click();
+      await page.locator('[data-splash-tog]').click();
+      await page.locator('[data-settings-close]').click();
+      await page.evaluate(() => {location.hash = 'barthes';});
+      const splash = page.locator('#splash');
+      await splash.waitFor();
+      await page.keyboard.press('Tab');
+      assert.equal(await splash.locator('[data-vote="up"]').evaluate(b => b === document.activeElement),true);
+      await page.keyboard.press('Enter');
+      assert.equal(await splash.locator('[data-vote="up"]').getAttribute('aria-pressed'),'true');
+      const add = splash.locator('[data-quote-save]');
+      if (await add.isEnabled()) await add.click();
+      assert.equal(await add.isDisabled(), true);
+      await splash.getByRole('button',{name:'Продолжить'}).click();
+      await splash.waitFor({state:'hidden'});
+      await page.reload(); await splash.waitFor();
+      assert.equal(await splash.locator('[data-vote="up"]').getAttribute('aria-pressed'),'true');
+      assert.equal(await splash.locator('[data-quote-save]').isDisabled(),true);
+      const final = await saved(page);
+      assert.deepEqual(final.notes.fixture1,state.notes.fixture1);
+      assert.equal(Object.values(final.notes).filter(x=>x.quote.startsWith('Рождение читателя')).length,1);
+      assert.equal(await page.evaluate(()=>window.__cloudCalls),0);
+    } finally { await context.close(); }
+  });
+}
+
+test('A verse quotation keeps its complete passage, attribution and reading anchors in a JSON backup', async () => {
+  const context = await contextFor({reducedMotion:'reduce'}, {...initial(),splash:true});
+  try {
+    const page = await context.newPage();
+    await ready(page); await context.setOffline(true);
+    await page.evaluate(() => { location.hash = 'push_s002005'; });
+    const card = page.locator('#splash');
+    await card.locator('[data-quote-save]').click();
+    const n = Object.values((await saved(page)).notes).find(n => n.book === 'push_s002005');
+    assert.equal(n.b0,204); assert.equal(n.b1,209);
+    assert.ok(n.quote.startsWith('Есть упоение в бою,\n'));
+    assert.ok(n.quote.endsWith('И в дуновении Чумы.'));
+    assert.equal(n.e,'И в дуновении Чумы.'.length);
+    const bookSizes = {push_s002005:1000};
+    const [roundTrip] = transfer.parseBackup(transfer.serializeBackup([n],bookSizes),bookSizes);
+    assert.equal(roundTrip.quote,n.quote);
+    assert.equal(roundTrip.label,'А. С. Пушкин · Пир во время чумы');
+  } finally { await context.close(); }
+});
