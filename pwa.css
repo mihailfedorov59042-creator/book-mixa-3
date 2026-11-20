@@ -286,21 +286,3 @@ body:is([data-book="frye"],[data-book="ne"],[data-book="barthes"]) .theory-open 
 #splash .sp-hint { left:50%; right:auto; transform:translateX(-50%); padding:6px 16px; border:1px solid var(--rule); background:var(--vellum); cursor:pointer; }
 @media (max-width:440px) { .home-tools kbd { display:none; } }
 body:has(#splash:not([hidden])) #toast { z-index:91; }
-
-/* Repeat each sprig at its engraved proportions on the four catalogue edges. */
-#home :is(.cont,.shelf-choice,.book,.home-search,.btn,.tab,.quote-vote) {
-  border:7px solid transparent !important;
-  border-image:url("./icons/hop-border.svg") 10 / 7px / 0 round !important;
-  box-shadow:none; outline-offset:2px;
-}
-#home :is(.cont,.shelf-choice,.book,.btn)::after { pointer-events:none; }
-#home :is(.btn,.tab,.quote-vote) { outline:0; }
-#home :is(button,a):focus-visible { outline:2px solid var(--cinnabar); outline-offset:2px; }
-#home .quote-vote { padding:0; }
-#home .quote-vote[aria-pressed="true"] { background:var(--cinnabar-wash); outline:1px solid var(--cinnabar); }
-#home .home-q,#home .sec-h,#home .brand,#home .top-nav::after {
-  border:0; border-bottom:9px solid transparent;
-  border-image:url("./icons/hop-border.svg") 10 / 0 0 9px / 0 round;
-}
-#home .home-q { border-top:9px solid transparent; border-image-width:9px 0; }
-#home .top-nav::after { background:none; height:0; }

@@ -258,7 +258,7 @@ for (const [name, options] of [
     };
     await ready(page);
     const original = await saved(page);
-    await page.locator('[data-go="shelf/theory"]').click();
+    await page.locator('#home nav [data-go="theory"]').click();
     const card = page.locator('#theory-slot [data-go="barthes"]');
     await card.waitFor();
     assert.equal(await card.count(), 1);
@@ -323,11 +323,11 @@ for (const [name, options] of [
     const errors=[]; page.on('pageerror', e=>errors.push(e.message));
     await ready(page);
     const before=await saved(page);
-    assert.equal(await page.locator('.shelf-choice').count(),7);
+    assert.equal(await page.locator('.shelf-choice').count(),6);
     assert.equal(await page.locator('#home .book').count(),0);
     assert.equal(await page.locator('#home [data-notes-export]').count(),0);
     await context.setOffline(true);
-    for(const [id,slot] of [['classic','classic-slot'],['gozzi','gz-slot'],['xx','xx-slot'],['euripides','eur-slot'],['theory','theory-slot'],['pushkin','pushkin-slot'],['homer','homer-slot']]) {
+    for(const [id,slot] of [['classic','classic-slot'],['gozzi','gz-slot'],['xx','xx-slot'],['euripides','eur-slot'],['pushkin','pushkin-slot'],['homer','homer-slot']]) {
       await page.locator(`[data-go="shelf/${id}"]`).click();
       await page.waitForURL(`**/#shelf/${id}`);
       await page.locator('#'+slot).waitFor();
@@ -339,7 +339,9 @@ for (const [name, options] of [
       await page.locator('#shelf-navigation [data-go="home"]').click();
       await page.locator('.shelf-choice').first().waitFor();
     }
-    await page.locator('[data-go="shelf/theory"]').click();
+    await page.locator('#home nav [data-go="theory"]').click();
+    assert.equal(await page.locator('#shelf-picker').isVisible(),false);
+    assert.equal(await page.locator('#home .home-tools').isVisible(),false);
     await page.locator('#theory-slot [data-go="barthes"]').click();
     await page.locator('#book .page').first().waitFor({state:'attached'});
     await page.locator('#btn-aa').click();
@@ -350,11 +352,11 @@ for (const [name, options] of [
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('#app-settings').isVisible(),false);
     await page.locator('#reader [data-go="home"]').click();
-    await page.waitForURL('**/#shelf/theory');
+    await page.waitForURL('**/#theory');
     await page.goBack();
     await page.waitForURL('**/#barthes');
     await page.goForward();
-    await page.waitForURL('**/#shelf/theory');
+    await page.waitForURL('**/#theory');
     await openSettings(page);
     await page.locator('[data-splash-tog]').click();
     assert.equal((await saved(page)).splash,true);
@@ -364,7 +366,7 @@ for (const [name, options] of [
     assert.deepEqual((await saved(page)).progress.phedre,before.progress.phedre);
     assert.deepEqual(errors,[]);
     if(process.env.POLKA_SCREENSHOT_DIR) {
-      await page.locator('#shelf-navigation [data-go="home"]').click();
+      await page.locator('#home .tabs [data-go="home"]').click();
       await mkdir(process.env.POLKA_SCREENSHOT_DIR,{recursive:true});
       await page.screenshot({path:path.join(process.env.POLKA_SCREENSHOT_DIR,`shelves-${name}.png`)});
       await openSettings(page);
@@ -454,7 +456,7 @@ test('Two installed-app identities on one origin stay separate, including offlin
   });
   await context.setOffline(true);await polka.reload();await ssl.reload();
   assert.equal(await ssl.locator('h1').innerText(),'Старославянский язык');
-  assert.equal(await polka.locator('.shelf-choice').count(),7);
+  assert.equal(await polka.locator('.shelf-choice').count(),6);
   assert.deepEqual((await saved(polka)).notes,before.notes);
   assert.equal(await ssl.evaluate(()=>JSON.parse(localStorage.getItem('noun-v2')).test),'keep-ssl-progress');
   const names=await polka.evaluate(()=>caches.keys());
@@ -923,6 +925,16 @@ test('Homer offline: two epics, songs, notes, illustrated plates, three cast lev
     const dict=p.locator('#homer-slot a');
     await dict.click();
     assert.equal(await p.locator('main section h2').count(),2);
+    assert.equal(await p.locator('details[open]').count(),0);
+    const query=p.getByRole('searchbox');
+    await query.fill('полифем');
+    const entry=p.locator('details:visible').filter({has:p.locator('summary',{hasText:/полифем/i})}).first();
+    await entry.locator('summary').click();
+    assert.ok((await entry.innerText()).length>70);
+    await query.fill('ыыыыы');
+    assert.equal(await p.locator('details:visible').count(),0);
+    await query.fill('');
+    assert.ok(await p.locator('details:visible').count()>250);
     await p.goBack();
     for(const id of ['iliad','odyssey']){
       await p.locator('#homer-slot [data-go="'+id+'"]').click();

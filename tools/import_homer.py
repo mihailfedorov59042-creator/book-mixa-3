@@ -204,15 +204,47 @@ for filename in sys.argv[1:]:
     schemes[key]=dict(nodes=nodes,edges=edges)
     artist,work=('По композициям Джона Флаксмана','6130') if key=='iliad' else ('Вилли Погани','16867')
     plates[key]=[[anchors[n-1],f'data/art/homer/{f}.webp',caption,artist,'https://www.gutenberg.org/ebooks/'+work] for n,f,caption in PLATES[key]]
-    glossary=''.join('<p>'+inline(p,web=True)+'</p>' for p in dictionary if p.tag!='title')
-    refs=set(re.findall('href="#n(\\d+)"',glossary))
-    for e in notes.findall('section'):
-        n=lookup[e.get('id')]
-        if n in refs:glossary+=f'<p id="n{n}"><b>{n}.</b> '+ ' '.join(inline(p,web=True) for p in e if p.tag!='title')+'</p>'
-    label=plain(dictionary.find('title'))
-    glossary=glossary.replace('href="#n',f'href="#{key}-n').replace('id="n',f'id="{key}-n')
-    glossaries[key]=f'<section id="{key}"><h2>{title} · {label.capitalize()}</h2>{glossary}<a href="#top">К оглавлению ↑</a></section>'
+    # The Iliad sets each headword in italics. The Odyssey sets the name
+    # in capitals, and its longer articles often extend over several paragraphs.
+    articles = []
+    signature = ''
+    for paragraph in dictionary.findall('p'):
+        content = plain(paragraph)
+        if key == 'iliad':
+            heading, separator, _ = content.partition(' — ')
+            if not separator:
+                assert content == 'С. Ошеров', content
+                signature = inline(paragraph, web=True)
+                continue
+        else:
+            match = re.match(r'^([А-ЯЁ]{2,}(?: (?:и )?[А-ЯЁ]{2,})*)(?=[ .(])', content)
+            heading = match.group(1) if match else None
+        if heading or not articles:
+            articles.append((heading or 'Введение', []))
+        articles[-1][1].append('<p>' + inline(paragraph, web=True) + '</p>')
+
+    label = 'Словарь мифологических и географических названий и имен' if key == 'iliad' else 'Словарь мифологических сюжетов'
+    parts = [f'<section id="{key}"><h2>{title} · {label}</h2>']
+    for number, (heading, paragraphs) in enumerate(articles, 1):
+        article = ''.join(paragraphs)
+        note_ids = re.findall(r'href="#n(\d+)"', article)
+        parts.append(f'<details id="{key}-entry-{number}"><summary>{html.escape(heading)}</summary>')
+        parts.append(article.replace('href="#n', f'href="#{key}-n'))
+        if note_ids:
+            parts.append('<aside aria-label="Примечания">')
+            for n in dict.fromkeys(note_ids):
+                parts.append(f'<p id="{key}-n{n}"><b>{n}.</b> {defs[n][1]}</p>')
+            parts.append('</aside>')
+        parts.append('</details>')
+    if signature:
+        parts.append(f'<p>{signature}</p>')
+    parts.append('</section>')
+    glossaries[key] = ''.join(parts)
 assert len(books)==2
 (OUT/'b-homer.js').write_text('Object.assign(window.__BOOKS,'+dump(books)+');\nObject.assign(window.__SCH,'+dump(schemes)+');\nwindow.__HOMER_PLATES='+dump(plates)+';\n', encoding='utf-8')
 
-(OUT/'homer-dictionary.html').write_text('<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Гомер · Словари двух поэм</title><style>body{margin:auto;padding:2em 1em;max-width:48em;background:#f3ead3;color:#362819;font:18px/1.55 Georgia,serif}a{color:#863c2d}h2{font-size:1.5em}</style><main id="top"><a href="../#shelf/homer">← Полка Гомера</a><h1>Словари двух поэм</h1><nav><a href="#iliad">Илиада · Имена и названия</a> · <a href="#odyssey">Одиссея · Мифологические сюжеты</a></nav>'+glossaries['iliad']+glossaries['odyssey']+'</main></html>', encoding='utf-8')
+template = Path(__file__).with_name('homer-dictionary.template.html').read_text(encoding='utf-8')
+(OUT/'homer-dictionary.html').write_text(
+    template.replace('<!--DICTIONARIES-->', glossaries['iliad'] + glossaries['odyssey']),
+    encoding='utf-8',
+)

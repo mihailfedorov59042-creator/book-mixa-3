@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#efe5cd">
+<title>Гомер · Словари двух поэм</title>
+<style>
+* { box-sizing: border-box }
+body { margin: 0; color: #38291c; background: #f1e7d0; font: 1.08rem/1.55 Georgia, serif }
+main { max-width: 52rem; margin: auto; padding: 1.5rem clamp(1rem, 4vw, 3rem) 3rem }
+a, a:visited { color: #863c2d; text-underline-offset: .18em }
+h1, h2 { font-weight: normal; line-height: 1.2 }
+h1 { font-size: clamp(2rem, 6vw, 3.5rem); margin: .65em 0 .35em }
+h2 { color: #693121; font-size: clamp(1.4rem, 3vw, 1.8rem) }
+nav { display: flex; flex-wrap: wrap; gap: .4rem 1.5rem }
+form { margin: 1.25rem 0; padding: 1rem 0; border-block: 1px solid #ac9167 }
+label { display: block; margin-bottom: .35rem }
+input[type="search"] { display: block; width: 100%; padding: .6rem .8rem; font: inherit; background: #faf3e1; color: inherit; border: 1px solid #8e7553; border-radius: 2px; appearance: none }
+fieldset { display: flex; flex-wrap: wrap; gap: .35rem 1.3rem; margin: .6rem 0 0; padding: 0; border: 0 }
+fieldset label { cursor: pointer }
+input[type="radio"] { accent-color: #863c2d }
+:focus-visible { outline: 2px solid #913c29; outline-offset: 3px }
+[role=status]:not(:empty) { display: block; margin-top: .4rem }
+details { border-bottom: 1px solid #bba781 }
+summary { cursor: pointer; padding: .52em .35em; color: #624127 }
+details[open] > summary { color: #822f25; background: #e9dcc0 }
+details p { margin: .7em .4em 1em; overflow-wrap: anywhere }
+details aside { font-size: .92em; border-inline-start: 2px solid #a88b56; padding-inline-start: .55em }
+aside p:target { background: #ebd9ac }
+[hidden] { display: none !important }
+</style>
+</head>
+<body>
+<main id="top">
+<a href="../#shelf/homer">← Полка Гомера</a>
+<h1>Словари двух поэм</h1>
+<nav aria-label="Перейти к словарю"><a href="#iliad">Илиада</a><a href="#odyssey">Одиссея</a></nav>
+<form role="search" hidden>
+<label for="query">Поиск по обоим словарям</label>
+<input type="search" id="query" placeholder="Введите слово для поиска" autocomplete="off">
+<fieldset aria-label="Область поиска">
+<label><input type="radio" name="scope" value="title" checked> По названиям</label>
+<label><input type="radio" name="scope" value="text"> В тексте статей</label>
+</fieldset>
+<output role="status" aria-live="polite" id="matches"></output>
+</form>
+<!--DICTIONARIES-->
+<a href="#top">К началу ↑</a>
+</main>
+<script>
+const form = document.querySelector('form');
+const query = document.querySelector('#query');
+const statusLine = document.querySelector('#matches');
+const normalize = value => value.toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ').trim();
+const sections = Array.from(document.querySelectorAll('main > section'));
+const entries = Array.from(document.querySelectorAll('details'), item => ({
+  item, title: normalize(item.querySelector('summary').textContent), text: normalize(item.textContent)
+}));
+function filterEntries() {
+  const needle = normalize(query.value);
+  const scope = form.elements.scope.value;
+  let count = 0;
+  for (const entry of entries) {
+    const {item} = entry;
+    item.hidden = !entry[scope].includes(needle);
+    if (!item.hidden) count++;
+  }
+  for (const section of sections) {
+    section.hidden = !section.querySelector('details:not([hidden])');
+  }
+  statusLine.textContent = needle ? (count ? 'Найдено: ' + count : 'Совпадений нет') : '';
+}
+function revealTarget() {
+  const target = document.getElementById(location.hash.slice(1));
+  if (!target) return;
+  const entry = target.closest('details');
+  if (target.hidden || entry?.hidden) {
+    query.value = '';
+    filterEntries();
+  }
+  if (entry) entry.open = true;
+  target.scrollIntoView();
+}
+form.hidden = false;
+form.addEventListener('submit', event => event.preventDefault());
+form.addEventListener('input', filterEntries);
+document.addEventListener('click', event => {
+  const anchor = event.target.closest('a[href^="#"]');
+  if (anchor && anchor.hash === location.hash) revealTarget();
+});
+window.addEventListener('hashchange', revealTarget);
+if (location.hash) revealTarget();
+</script>
+</body>
+</html>
