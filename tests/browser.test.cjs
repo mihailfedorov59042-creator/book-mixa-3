@@ -323,11 +323,11 @@ for (const [name, options] of [
     const errors=[]; page.on('pageerror', e=>errors.push(e.message));
     await ready(page);
     const before=await saved(page);
-    assert.equal(await page.locator('.shelf-choice').count(),6);
+    assert.equal(await page.locator('.shelf-choice').count(),7);
     assert.equal(await page.locator('#home .book').count(),0);
     assert.equal(await page.locator('#home [data-notes-export]').count(),0);
     await context.setOffline(true);
-    for(const [id,slot] of [['classic','classic-slot'],['gozzi','gz-slot'],['xx','xx-slot'],['euripides','eur-slot'],['theory','theory-slot'],['pushkin','pushkin-slot']]) {
+    for(const [id,slot] of [['classic','classic-slot'],['gozzi','gz-slot'],['xx','xx-slot'],['euripides','eur-slot'],['theory','theory-slot'],['pushkin','pushkin-slot'],['homer','homer-slot']]) {
       await page.locator(`[data-go="shelf/${id}"]`).click();
       await page.waitForURL(`**/#shelf/${id}`);
       await page.locator('#'+slot).waitFor();
@@ -454,7 +454,7 @@ test('Two installed-app identities on one origin stay separate, including offlin
   });
   await context.setOffline(true);await polka.reload();await ssl.reload();
   assert.equal(await ssl.locator('h1').innerText(),'Старославянский язык');
-  assert.equal(await polka.locator('.shelf-choice').count(),6);
+  assert.equal(await polka.locator('.shelf-choice').count(),7);
   assert.deepEqual((await saved(polka)).notes,before.notes);
   assert.equal(await ssl.evaluate(()=>JSON.parse(localStorage.getItem('noun-v2')).test),'keep-ssl-progress');
   const names=await polka.evaluate(()=>caches.keys());
@@ -912,5 +912,43 @@ test('Boris cast expands with zoom, pins manually and opens a minor character fr
     await p.locator('#sch-card h3').waitFor();
     assert.equal(await p.locator('#sch-card h3').innerText(),'Мисаил');
     assert.equal(await nodes.count(),27);
+  } finally {await ctx.close();}
+});
+
+test('Homer offline: two epics, songs, notes, illustrated plates, three cast levels and one dictionary', {timeout:180000}, async()=>{
+  const ctx=await contextFor({viewport:{width:1300,height:840}});
+  try {
+    const p=await ctx.newPage(); await ready(p); await ctx.setOffline(true);
+    await p.locator('[data-go="shelf/homer"]').click();
+    const dict=p.locator('#homer-slot a');
+    await dict.click();
+    assert.equal(await p.locator('main section h2').count(),2);
+    await p.goBack();
+    for(const id of ['iliad','odyssey']){
+      await p.locator('#homer-slot [data-go="'+id+'"]').click();
+      await p.locator('#book .milton-plate img[src*="'+(id==='iliad'?'il04':'illus-176')+'"]').waitFor({state:'attached'});
+      assert.equal(await p.locator('#book .milton-plate').count(),id==='iliad'?3:2);
+      const data=await p.evaluate(id=>{const b=window.__BOOKS[id];return [b.b.slice(0,b.mainEnd).filter(([k,t])=>k==='h1'&&t.includes('ПЕСНЬ')).length,b.c.every(c=>c.st.length>0),Object.keys(b.n).length]},id);
+      assert.deepEqual(data,[24,true,id==='iliad'?186:1781]);
+      await p.locator('#btn-sch').click();
+      const total=await p.evaluate(id=>window.__BOOKS[id].c.length,id);
+      const nodes=p.locator('#sch-svg .sn:visible');
+      await nodes.first().waitFor();
+      assert.equal(await nodes.count(),6);
+      await p.locator('#sch-zo').click();
+      assert.equal(await nodes.count(),13);
+      await p.locator('#sch-zo').click();
+      assert.equal(await nodes.count(),total);
+      assert.ok(total>=25);
+      await p.locator('#sch-levels [data-level="3"]').click();
+      await nodes.last().click();
+      await p.locator('[data-sca="char"]').click();
+      await p.locator('[data-cact="spoil"]').click();
+      const event=p.locator('#pop [data-goi]').last();
+      const anchor=await event.getAttribute('data-goi');
+      await event.click();
+      await p.locator('#book .page:not([hidden]) [data-i="'+anchor+'"]').first().waitFor({state:'visible'});
+      await p.evaluate(()=>location.hash='shelf/homer');
+    }
   } finally {await ctx.close();}
 });
