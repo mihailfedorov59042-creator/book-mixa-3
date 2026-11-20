@@ -889,3 +889,28 @@ test('Download on desktop and restore ratings, notes and completed books on an o
     assert.deepEqual(roundTrip.read,data.read);
   } finally { await source.close(); await target.close(); }
 });
+
+test('Boris cast expands with zoom, pins manually and opens a minor character from the reader',async()=>{
+  const ctx=await contextFor({viewport:{width:1200,height:850}});
+  try {
+    const p=await ctx.newPage(); await ready(p);
+    await p.evaluate(()=>location.hash='push_s002001@692');
+    await p.locator('#btn-sch').click();
+    const nodes=p.locator('#sch-svg .sn:visible');
+    await nodes.first().waitFor();
+    assert.equal(await nodes.count(),10);
+    await p.locator('#sch-zo').click();
+    assert.equal(await nodes.count(),27);
+    await p.locator('#sch-zo').click();
+    assert.equal(await nodes.count(),59);
+    await p.locator('#sch-levels [data-level="3"]').click();
+    await p.locator('#sch-zi').click();
+    assert.equal(await nodes.count(),59);
+    await p.locator('#sch-x').click();
+    await p.locator('#book .page:not([hidden]) [data-i="692"] .ch').first().click();
+    await p.locator('[data-cact="scheme"]').click();
+    await p.locator('#sch-card h3').waitFor();
+    assert.equal(await p.locator('#sch-card h3').innerText(),'Мисаил');
+    assert.equal(await nodes.count(),27);
+  } finally {await ctx.close();}
+});
