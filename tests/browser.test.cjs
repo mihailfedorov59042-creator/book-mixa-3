@@ -340,6 +340,7 @@ for (const [name, options] of [
       await page.locator('.shelf-choice').first().waitFor();
     }
     await page.locator('#home nav [data-go="theory"]').click();
+    await page.locator('#theory-slot').waitFor();
     assert.equal(await page.locator('#shelf-picker').isVisible(),false);
     assert.equal(await page.locator('#home .home-tools').isVisible(),false);
     await page.locator('#theory-slot [data-go="barthes"]').click();
@@ -930,7 +931,8 @@ test('Homer offline: two epics, songs, notes, illustrated plates, three cast lev
     await query.fill('полифем');
     const entry=p.locator('details:visible').filter({has:p.locator('summary',{hasText:/полифем/i})}).first();
     await entry.locator('summary').click();
-    assert.ok((await entry.innerText()).length>70);
+    await entry.locator('p').first().waitFor();
+    assert.match(await entry.locator('p').first().innerText(),/полифем/i);
     await query.fill('ыыыыы');
     assert.equal(await p.locator('details:visible').count(),0);
     await query.fill('');
