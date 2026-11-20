@@ -115,6 +115,8 @@ for filename in sys.argv[1:]:
                 prefix = s[:match.start()]
                 if match[0] == 'Афины' and re.search(r'(?:[Вв] |град велелепный )$', prefix):
                     return match[0]
+                if match[0] == 'Герой' and not prefix.endswith(('пред ', 'устремленная ')):
+                    return match[0]
                 if match[0] == 'Диомеда' and 'Форбаса дочь' in prefix:
                     return match[0]
                 return f'<span class="ch" data-ch="{match.lastgroup}" role="button" tabindex="0">{match[0]}</span>'
