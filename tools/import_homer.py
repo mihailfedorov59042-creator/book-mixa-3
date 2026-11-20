@@ -204,6 +204,21 @@ for filename in sys.argv[1:]:
     schemes[key]=dict(nodes=nodes,edges=edges)
     artist,work=('По композициям Джона Флаксмана','6130') if key=='iliad' else ('Вилли Погани','16867')
     plates[key]=[[anchors[n-1],f'data/art/homer/{f}.webp',caption,artist,'https://www.gutenberg.org/ebooks/'+work] for n,f,caption in PLATES[key]]
+    if key == 'iliad':
+        pikov = [(-1,'000_cover','Обложка издания в переводе В. Вересаева'),
+                 (-1,'000','Титульный лист издания в переводе В. Вересаева'),
+                 (-1,'001','Фронтиспис')]
+        pikov += [(anchor, f'{n:02}', f'Иллюстрация к песни {n}')
+                  for n, anchor in enumerate(anchors, 1)]
+        pikov.append((end-1,'25','Концовка поэмы'))
+        for anchor, number, caption in pikov:
+            plates[key].append([anchor, f'data/art/homer/pikov-{number}.webp', caption,
+                                'М. И. Пиков', f'http://az.lib.ru/img/g/gomer/text_0040/{number}.jpg'])
+    else:
+        for n, file, caption, artist, url in json.loads((ROOT/'tools/homer-odyssey-art.json').read_text()):
+            plates[key].append([anchors[n-1], f'data/art/homer/{file}.webp', caption, artist, url])
+    plates[key].sort(key=lambda plate: plate[0])
+
     # The Iliad sets each headword in italics. The Odyssey sets the name
     # in capitals, and its longer articles often extend over several paragraphs.
     articles = []

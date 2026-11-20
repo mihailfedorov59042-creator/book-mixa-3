@@ -941,7 +941,35 @@ test('Homer offline: two epics, songs, notes, illustrated plates, three cast lev
     for(const id of ['iliad','odyssey']){
       await p.locator('#homer-slot [data-go="'+id+'"]').click();
       await p.locator('#book .milton-plate img[src*="'+(id==='iliad'?'il04':'illus-176')+'"]').waitFor({state:'attached'});
-      assert.equal(await p.locator('#book .milton-plate').count(),id==='iliad'?3:2);
+      const plates=p.locator('#book .milton-plate');
+      const count=await plates.count();
+      const loaded=await plates.locator('img').evaluateAll(async images=>{
+        for(const img of images) {
+          const response=await fetch(img.src);
+          if(!response.ok) return false;
+          const bitmap=await createImageBitmap(await response.blob());
+          bitmap.close();
+        }
+        return true;
+      });
+      assert.ok(loaded,'Every illustration opens from the offline cache');
+      if(id==='iliad') {
+        assert.equal(count,31);
+        assert.equal(await plates.locator('img[src*="pikov-"]').count(),28);
+      } else {
+        assert.equal(count,31);
+        assert.equal(await plates.locator('img[src*="flaxman-odyssey-"]').count(),29);
+      }
+      await p.locator('#btn-toc').click();
+      await p.locator('.toc-plates summary').click();
+      const links=p.locator('.toc-plates button');
+      assert.equal(await links.count(),count);
+      const src=await links.last().getAttribute('data-plate');
+      await links.last().click();
+      const pic=p.locator('#book .page:visible img[src="'+src+'"]');
+      await pic.waitFor();
+      await pic.evaluate(img=>img.decode());
+      assert.ok(await pic.evaluate(img=>img.naturalWidth>0));
       const data=await p.evaluate(id=>{const b=window.__BOOKS[id];return [b.b.slice(0,b.mainEnd).filter(([k,t])=>k==='h1'&&t.includes('ПЕСНЬ')).length,b.c.every(c=>c.st.length>0),Object.keys(b.n).length]},id);
       assert.deepEqual(data,[24,true,id==='iliad'?186:1781]);
       await p.locator('#btn-sch').click();
