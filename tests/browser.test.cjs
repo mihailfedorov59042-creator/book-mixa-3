@@ -994,3 +994,59 @@ test('Homer offline: two epics, songs, notes, illustrated plates, three cast lev
     }
   } finally {await ctx.close();}
 });
+
+test('Bakhtin offline: author, volumes, individual readers, maps and notes', {timeout:180000}, async()=>{
+  const ctx=await contextFor(devices['Pixel 7'], {notes:{},splash:false});
+  try {
+    const p=await ctx.newPage(); await ready(p); await ctx.setOffline(true);
+    await p.locator('#home nav [data-go="theory"]').click();
+    await p.locator('#theory-slot [data-go="theory/bakhtin"]').click();
+    for(const volume of ['3','4']) {
+      await p.locator('#theory-slot [data-go="theory/bakhtin/'+volume+'"]').click();
+      const works=await p.evaluate(volume=>Object.entries(window.__BAKHTIN)
+        .filter(([,m])=>String(m.volume)===volume).map(([id,m])=>({id,...m})),volume);
+      await p.locator('#theory-slot [data-go="'+works[0].id+'"]').waitFor();
+      assert.ok(works.length>2);
+      assert.equal(await p.locator('#theory-slot .eur-extra button').count(),works.length);
+      if(volume==='4') assert.deepEqual(await p.locator('#theory-slot h3').allTextContents(),['Книга 1','Книга 2']);
+      const work=works.find(w=>!w.kind || w.kind!=='Материалы издания');
+      await p.locator('#theory-slot [data-go="'+work.id+'"]').click();
+      await p.waitForFunction(id=>document.body.dataset.book===id,work.id);
+      await p.locator('#book .page').first().waitFor({state:'attached'});
+      assert.equal(await p.locator('#rtitle').innerText(),work.title);
+      await p.locator('.theory-open').click();
+      const dialog=p.locator('.tm');
+      await dialog.locator('.tm-svg circle.outer').first().waitFor({state:'attached'});
+      const svg=dialog.locator('.tm-svg');
+      await dialog.locator('[data-tool="pen"]').click();
+      const canvas=await svg.boundingBox();
+      await p.mouse.move(canvas.x+50,canvas.y+55);await p.mouse.down();
+      await p.mouse.move(canvas.x+100,canvas.y+75,{steps:4});await p.mouse.up();
+      assert.equal(await svg.locator('.tm-ink polyline').count(),1);
+      await dialog.locator('[data-tool="view"]').click();
+      await dialog.locator('[data-group]').selectOption({index:1});
+      for(const mode of ['topics','works','claims']) {
+        await dialog.locator('[data-mode="'+mode+'"]').click();
+        if(mode!=='works')assert.ok(await svg.locator('.tm-node').count()>0);
+      }
+      await dialog.locator('[data-mode="thoughts"]').click();
+      assert.equal(await svg.locator('.tm-ink polyline').count(),1);
+      await svg.locator('[data-kind="cluster"]').first().focus();
+      await p.keyboard.press('Enter');
+      await dialog.locator('.tm-sources summary').click();
+      const source=dialog.locator('.tm-sources a[data-source]').first();
+      const target=(await source.getAttribute('href')).split('@')[1];
+      await source.click();
+      await p.locator('#book .page:not([hidden]) [data-i="'+target+'"]').first().waitFor();
+
+      await p.locator('#btn-pnote').click();
+      await p.locator('#ed-text').fill('Заметка к тому '+volume);
+      await p.locator('#ed-save').click();
+      assert.ok(Object.values((await saved(p)).notes).some(n=>n.book===work.id));
+      await p.reload();
+      await p.locator('#reader [data-go="home"]').click();
+      await p.waitForURL('**/#theory/bakhtin/'+volume);
+      await p.locator('#theory-slot [data-go="theory/bakhtin"]').click();
+    }
+  } finally { await ctx.close(); }
+});

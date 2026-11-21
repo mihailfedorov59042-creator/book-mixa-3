@@ -25,6 +25,8 @@ ASSETS += ['data/homer-dictionary.html'] + [p.relative_to(ROOT).as_posix() for p
 
 ASSETS += [file.relative_to(ROOT).as_posix() for file in sorted((ROOT / 'data/art/pushkin').glob('*.webp'))]
 
+ASSETS += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / 'data/art/bakhtin').glob('*.webp'))]
+
 def build():
     source = INDEX.read_text(encoding='utf-8')
     canonical, count = SCRIPT_TAG.subn(r'\g<1>BUILD_ID\g<2>', source)

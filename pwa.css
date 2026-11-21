@@ -73,7 +73,7 @@
 #shelf-navigation[hidden] { display:none; }
 @media(max-width:640px) { .shelf-choices { grid-template-columns:1fr; } .shelf-choice .xi { flex-basis:44px; height:44px; } }
 .theory-open { display:none!important }
-body:is([data-book="frye"],[data-book="ne"],[data-book="barthes"]) .theory-open { display:inline-flex!important }
+.theory-open:not([hidden]) { display:inline-flex!important }
 .theory-dialog { width:min(1200px,100vw); height:min(900px,100dvh); max-width:none; max-height:none; padding:0; border:1px solid var(--accent,#76502f); border-radius:12px; color:var(--ink,#332c25); background:var(--paper,#f7f1e5); }
 .theory-dialog::backdrop { background:#21190dcc }
 .theory-head,.theory-modes,.theory-controls { display:flex; gap:.5rem; align-items:center; padding:.7rem; border-bottom:1px solid #bba98f; }

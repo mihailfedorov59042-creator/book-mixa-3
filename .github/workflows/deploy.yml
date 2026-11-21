@@ -30,6 +30,7 @@ jobs:
         run: |
           python tools/build_theory_materials.py --check
           python tools/build_theory_app_data.py --check
+          python tools/build_bakhtin_maps.py --check
           python tools/check_theory_materials.py
           python tools/check_theory_research.py
       - name: Build and test notes transfer and offline PWA updates

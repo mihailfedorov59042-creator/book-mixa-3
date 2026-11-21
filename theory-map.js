@@ -3,6 +3,9 @@
   'use strict';
   const NS='http://www.w3.org/2000/svg', KEY='polka-theory-ink-v2';
   const titles={frye:'Нортроп Фрай · Анатомия критики',ne:'Аристотель · Никомахова этика',barthes:'Ролан Барт · Избранные работы'};
+  const bakhtin = window.__BAKHTIN_MAPS;
+  const mappedBakhtin = new Set((bakhtin?.clusters || []).map(cluster => cluster.book));
+  for (const id of mappedBakhtin) titles[id] = 'М. М. Бахтин · ' + window.__BAKHTIN[id].title;
   const modes=[['thoughts','Мысли'],['topics','Темы и связи'],['works','Произведения'],['claims','Положения']];
   const colors={ink:'Чернила',cin:'Киноварь',az:'Лазурь',vert:'Зелёный'};
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -10,6 +13,9 @@
   const el=(tag,attrs,body='')=>`<${tag} ${Object.entries(attrs).map(([k,v])=>`${k}="${esc(v)}"`).join(' ')}>${body}</${tag}>`;
   const action=(kind,id,label)=>`<button type="button" data-kind="${kind}" data-id="${esc(id)}">${esc(label)}</button>`;
   const launch=document.createElement('button'); launch.type='button'; launch.className='ib theory-open'; launch.textContent='Схема'; launch.setAttribute('aria-label','Открыть схему теории'); document.querySelector('#btn-sch').after(launch);
+  function updateLaunch() { launch.hidden = !Object.hasOwn(titles, document.body.dataset.book); }
+  new MutationObserver(updateLaunch).observe(document.body, {attributes:true, attributeFilter:['data-book']});
+  updateLaunch();
   const dialog=document.createElement('dialog'); dialog.className='tm'; dialog.setAttribute('aria-label','Схема теории'); document.body.append(dialog);
   let data, topics, works, groups, relations, book, mode='thoughts', selected=null, detail=null, scene, svg, viewport;
   let tool='view',color='ink',width=2.8, vb, full, undo=[], pending=null, penSeen=false, pointerState=null, suppressClick=false;
@@ -39,7 +45,7 @@
   const sourceLink=(url,label)=>`<a data-source href="${esc(new URL(url,location.href).hash)}">${esc(label)}</a>`;
   function sources(refs) {
     const unique=[...new Set(refs||[])].map(id=>data.sources[id]).filter(Boolean);
-    return `<details class="tm-sources"><summary>Места в тексте · ${unique.length}</summary><ol>${unique.map(s=>`<li>${sourceLink(s.url,s.note?'Примечание '+s.note:`${s.book==='frye'?'Фрай':s.book==='ne'?'Аристотель':'Барт'} · фрагмент ${s.block}`)}${s.note?`<p>${esc(s.text||'')}</p>`:''}</li>`).join('')}</ol></details>`;
+    return `<details class="tm-sources"><summary>Места в тексте · ${unique.length}</summary><ol>${unique.map(s=>`<li>${sourceLink(s.url,s.note?'Примечание '+s.note:`${s.book==='frye'?'Фрай':s.book==='ne'?'Аристотель':s.book==='barthes'?'Барт':'Бахтин'} · фрагмент ${s.block}`)}${s.note?`<p>${esc(s.text||'')}</p>`:s.excerpt?`<p>«${esc(s.excerpt)}»</p>`:''}</li>`).join('')}</ol></details>`;
   }
   function detailContent() {
     if(!detail)return '';
@@ -156,8 +162,8 @@
     const gs=data.clusters.filter(c=>c.book===book).sort((a,b)=>(a.kind==='context')-(b.kind==='context'));
     let nodes=[],edges=[],decorations='', structural='';
     if(mode==='thoughts'||!selected){
-      gs.forEach((g,i)=>{const a=(i/gs.length)*Math.PI*2-Math.PI/2;nodes.push({id:g.id,kind:'cluster',title:g.title,x:Math.cos(a)*700,y:Math.sin(a)*440,r:137,context:g.kind==='context'});});
-      decorations=el('text',{x:0,y:0,'text-anchor':'middle',class:'tm-center'},mode==='thoughts'?'Ключевые мысли':'Выберите мысль');
+      gs.forEach((g,i)=>{const a=(i/gs.length)*Math.PI*2-Math.PI/2;nodes.push({id:g.id,kind:'cluster',title:g.title,x:gs.length===1?0:Math.cos(a)*700,y:gs.length===1?0:Math.sin(a)*440,r:137,context:g.kind==='context'});});
+      if(gs.length>1)decorations=el('text',{x:0,y:0,'text-anchor':'middle',class:'tm-center'},mode==='thoughts'?'Ключевые мысли':'Выберите мысль');
     } else {
       const g=groups.get(selected);
       if(mode==='topics'){
@@ -207,7 +213,7 @@
   function updateTools(){dialog.dataset.tool=tool;dialog.querySelectorAll('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tool===tool));dialog.querySelectorAll('[data-color]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.color===color));dialog.querySelectorAll('[data-width]').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.width)===width));const u=dialog.querySelector('[data-undo]'),c=dialog.querySelector('[data-clear]');if(u)u.disabled=!undo.some(x=>x.page===pageKey());if(c)c.disabled=!strokes().length;}
   function toolbar(){
     const gs=data.clusters.filter(c=>c.book===book);
-    dialog.innerHTML=`<header class="sch-bar tm-bar"><div class="sch-t"><span class="gb-seal sch-seal" aria-hidden="true"><span class="emb emb-shield"></span></span><span><b>Схема связей</b><small>${esc(titles[book])}</small></span></div><div class="sch-tools"><button type="button" class="sch-b" data-tool="view">☞ Смотреть</button><button type="button" class="sch-b" data-tool="pen">✎ Перо</button><div class="sch-colors" aria-label="Цвет">${Object.entries(colors).map(([key,name])=>`<button type="button" class="sch-c" data-sc="${key}" data-color="${key}" aria-label="${name}"></button>`).join('')}</div><div class="sch-ws" aria-label="Толщина">${[1.5,2.8,5].map(w=>`<button type="button" class="sch-w" data-width="${w}" aria-label="Толщина ${w}"><i style="width:${w*2}px;height:${w*2}px"></i></button>`).join('')}</div><button type="button" class="sch-b" data-tool="erase">♢ Ластик</button><button type="button" class="sch-b" data-undo>↶ Отменить</button><button type="button" class="sch-b" data-clear>Стереть всё</button></div><button type="button" class="sch-b tm-close" data-close aria-label="Закрыть схему">✕</button></header><nav class="tm-nav" aria-label="Режим схемы">${modes.map(([key,title])=>`<button class="sch-b" type="button" data-mode="${key}" aria-pressed="${mode===key}">${title}</button>`).join('')}<label class="tm-group-label">Мысль <select data-group aria-label="Выбрать мысль"><option value="">Все мысли</option>${gs.map(g=>`<option value="${g.id}" ${selected===g.id?'selected':''}>${esc(g.title)}</option>`).join('')}</select></label><button type="button" class="sch-b" data-list>Список</button>${legacyAvailable()?'<button type="button" class="sch-b" data-legacy>Прежние пометки</button>':''}</nav><main class="tm-viewport"><svg class="tm-svg" xmlns="${NS}" tabindex="0" aria-label="Полотно схемы: двигайте, увеличивайте и нажимайте узлы"></svg><aside class="tm-card" aria-label="Карточка выбранного объекта" aria-live="polite" hidden></aside><aside class="tm-list" aria-label="Список узлов и связей" hidden></aside><div class="tm-legend">${mode==='claims'?'<span class="structure">Детализация, не вывод</span>':''}<span class="line">Связь</span><span class="contrast">Различие / уточнение</span><span class="revision">Изменение позиции</span></div><div class="sch-zoom"><button type="button" class="sch-b" data-zoom="-" aria-label="Уменьшить">−</button><button type="button" class="sch-b" data-zoom="fit">Вписать</button><button type="button" class="sch-b" data-zoom="+" aria-label="Увеличить">+</button></div><p class="tm-status" data-status role="status" hidden></p></main>`;
+    dialog.innerHTML=`<header class="sch-bar tm-bar"><div class="sch-t"><span class="gb-seal sch-seal" aria-hidden="true"><span class="emb emb-shield"></span></span><span><b>Схема связей</b><small>${esc(titles[book])}</small></span></div><div class="sch-tools"><button type="button" class="sch-b" data-tool="view">☞ Смотреть</button><button type="button" class="sch-b" data-tool="pen">✎ Перо</button><div class="sch-colors" aria-label="Цвет">${Object.entries(colors).map(([key,name])=>`<button type="button" class="sch-c" data-sc="${key}" data-color="${key}" aria-label="${name}"></button>`).join('')}</div><div class="sch-ws" aria-label="Толщина">${[1.5,2.8,5].map(w=>`<button type="button" class="sch-w" data-width="${w}" aria-label="Толщина ${w}"><i style="width:${w*2}px;height:${w*2}px"></i></button>`).join('')}</div><button type="button" class="sch-b" data-tool="erase">♢ Ластик</button><button type="button" class="sch-b" data-undo>↶ Отменить</button><button type="button" class="sch-b" data-clear>Стереть всё</button></div><button type="button" class="sch-b tm-close" data-close aria-label="Закрыть схему">✕</button></header><nav class="tm-nav" aria-label="Режим схемы">${modes.map(([key,title])=>`<button class="sch-b" type="button" data-mode="${key}" aria-pressed="${mode===key}">${title}</button>`).join('')}<label class="tm-group-label">Мысль <select data-group aria-label="Выбрать мысль"><option value="">Все мысли</option>${gs.map(g=>`<option value="${g.id}" ${selected===g.id?'selected':''}>${esc(g.title)}</option>`).join('')}</select></label><button type="button" class="sch-b" data-list>Список</button>${!mappedBakhtin.has(book)&&legacyAvailable()?'<button type="button" class="sch-b" data-legacy>Прежние пометки</button>':''}</nav><main class="tm-viewport"><svg class="tm-svg" xmlns="${NS}" tabindex="0" aria-label="Полотно схемы: двигайте, увеличивайте и нажимайте узлы"></svg><aside class="tm-card" aria-label="Карточка выбранного объекта" aria-live="polite" hidden></aside><aside class="tm-list" aria-label="Список узлов и связей" hidden></aside><div class="tm-legend">${mode==='claims'?'<span class="structure">Детализация, не вывод</span>':''}<span class="line">Связь</span><span class="contrast">Различие / уточнение</span><span class="revision">Изменение позиции</span></div><div class="sch-zoom"><button type="button" class="sch-b" data-zoom="-" aria-label="Уменьшить">−</button><button type="button" class="sch-b" data-zoom="fit">Вписать</button><button type="button" class="sch-b" data-zoom="+" aria-label="Увеличить">+</button></div><p class="tm-status" data-status role="status" hidden></p></main>`;
     for(const name of ['view','pen','erase']){const button=dialog.querySelector(`[data-tool="${name}"]`),original=document.querySelector(`#scheme [data-st="${name}"]`);button.innerHTML=original.innerHTML;button.setAttribute('aria-label',original.textContent.trim());button.title=original.title;}
     dialog.querySelector('[data-undo]').innerHTML=document.querySelector('#sch-undo').innerHTML;dialog.querySelector('[data-undo]').setAttribute('aria-label','Отменить');
     viewport=dialog.querySelector('.tm-viewport');svg=dialog.querySelector('.tm-svg');bindCanvas();drawScene();if(inkBlocked)status('Хранилище рисунков недоступно. Исходные данные не изменены.');
@@ -251,7 +257,21 @@
     svg.addEventListener('keydown',e=>{const n=e.target.closest('[data-kind]');if(n&&(e.key==='Enter'||e.key===' ')){e.preventDefault();choose(n.dataset.kind,n.dataset.id);}else if(e.key==='+'||e.key==='=')zoom(1.25);else if(e.key==='-')zoom(.8);else if(e.key.startsWith('Arrow')){e.preventDefault();const d=vb.w*.08;vb.x+=e.key==='ArrowLeft'?-d:e.key==='ArrowRight'?d:0;vb.y+=e.key==='ArrowUp'?-d:e.key==='ArrowDown'?d:0;setVB();}});
   }
   async function open(){const id=document.body.dataset.book;if(!titles[id])return;try{
-    if(!data){const response=await fetch('./data/theory-map.json');if(!response.ok)throw Error();data=await response.json();topics=new Map(data.topics.map(x=>[x.id,x]));groups=new Map(data.clusters.map(x=>[x.id,x]));works=new Map(data.works.map(x=>[x.id,x]));relations=new Map(data.relations.map(x=>[x.id,x]));}
+    if(!data){
+      const response=await fetch('./data/theory-map.json');
+      if(!response.ok)throw Error();
+      const loaded=await response.json();
+      if(bakhtin){
+        for(const key of ['topics','clusters','works','relations','claims','hierarchies']) loaded[key].push(...bakhtin[key]);
+        Object.assign(loaded.sources,bakhtin.sources);
+      }
+      topics=new Map(loaded.topics.map(x=>[x.id,x]));
+      groups=new Map(loaded.clusters.map(x=>[x.id,x]));
+      works=new Map(loaded.works.map(x=>[x.id,x]));
+      relations=new Map(loaded.relations.map(x=>[x.id,x]));
+      data=loaded;
+    }
+    if(document.body.dataset.book!==id)return;
     if(book!==id){book=id;selected=null;detail=null;mode='thoughts';}tool='view';penSeen=false;
     if(!dialog.open)dialog.showModal();toolbar();
   }catch(_){if(dialog.open)dialog.close();alert('Не удалось открыть схему. Обновите приложение при подключении к сети.');}}
