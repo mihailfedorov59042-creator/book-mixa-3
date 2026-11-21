@@ -5,6 +5,7 @@ python tools/import_bakhtin.py 41 volume.docx --dump /tmp/41.tsv
 DOC input requires LibreOffice (soffice). Pillow encodes local facsimiles.
 Paragraph numbers in plans include only nonempty Word paragraphs, in body order.
 """
+from bisect import bisect_left
 import argparse
 import html
 import io
@@ -122,6 +123,9 @@ def export(part, path, dump, complete=None):
                 if content and content.strip().replace('<br>','').strip():
                     blocks.append((max(0,ordinal), 'p', content))
 
+        # DOCX conversion recalculates Word PAGE fields. These ordinals retain
+        # the cached printed folios from the three supplied binary DOC files.
+        folios = json.loads(Path(__file__).with_name('bakhtin-print-folios.json').read_text())[part]
         books, catalog = {}, {}
         for pos, item in enumerate(plan):
             start = item['start']
@@ -132,6 +136,7 @@ def export(part, path, dump, complete=None):
             if any(i < start or i >= stop for i in headings | subheadings | skip):
                 raise ValueError(f'Paragraph outside {item["id"]}')
             rows = []
+            ordinals = []
             end = 0
             for i, kind, content in blocks:
                 if i < start or i >= stop or (i in skip and kind != 'table' and '<img' not in content):
@@ -141,6 +146,7 @@ def export(part, path, dump, complete=None):
                         kind = 'h1'
                     elif i in subheadings:
                         kind = 'h2'
+                ordinals.append(i)
                 rows.append([kind, content])
                 if i < item.get('endMain', stop):
                     end = len(rows)
@@ -150,7 +156,14 @@ def export(part, path, dump, complete=None):
             meta.update(volume=volume, part=number, year=year)
             if item.get('sourceNote'):
                 rows.append(['ed','Примечание электронной полки. '+html.escape(item['sourceNote'])])
-            books[item['id']] = dict(b=rows, c=[], n={}, mainEnd=end)
+            pages = {}
+            for ordinal, page in folios.items():
+                i = int(ordinal)
+                if start <= i < stop:
+                    index = bisect_left(ordinals, i)
+                    if index < len(ordinals):
+                        pages.setdefault(page, index)
+            books[item['id']] = dict(b=rows, c=[], n={}, mainEnd=end, pages=pages)
             catalog[item['id']] = meta
 
         if part == '41':

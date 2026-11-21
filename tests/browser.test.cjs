@@ -1050,3 +1050,31 @@ test('Bakhtin offline: author, volumes, individual readers, maps and notes', {ti
     }
   } finally { await ctx.close(); }
 });
+
+test('Bakhtin contents and alphabetical indexes link offline to works and printed pages', async()=>{
+  const ctx=await contextFor(devices['Pixel 7'], {notes:{},splash:false});
+  try {
+    const p=await ctx.newPage(); await ready(p); await ctx.setOffline(true);
+    await p.evaluate(()=>location.hash='theory/bakhtin');
+    await p.locator('#theory-slot [data-go="theory/bakhtin/contents"]').click();
+    await p.locator('[data-alpha-jump]').click();
+    const alpha=p.locator('#bakhtin-alpha').locator('..');
+    assert.equal(await alpha.locator('a').count(),32);
+    await alpha.getByRole('link',{name:'Проблемы стилистики романа',exact:true}).click();
+    await p.waitForFunction(()=>document.body.dataset.book==='bakhtin3_stylistics');
+    await p.goBack();
+    await p.locator('.bakhtin-contents a[href="#bakhtin42_index"]').click();
+    await p.waitForFunction(()=>document.body.dataset.book==='bakhtin42_index');
+    await p.locator('#book .page').first().waitFor({state:'attached'});
+    await p.evaluate(()=>location.hash='bakhtin42_index@3');
+    const entry=p.locator('#book .page:not([hidden]) [data-i="3"]').filter({hasText:'Август Октавиан'}).first();
+    const ref=entry.getByRole('link',{name:'Страница 43 печатного издания',exact:true});
+    await ref.waitFor();
+    assert.match(await entry.getByRole('link',{name:'Страница 703 печатного издания',exact:true}).getAttribute('href'),/^#bakhtin41_/);
+    const href=await ref.getAttribute('href');
+    assert.match(href,/^#bakhtin42_rabelais@/);
+    await ref.click();
+    await p.waitForFunction(()=>document.body.dataset.book==='bakhtin42_rabelais');
+    await p.locator('#book .page:not([hidden]) [data-i="'+href.split('@')[1]+'"]').first().waitFor();
+  } finally {await ctx.close();}
+});

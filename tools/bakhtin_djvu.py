@@ -64,8 +64,14 @@ def add_full_source(books, catalog, source):
     for i, (first, key, title, *author) in enumerate(plan):
         stop = plan[i+1][0] if i+1<len(plan) else len(pages)+1
         rows = []
+        folios = {}
+        # Missing blank leaves in the scan change the offset at section openings.
+        offsets = [(508,9),(593,10),(594,11),(665,12),(720,13),(737,14),
+                   (740,15),(815,16),(958,17),(967,18)]
         for scan in range(first, stop):
             # Divider leaves preceding the actual title pages are also part of the edition.
+            offset = next(delta for first_scan, delta in reversed(offsets) if first_scan <= scan)
+            folios[scan+offset] = len(rows)
             paragraphs = page_paragraphs(pages[scan-1], opening=scan==first or scan in (594,815))
             if not paragraphs:
                 raise ValueError(f'OCR text missing on scan {scan}')
@@ -73,7 +79,7 @@ def add_full_source(books, catalog, source):
                 kind = 'h2' if para.isupper() and 4<len(para)<120 else 'p'
                 rows.append([kind, html.escape(para)])
         id_ = 'bakhtin41_'+key
-        books[id_] = dict(b=rows, c=[], n={}, mainEnd=len(rows))
+        books[id_] = dict(b=rows, c=[], n={}, mainEnd=len(rows), pages=folios)
         meta = dict(title=title, volume='4', part=1, year='2008')
         if author:
             meta.update(author=author[0], kind='Материалы издания')
