@@ -1,11 +1,12 @@
 /* GENERATED FILE. Edit tools/sw.template.js and run python3 tools/build_pwa.py. */
-const BUILD_ID = '28b6550c3307d385';
+const BUILD_ID = '28b6550c3307d386';
 const CACHE_NAME = 'polka-offline-' + BUILD_ID;
 const PRECACHE_FILES = [
-  "./index.html?v=28b6550c3307d385",
+  "./index.html?v=28b6550c3307d386",
   "./pwa.js?v=28b6550c3307d385",
   "./pwa.css?v=28b6550c3307d385",
   "./notes-transfer.js?v=28b6550c3307d385",
+  "./extended-search.js?v=28b6550c3307d385",
   "./theory-map.js?v=28b6550c3307d385",
   "./theory-map-legacy.js",
   "./data/theory-map.json",

@@ -10,6 +10,8 @@
 <title>Полка XVII–XVIII веков</title>
 <meta name="theme-color" content="#382819">
 <meta name="description" content="Электронная литературная библиотека с заметками, закладками и чтением офлайн.">
+<meta property="og:title" content="Полка XVII–XVIII веков">
+<meta property="og:description" content="Электронная литературная библиотека с заметками, закладками и чтением офлайн.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Полка">
@@ -616,6 +618,18 @@ mark.sr.cur { background: var(--sr-cur); box-shadow: 0 0 0 2px var(--sr-cur); }
 .sr-book b { font-family: var(--f-ui); font-weight: 500; font-size: 12px; letter-spacing: 0; color: var(--mute); }
 .sr-more { align-self: flex-start; margin: 6px 10px 4px; border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 13.5px; cursor: pointer; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
 .sr-cap { padding: 2px 10px 6px; font-size: 12px; color: var(--mute); }
+.sr-modes { gap: 5px; }
+.sr-modes .chip { padding: 4px 9px; font-size: 12.5px; }
+.sr-modes .chip .cnt { font-size: 11px; opacity: .82; }
+.sr-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 13px 10px 5px; margin-top: 4px; border-bottom: 1px solid var(--rule); font-family: var(--f-caps); font-size: 13px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink2); }
+.sr-sec:first-child { margin-top: 0; padding-top: 6px; }
+.sr-sec b { font-family: var(--f-ui); font-weight: 500; font-size: 11.5px; letter-spacing: 0; color: var(--mute); font-variant-numeric: tabular-nums; }
+.sr-item-row { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.sr-item-row i { align-self: center; width: 8px; height: 8px; border-radius: 50%; background: var(--cov, var(--mute)); flex: none; }
+.sr-item-row .t { font-family: var(--f-body); font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--ink); overflow-wrap: anywhere; }
+.sr-item-row .sr-kind { margin-left: auto; flex: none; font-family: var(--f-ui); font-size: 11px; color: var(--mute); letter-spacing: .02em; }
+.sr-hit .d { font-size: 12.5px; color: var(--ink2); line-height: 1.4; overflow-wrap: anywhere; }
+.sr-empty { padding: 18px 10px; font-size: 13.5px; color: var(--mute); line-height: 1.5; }
 #sbar { position: fixed; z-index: 19; top: calc(54px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 2px; max-width: calc(100vw - 24px); box-sizing: border-box;
   padding: 3px 4px 3px 4px; border-radius: 999px; background: var(--pop); border: 1px solid var(--rule); box-shadow: 0 10px 26px -14px var(--shadow); font-family: var(--f-ui); font-size: 13.5px; color: var(--ink); }
 #sbar .ib { width: 32px; height: 32px; padding: 0; justify-content: center; border-radius: 50%; }
@@ -1310,7 +1324,7 @@ body.sch-open #pop { z-index: 80; }
       </nav>
       <button class="ib settings-gear" type="button" data-settings-open aria-label="Настройки" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-settings"/></svg></button>
     </header>
-    <div class="home-tools"><button class="home-search" id="home-search" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg><span>Поиск по текстам всех книг</span><kbd>Ctrl F</kbd></button>
+    <div class="home-tools"><button class="home-search" id="home-search" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg><span>Поиск книг, глав, героев и текста</span><kbd>Ctrl F</kbd></button>
       <button class="btn quiet" id="home-quote" type="button" aria-controls="home-quotation">Цитата</button>
     </div>
     <section id="home-quotation" aria-label="Случайная цитата" aria-live="polite" hidden></section>
@@ -1403,7 +1417,7 @@ body.sch-open #pop { z-index: 80; }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span class="lbl-wide">Содержание</span>
     </button>
     <div class="rtitle" id="rtitle"></div>
-    <button class="ib" type="button" id="btn-search" aria-label="Поиск по тексту">
+    <button class="ib" type="button" id="btn-search" aria-label="Расширенный поиск">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>
     </button>
     <button class="ib" type="button" id="btn-chars" aria-label="Персонажи">
@@ -1445,11 +1459,18 @@ body.sch-open #pop { z-index: 80; }
   <button class="btn ghost ch-sch" id="ch-sch" type="button" hidden>Схема связей</button>
   <div class="dr-list" id="ch-list"></div>
 </aside>
-<aside id="srch" class="drawer" aria-label="Поиск по тексту">
-  <div class="dr-h"><span>Поиск</span><button class="ib" id="sr-close" type="button" aria-label="Закрыть">✕</button></div>
+<aside id="srch" class="drawer" aria-label="Расширенный поиск">
+  <div class="dr-h"><span>Расширенный поиск</span><button class="ib" id="sr-close" type="button" aria-label="Закрыть">✕</button></div>
   <div class="sr-top">
-    <input class="search" id="sr-q" type="search" placeholder="Слово или фраза" aria-label="Что искать" autocomplete="off" enterkeyhint="search">
+    <input class="search" id="sr-q" type="search" placeholder="Книга, глава, герой или фраза" aria-label="Что искать" autocomplete="off" enterkeyhint="search">
     <div class="chips" id="sr-scope"><button class="chip on" type="button" data-sc="book">В этой книге</button><button class="chip" type="button" data-sc="all">Во всей полке</button></div>
+    <div class="chips sr-modes" id="sr-mode" role="group" aria-label="Раздел поиска">
+      <button class="chip on" type="button" data-sm="all">Всё <span class="cnt" hidden></span></button>
+      <button class="chip" type="button" data-sm="books">Книги <span class="cnt" hidden></span></button>
+      <button class="chip" type="button" data-sm="chars">Герои <span class="cnt" hidden></span></button>
+      <button class="chip" type="button" data-sm="chapters">Главы <span class="cnt" hidden></span></button>
+      <button class="chip" type="button" data-sm="text">Текст <span class="cnt" hidden></span></button>
+    </div>
     <div class="sr-stat" id="sr-stat" aria-live="polite"></div>
   </div>
   <div class="dr-list" id="sr-list"></div>
@@ -1595,6 +1616,7 @@ body.sch-open #pop { z-index: 80; }
   </div>
 </dialog>
 <script src="./notes-transfer.js?v=28b6550c3307d385"></script>
+<script src="./extended-search.js?v=28b6550c3307d385"></script>
 <script>
 (() => {
 'use strict';
@@ -3296,6 +3318,7 @@ function openBook(id) {
     relayout();
     if (pendingJump) { const nid = pendingJump; pendingJump = null; jumpToNote(nid); }
     if (pendingHit && pendingHit.id === id) { const h = pendingHit; pendingHit = null; SR.nq = h.q; const r = sFind(id, h.q, 3000); SR.hitBook = id; SR.hits = r.hits; SR.total = r.total; SR.pos = r.hits.findIndex(x => x.i === h.i && x.k === h.k); revealHit(h.i, h.k); }
+    if (pendingChar && pendingChar.id === id) { const ch = pendingChar; pendingChar = null; openChar(ch.cid, null, readingPos(), false); }
   };
   if (changed) { $('#loading').hidden = false; requestAnimationFrame(() => setTimeout(() => { run(); $('#loading').hidden = true; }, 20)); }
   else run();
@@ -3484,14 +3507,47 @@ function snippet(h) {
   return (a > 0 ? '…' : '') + esc(r.slice(a, h.a)) + '<mark>' + esc(r.slice(h.a, h.z)) + '</mark>' + esc(r.slice(h.z, z)) + (z < r.length ? '…' : '');
 }
 
-const SR = { q: '', nq: '', scope: 'book', open: false, more: {}, hits: [], pos: -1, hitBook: null };
-let pendingHit = null, srT = 0;
-const srEl = $('#srch'), srIn = $('#sr-q'), srList = $('#sr-list'), srStat = $('#sr-stat');
-function openSearch(scope) {
-  if (scope) SR.scope = scope;
-  if (view !== 'read') SR.scope = 'all';
+const SR = { q: '', nq: '', scope: 'book', mode: 'all', open: false, more: {}, moreSec: {}, hits: [], pos: -1, hitBook: null };
+let pendingHit = null, pendingChar = null, srT = 0;
+const srEl = $('#srch'), srIn = $('#sr-q'), srList = $('#sr-list'), srStat = $('#sr-stat'), srModeEl = $('#sr-mode');
+let EX_IDX = null;
+function exIndex() {
+  if (EX_IDX) return EX_IDX;
+  const P = window.PolkaSearch;
+  EX_IDX = {
+    books: P ? P.buildBookIndex(ALL, META, BOOKS) : [],
+    chars: P ? P.buildCharIndex(ALL, META, BOOKS) : [],
+    chapters: P ? P.buildChapterIndex(ALL, META, BOOKS) : [],
+  };
+  return EX_IDX;
+}
+function hlText(raw, q) { return window.PolkaSearch ? window.PolkaSearch.highlightText(raw, q) : esc(raw); }
+function syncSearchControls() {
   $('#sr-scope').hidden = view !== 'read';
   $$('#sr-scope [data-sc]').forEach(b => b.classList.toggle('on', b.dataset.sc === SR.scope));
+  $$('#sr-mode [data-sm]').forEach(b => {
+    const active = b.dataset.sm === SR.mode;
+    b.classList.toggle('on', active);
+    b.setAttribute('aria-pressed', String(active));
+  });
+}
+function setModeCounts(counts) {
+  $$('#sr-mode [data-sm]').forEach(b => {
+    const c = b.querySelector('.cnt');
+    if (!c) return;
+    if (!counts) { c.hidden = true; c.textContent = ''; return; }
+    const m = b.dataset.sm;
+    const val = m === 'all' ? (counts.books + counts.chars + counts.chapters + counts.text) : (counts[m] || 0);
+    c.textContent = val > 999 ? '999+' : String(val);
+    c.hidden = val === 0 && m !== 'all';
+  });
+}
+function openSearch(scope, mode) {
+  if (scope) SR.scope = scope;
+  if (mode) SR.mode = mode;
+  if (view !== 'read') SR.scope = 'all';
+  if (SR.scope === 'book' && SR.mode === 'books') SR.mode = 'all';
+  syncSearchControls();
   openDrawer(srEl); SR.open = true;
   srIn.value = SR.q; runSearch();
   setTimeout(() => { srIn.focus(); srIn.select(); }, 60);
@@ -3504,40 +3560,159 @@ function hitLoc(h) {
   return [lab, side, pg].filter(Boolean).map(esc).join(' · ');
 }
 const hitBtn = (h, n) => `<button class="sr-hit" type="button" data-sh="${n}"><span class="m">${hitLoc(h)}</span><span class="x">${snippet(h)}</span></button>`;
-let srShown = [];
+let srShown = [], srBooksShown = [], srCharsShown = [], srChapsShown = [];
+
+function bookBtn(b, n, rawQ) {
+  const metaParts = [b.author, b.year, b.genre].filter(Boolean).join(' · ');
+  const sub = b.sub ? `<span class="d">${hlText(b.sub, rawQ)}</span>` : '';
+  return `<button class="sr-hit sr-item" type="button" data-sbook="${n}" data-book="${b.id}">`
+    + `<span class="sr-item-row"><i></i><span class="t">${hlText(b.title, rawQ)}</span><span class="sr-kind">Книга</span></span>`
+    + sub
+    + (metaParts ? `<span class="m">${hlText(metaParts, rawQ)}</span>` : '')
+    + `</button>`;
+}
+function charBtn(c, n, rawQ, showBook) {
+  const loc = showBook ? c.bookShort : '';
+  const meta = [loc, c.stagesCount ? `${c.stagesCount} ${plural(c.stagesCount, 'этап', 'этапа', 'этапов')}` : ''].filter(Boolean).join(' · ');
+  return `<button class="sr-hit sr-item" type="button" data-schar="${n}" data-book="${c.bookId}">`
+    + `<span class="sr-item-row"><i></i><span class="t">${hlText(c.name, rawQ)}</span><span class="sr-kind">Герой</span></span>`
+    + (c.role ? `<span class="d">${hlText(c.role, rawQ)}</span>` : '')
+    + (meta ? `<span class="m">${hlText(meta, rawQ)}</span>` : '')
+    + `</button>`;
+}
+function chapBtn(ch, n, rawQ, showBook) {
+  const pg = ch.bookId === curBook && view === 'read' && blockPage[ch.i] != null ? 'с. ' + (blockPage[ch.i] + 1) : '';
+  const meta = [showBook ? ch.bookShort : '', ch.parent, ch.side ? 'комментарий' : '', pg].filter(Boolean).join(' · ');
+  return `<button class="sr-hit sr-item" type="button" data-schap="${n}" data-book="${ch.bookId}">`
+    + `<span class="sr-item-row"><i></i><span class="t">${hlText(ch.title, rawQ)}</span><span class="sr-kind">${esc(ch.kind)}</span></span>`
+    + (ch.cast ? `<span class="d">${hlText(ch.cast, rawQ)}</span>` : '')
+    + (meta ? `<span class="m">${hlText(meta, rawQ)}</span>` : '')
+    + `</button>`;
+}
+
+function buildSearchSummary(counts, scopeBook) {
+  const parts = [];
+  if (counts.books) parts.push(`${counts.books} ${plural(counts.books, 'книга', 'книги', 'книг')}`);
+  if (counts.chars) parts.push(`${counts.chars} ${plural(counts.chars, 'герой', 'героя', 'героев')}`);
+  if (counts.chapters) parts.push(`${counts.chapters} ${plural(counts.chapters, 'глава', 'главы', 'глав')}`);
+  if (counts.text) parts.push(`${counts.text} ${plural(counts.text, 'фрагмент', 'фрагмента', 'фрагментов')} текста`);
+  if (!parts.length) return scopeBook ? `В «${META[curBook].short}» ничего не найдено` : 'Ничего не найдено';
+  const prefix = scopeBook ? `В «${META[curBook].short}»: ` : 'Найдено: ';
+  return prefix + parts.join(' · ');
+}
+
+function renderStructuredSections(opts) {
+  const { rawQ, mode, bookRes, charRes, chapRes, showBook } = opts;
+  const sections = [];
+  const capAll = (key, def) => SR.moreSec[key] ? 200 : (mode === 'all' ? def : 200);
+
+  if (showBook && (mode === 'all' || mode === 'books') && bookRes.total) {
+    const lim = capAll('books', 6);
+    const sh = bookRes.hits.slice(0, lim);
+    const html = sh.map(b => { srBooksShown.push(b); return bookBtn(b, srBooksShown.length - 1, rawQ); }).join('');
+    sections.push(`<div class="sr-sec"><span>Книги</span><b>${bookRes.total}</b></div>` + html
+      + (bookRes.hits.length > lim ? `<button class="sr-more" type="button" data-smore-sec="books">Показать все книги (${bookRes.total})</button>` : ''));
+  }
+
+  if ((mode === 'all' || mode === 'chars') && charRes.total) {
+    const lim = capAll('chars', 6);
+    const sh = charRes.hits.slice(0, lim);
+    const html = sh.map(c => { srCharsShown.push(c); return charBtn(c, srCharsShown.length - 1, rawQ, showBook); }).join('');
+    sections.push(`<div class="sr-sec"><span>Герои</span><b>${charRes.total}</b></div>` + html
+      + (charRes.hits.length > lim ? `<button class="sr-more" type="button" data-smore-sec="chars">Показать всех героев (${charRes.total})</button>` : ''));
+  }
+
+  if ((mode === 'all' || mode === 'chapters') && chapRes.total) {
+    const lim = capAll('chapters', 8);
+    const sh = chapRes.hits.slice(0, lim);
+    const html = sh.map(ch => { srChapsShown.push(ch); return chapBtn(ch, srChapsShown.length - 1, rawQ, showBook); }).join('');
+    sections.push(`<div class="sr-sec"><span>Главы и разделы</span><b>${chapRes.total}</b></div>` + html
+      + (chapRes.hits.length > lim ? `<button class="sr-more" type="button" data-smore-sec="chapters">Показать все главы (${chapRes.total})</button>` : ''));
+  }
+
+  return sections;
+}
+
 function runSearch() {
-  const q = normQ(srIn.value); SR.q = srIn.value.trim(); SR.nq = q;
-  srShown = [];
+  const rawQ = srIn.value.trim();
+  const q = normQ(rawQ); SR.q = rawQ; SR.nq = q;
+  srShown = []; srBooksShown = []; srCharsShown = []; srChapsShown = [];
   if (q.length < 2) {
-    srStat.textContent = SR.scope === 'book' ? 'Введите хотя бы две буквы. Поиск не различает «е» и «ё» и не учитывает ударения.' : 'Ищет по всем книгам полки: тексты, статьи и комментарии. «Е» и «ё» не различаются, ударения не учитываются.';
+    setModeCounts(null);
+    srStat.textContent = SR.scope === 'book'
+      ? 'Введите хотя бы две буквы: ищет названия глав, имена героев и текст в этой книге («е» и «ё» не различаются).'
+      : 'Введите хотя бы две буквы: ищет названия книг, главы, имена героев и текст по всей библиотеке.';
     srList.innerHTML = ''; setBookHits(curBook, [], 0); return;
   }
-  if (SR.scope === 'book' && curBook) {
+
+  const P = window.PolkaSearch;
+  const idx = exIndex();
+  const inBook = SR.scope === 'book' && !!curBook;
+  const bookRes = (!inBook && P) ? P.searchBooks(idx.books, rawQ, { cap: 200 }) : { hits: [], total: 0 };
+  const charRes = P ? P.searchChars(idx.chars, rawQ, { bookId: inBook ? curBook : null, cap: 200 }) : { hits: [], total: 0 };
+  const chapRes = P ? P.searchChapters(idx.chapters, rawQ, { bookId: inBook ? curBook : null, cap: 300 }) : { hits: [], total: 0 };
+
+  if (inBook) {
     const { hits, total } = sFind(curBook, q, 3000);
     setBookHits(curBook, hits, total);
-    srStat.textContent = total ? `${total} ${plural(total, 'совпадение', 'совпадения', 'совпадений')} в «${META[curBook].short}»` : `В «${META[curBook].short}» не найдено`;
-    const show = hits.slice(0, SR.more[curBook] ? 3000 : 200);
-    srShown = show;
-    srList.innerHTML = show.map((h, n) => hitBtn(h, n)).join('') + (hits.length > show.length ? `<button class="sr-more" type="button" data-smore="${curBook}">Показать все ${hits.length}</button>` : '');
+    const counts = { books: 0, chars: charRes.total, chapters: chapRes.total, text: total };
+    setModeCounts(counts);
+    srStat.textContent = buildSearchSummary(counts, true);
+
+    const parts = renderStructuredSections({ rawQ, mode: SR.mode, bookRes, charRes, chapRes, showBook: false });
+    if ((SR.mode === 'all' || SR.mode === 'text') && total) {
+      const lim = SR.more[curBook] ? 3000 : (SR.mode === 'all' ? 30 : 200);
+      const show = hits.slice(0, lim);
+      const textHtml = show.map(h => { srShown.push(h); return hitBtn(h, srShown.length - 1); }).join('')
+        + (hits.length > show.length ? `<button class="sr-more" type="button" data-smore="${curBook}">Показать все совпадения в тексте (${hits.length})</button>` : '');
+      parts.push(`<div class="sr-sec"><span>В тексте</span><b>${total}</b></div>` + textHtml);
+    }
+    if (!parts.length) {
+      const anyOther = (counts.chars + counts.chapters + counts.text) > 0;
+      srList.innerHTML = anyOther
+        ? `<div class="sr-empty">В этом разделе совпадений нет — переключите фильтр на «Всё».</div>`
+        : '';
+    } else {
+      srList.innerHTML = parts.join('');
+    }
     return;
   }
-  srStat.textContent = 'Ищу…'; srList.innerHTML = '';
+
+  srStat.textContent = 'Ищу…';
+  srList.innerHTML = '';
   const qq = q;
   setTimeout(() => {
     if (SR.nq !== qq) return;
-    let sum = 0, nb = 0; const parts = [];
+    let textSum = 0;
+    const textParts = [];
     for (const id of ALL) {
       const { hits, total } = sFind(id, qq, 400); if (!total) continue;
-      sum += total; nb++;
+      textSum += total;
       if (id === curBook) setBookHits(id, hits, total);
-      const lim = SR.more[id] ? 400 : 4, sh = hits.slice(0, lim);
-      parts.push(`<div class="sr-book" data-book="${id}"><i></i><span>${esc(META[id].short)}</span><small>${esc(META[id].author)}</small><b>${total}</b></div>`
-        + sh.map(h => { srShown.push(h); return hitBtn(h, srShown.length - 1); }).join('')
-        + (hits.length > lim ? `<button class="sr-more" type="button" data-smore="${id}">Ещё ${hits.length - lim} в «${esc(META[id].short)}»</button>` : '')
-        + (total > hits.length && SR.more[id] ? `<div class="sr-cap">Показаны первые ${hits.length}. Уточните запрос.</div>` : ''));
+      if (SR.mode === 'all' || SR.mode === 'text') {
+        const lim = SR.more[id] ? 400 : 4, sh = hits.slice(0, lim);
+        textParts.push(`<div class="sr-book" data-book="${id}"><i></i><span>${esc(META[id].short)}</span><small>${esc(META[id].author)}</small><b>${total}</b></div>`
+          + sh.map(h => { srShown.push(h); return hitBtn(h, srShown.length - 1); }).join('')
+          + (hits.length > lim ? `<button class="sr-more" type="button" data-smore="${id}">Ещё ${hits.length - lim} в «${esc(META[id].short)}»</button>` : '')
+          + (total > hits.length && SR.more[id] ? `<div class="sr-cap">Показаны первые ${hits.length}. Уточните запрос.</div>` : ''));
+      }
     }
-    srStat.textContent = sum ? `${sum} ${plural(sum, 'совпадение', 'совпадения', 'совпадений')} в ${nb} ${plural(nb, 'книге', 'книгах', 'книгах')}` : 'Ничего не найдено';
-    srList.innerHTML = parts.join('');
+    const counts = { books: bookRes.total, chars: charRes.total, chapters: chapRes.total, text: textSum };
+    setModeCounts(counts);
+    srStat.textContent = buildSearchSummary(counts, false);
+
+    const parts = renderStructuredSections({ rawQ, mode: SR.mode, bookRes, charRes, chapRes, showBook: true });
+    if ((SR.mode === 'all' || SR.mode === 'text') && textParts.length) {
+      parts.push(`<div class="sr-sec"><span>В текстах книг</span><b>${textSum}</b></div>` + textParts.join(''));
+    }
+    if (!parts.length) {
+      const anyOther = (counts.books + counts.chars + counts.chapters + counts.text) > 0;
+      srList.innerHTML = anyOther
+        ? `<div class="sr-empty">В этом разделе совпадений нет — переключите фильтр на «Всё».</div>`
+        : '';
+    } else {
+      srList.innerHTML = parts.join('');
+    }
   }, 30);
 }
 function setBookHits(id, hits, total) {
@@ -3545,12 +3720,46 @@ function setBookHits(id, hits, total) {
   SR.hits = hits; SR.total = total; SR.hitBook = id; SR.pos = -1;
   if (view === 'read') { applySearchMarks(); updSbar(); }
 }
-srIn.addEventListener('input', () => { clearTimeout(srT); SR.more = {}; srT = setTimeout(runSearch, 200); });
-srIn.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeDrawers(); return; } if (e.key === 'Enter') { e.preventDefault(); clearTimeout(srT); runSearch(); const f = srList.querySelector('.sr-hit'); if (f && view === 'read' && SR.scope === 'book') f.click(); } });
+srIn.addEventListener('input', () => { clearTimeout(srT); SR.more = {}; SR.moreSec = {}; srT = setTimeout(runSearch, 200); });
+srIn.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeDrawers(); return; }
+  if (e.key === 'Enter') {
+    e.preventDefault(); clearTimeout(srT); runSearch();
+    const f = srList.querySelector('.sr-hit');
+    if (f && view === 'read' && SR.scope === 'book') f.click();
+  }
+});
 $('#sr-close').addEventListener('click', closeDrawers);
-$('#sr-scope').addEventListener('click', e => { const b = e.target.closest('[data-sc]'); if (!b) return; SR.scope = b.dataset.sc; SR.more = {}; $$('#sr-scope [data-sc]').forEach(x => x.classList.toggle('on', x === b)); runSearch(); srIn.focus(); });
+$('#sr-scope').addEventListener('click', e => {
+  const b = e.target.closest('[data-sc]'); if (!b) return;
+  SR.scope = b.dataset.sc; SR.more = {}; SR.moreSec = {};
+  if (SR.scope === 'book' && SR.mode === 'books') SR.mode = 'all';
+  syncSearchControls(); runSearch(); srIn.focus();
+});
+srModeEl.addEventListener('click', e => {
+  const b = e.target.closest('[data-sm]'); if (!b) return;
+  SR.mode = b.dataset.sm; SR.more = {}; SR.moreSec = {};
+  if (SR.mode === 'books' && SR.scope === 'book') SR.scope = 'all';
+  syncSearchControls(); runSearch(); srIn.focus();
+});
 srList.addEventListener('click', e => {
+  const ms = e.target.closest('[data-smore-sec]'); if (ms) { SR.moreSec[ms.dataset.smoreSec] = true; runSearch(); return; }
   const m = e.target.closest('[data-smore]'); if (m) { SR.more[m.dataset.smore] = true; runSearch(); return; }
+  const sb = e.target.closest('[data-sbook]');
+  if (sb) {
+    const bk = srBooksShown[+sb.dataset.sbook]; if (!bk) return;
+    closeDrawers(); go(bk.id); return;
+  }
+  const sc = e.target.closest('[data-schar]');
+  if (sc) {
+    const ch = srCharsShown[+sc.dataset.schar]; if (!ch) return;
+    closeDrawers(); gotoCharHit(ch); return;
+  }
+  const sp = e.target.closest('[data-schap]');
+  if (sp) {
+    const cp = srChapsShown[+sp.dataset.schap]; if (!cp) return;
+    closeDrawers(); gotoChapterHit(cp); return;
+  }
   const b = e.target.closest('[data-sh]'); if (!b) return;
   const h = srShown[+b.dataset.sh]; if (!h) return;
   closeDrawers(); gotoHit(h);
@@ -3558,8 +3767,27 @@ srList.addEventListener('click', e => {
 $('#btn-search').addEventListener('click', () => openSearch(SR.scope === 'all' && !SR.q ? 'book' : null));
 $('#home-search').addEventListener('click', () => openSearch('all'));
 
+function gotoChapterHit(cp) {
+  if (view !== 'read' || curBook !== cp.bookId) {
+    splSection = cp.bookId;
+    pendingAt = { id: cp.bookId, i: cp.i };
+    go(cp.bookId); return;
+  }
+  let idx = pageForBlock(cp.i);
+  if (spread) idx -= idx % 2;
+  show(idx, idx > cur ? 1 : -1);
+}
+function gotoCharHit(ch) {
+  if (view !== 'read' || curBook !== ch.bookId) {
+    splSection = ch.bookId;
+    pendingChar = { id: ch.bookId, cid: ch.cid };
+    go(ch.bookId); return;
+  }
+  openChar(ch.cid, null, readingPos(), false);
+}
 function gotoHit(h) {
   if (view !== 'read' || curBook !== h.id) {
+    splSection = h.id;
     pendingHit = { id: h.id, i: h.i, k: h.k, q: SR.nq };
     if (SR.scope === 'all') SR.scope = 'book';
     go(h.id); return;
